@@ -1,2 +1,2 @@
-# hackathon
+# Mybrary
 ハックツハッカソン用リポジトリです。
