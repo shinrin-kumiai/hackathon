@@ -1,15 +1,15 @@
 from fire import Fire
 
 from src.database.database import engine
-from src.database.seeding.book import seeding_to_book
-from src.database.seeding.user import seeding_to_user
-from src.database.seeding.community import seeding_to_community
-from src.database.seeding.user_community import seeding_to_user_community
-from src.database.seeding.user_book import seeding_to_user_book
-from src.database.seeding.community_book import seeding_to_community_book
-from src.database.seeding.user_book_state_log import seeding_to_user_book_state_log
-from src.database.seeding.community_book_state_log import seeding_to_community_book_state_log
-from src.database.seeding.state import seeding_to_state
+from src.database.seedings.book import seeding_to_book
+from src.database.seedings.user import seeding_to_user
+from src.database.seedings.community import seeding_to_community
+from src.database.seedings.user_community import seeding_to_user_community
+from src.database.seedings.user_book import seeding_to_user_book
+from src.database.seedings.community_book import seeding_to_community_book
+from src.database.seedings.user_book_state_log import seeding_to_user_book_state_log
+from src.database.seedings.community_book_state_log import seeding_to_community_book_state_log
+from src.database.seedings.state import seeding_to_state
 
 
 def main(
@@ -23,7 +23,7 @@ def main(
             user_book_state_log: bool = True,
             community_book_state_log: bool = True,
             state: bool = True,
-        ):
+        ) -> None:
     """引数でTrueと指定されたテーブルに対するseedingファイルを実行する
 
     Args:
