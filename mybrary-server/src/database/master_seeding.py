@@ -14,15 +14,16 @@ from src.database.seedings.state import seeding_to_state
 
 def main(
             engine = engine, 
-            book: bool = True,
-            user: bool = True,
-            community: bool = True,
-            user_community: bool = True,
-            user_book: bool = True,
-            community_book: bool = True,
-            user_book_state_log: bool = True,
-            community_book_state_log: bool = True,
-            state: bool = True,
+            all: bool = False,
+            book: bool = False,
+            user: bool = False,
+            community: bool = False,
+            user_community: bool = False,
+            user_book: bool = False,
+            community_book: bool = False,
+            user_book_state_log: bool = False,
+            community_book_state_log: bool = False,
+            state: bool = False,
         ) -> None:
     """引数でTrueと指定されたテーブルに対するseedingファイルを実行する
 
@@ -38,15 +39,15 @@ def main(
         community_book_state_log (bool, optional): Defaults to True.
         state (bool, optional): Defaults to True.
     """
-    if book: seeding_to_book(engine = engine)
-    if user: seeding_to_user(engine = engine)
-    if community: seeding_to_community(engine = engine)
-    if user_community: seeding_to_user_community(engine = engine)
-    if user_book: seeding_to_user_book(engine = engine)
-    if community_book: seeding_to_community_book(engine = engine)
-    if user_book_state_log: seeding_to_user_book_state_log(engine = engine)
-    if community_book_state_log: seeding_to_community_book_state_log(engine = engine)
-    if state: seeding_to_state(engine = engine)
+    if book or all: seeding_to_book(engine = engine)
+    if user or all: seeding_to_user(engine = engine)
+    if community or all: seeding_to_community(engine = engine)
+    if user_community or all: seeding_to_user_community(engine = engine)
+    if user_book or all: seeding_to_user_book(engine = engine)
+    if community_book or all: seeding_to_community_book(engine = engine)
+    if user_book_state_log or all: seeding_to_user_book_state_log(engine = engine)
+    if community_book_state_log or all: seeding_to_community_book_state_log(engine = engine)
+    if state or all: seeding_to_state(engine = engine)
 
 
 if __name__ == "__main__":

@@ -20,6 +20,7 @@ def delete_target_table_records(engine, models_obj) -> None:
 
 def main(
         engine = engine, 
+        all: bool = False,
         book: bool = False,
         user: bool = False,
         community: bool = False,
@@ -29,7 +30,6 @@ def main(
         user_book_state_log: bool = False,
         community_book_state_log: bool = False,
         state: bool = False,
-        all: bool = False
         ) -> None:
     """引数でTrueを受け取ったテーブルに対してdelete_target_table_records関数を呼び出す関数
 

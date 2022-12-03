@@ -21,24 +21,29 @@ py -m src.seeding.master_seeding --Option=Param
 seeding実行時のOption属性のDefault値は以下の通り
 |Option|Default Params|Details|
 |:----|:----:|:----|
-|book|True|本が10冊登録されます|
-|user|True|ユーザーが8名登録されます|
-|community|True|コミュニティが3グループ作成されます|
-|user_community|True|ユーザーとコミュニティが紐づきます|
-|user_book|True|ユーザーと本が紐づきます|
-|community_book|True|コミュニティと本が紐づきます|
-|user_book_state_log|True|ユーザー所有の本が全て"貸出可能"状態になります|
-|community_book_state_log|True|コミュニティ所有の本が全て"貸出可能"状態になります|
-|state|True|本のステータス一覧が登録されます|
+|all|False|全テーブルへのseeding|
+|book|False|本が10冊登録されます|
+|user|False|ユーザーが8名登録されます|
+|community|False|コミュニティが3グループ作成されます|
+|user_community|False|ユーザーとコミュニティが紐づきます|
+|user_book|False|ユーザーと本が紐づきます|
+|community_book|False|コミュニティと本が紐づきます|
+|user_book_state_log|False|ユーザー所有の本が全て"貸出可能"状態になります|
+|community_book_state_log|False|コミュニティ所有の本が全て"貸出可能"状態になります|
+|state|False|本のステータス一覧が登録されます|
 
 ### - Option属性設定の例
-- stateテーブルのseedingのみを解除する場合
+- bookテーブルにのみseedingをする場合
 ```bash
-py -m src.master_seeding --state=False
+py -m src.master_seeding --book=True
 ```
-- user_bookテーブルとcommunity_bookテーブルのseedingを解除する場合
+- userテーブルとcommunityテーブルにseedingをする場合
 ```bash
-py -m src.master_seeding --user_book=False --community_book=False
+py -m src.master_seeding --user=True --community=True
+```
+- 全テーブルに対してseedingを行う場合
+```bash
+py -m src.master_seeding --all=True
 ```
 
 ### - サンプルデータにおけるuuid
@@ -107,6 +112,7 @@ py -m src.seeding.db_handler --Option=Param
 db_handler実行時のOption属性のDefault値は以下の通り
 |Option|Default Params|Details|
 |:----|:----:|:----|
+|all|False|全テーブルを指定|
 |book|False|bookテーブルを指定|
 |user|False|userテーブルを指定|
 |community|False|communityテーブルを指定|
@@ -116,7 +122,6 @@ db_handler実行時のOption属性のDefault値は以下の通り
 |user_book_state_log|False|user_book_state_logテーブルを指定|
 |community_book_state_log|False|community_book_state_logテーブルを指定|
 |state|False|stateテーブルを指定|
-|all|False|全テーブルを指定|
 
 ### - Option属性設定の例
 - 本のみ登録
