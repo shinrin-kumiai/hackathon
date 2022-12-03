@@ -9,5 +9,5 @@ router = APIRouter(
 )
 
 @router.get("/communities")
-async def get_communities(db: Session = Depends(get_db)):
+async def get_communities(db: Session = Depends(get_db)) -> dict:
     return {"message": "This end-point is in the community.py!"}

@@ -11,5 +11,5 @@ app.include_router(books.router)
 
 
 @app.get('/hello')
-async def index():
+async def index() -> str:
     return "Hello world!"

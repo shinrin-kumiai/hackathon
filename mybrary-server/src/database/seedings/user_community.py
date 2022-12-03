@@ -6,7 +6,7 @@ from src.database.database import engine
 
 
 
-def seeding_to_user_community(engine):
+def seeding_to_user_community(engine) -> None:
     """user_communityテーブルへのSeeding
     
     Args:

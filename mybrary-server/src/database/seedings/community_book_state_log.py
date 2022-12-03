@@ -5,7 +5,7 @@ from src import models
 from src.database.database import engine
 
 
-def seeding_to_community_book_state_log(engine):
+def seeding_to_community_book_state_log(engine) -> None:
     """CommunityBookStateLogテーブルへのSeeding
     
     Args:

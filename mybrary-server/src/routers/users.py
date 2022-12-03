@@ -10,9 +10,9 @@ router = APIRouter(
 
 
 @router.get("/all")
-async def get_users(db: Session = Depends(get_db)):
+async def get_users(db: Session = Depends(get_db)) -> dict:
     return {"message": "This end-point is in the user.py!"}
 
 @router.get("/{id}")
-async def get_users(db: Session = Depends(get_db)):
+async def get_users(db: Session = Depends(get_db)) -> dict:
     return {"message": "This end-point is in the user.py!"}

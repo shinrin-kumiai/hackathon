@@ -10,5 +10,5 @@ router = APIRouter(
 
 
 @router.get("/books")
-async def get_books(db: Session = Depends(get_db)):
+async def get_books(db: Session = Depends(get_db)) -> dict:
     return {"message": "This end-point is in the book.py!"}

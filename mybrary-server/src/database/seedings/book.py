@@ -4,7 +4,7 @@ from src import models
 from src.database.database import engine
 
 
-def seeding_to_book(engine):
+def seeding_to_book(engine) -> None:
     """BookテーブルへのSeeding
     
     Args:

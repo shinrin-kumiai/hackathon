@@ -30,7 +30,7 @@ def main(
         community_book_state_log: bool = False,
         state: bool = False,
         all: bool = False
-        ):
+        ) -> None:
     """引数でTrueを受け取ったテーブルに対してdelete_target_table_records関数を呼び出す関数
 
     Args:

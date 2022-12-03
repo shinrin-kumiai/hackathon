@@ -4,7 +4,7 @@ from src import models
 from src.database.database import engine
 
 
-def seeding_to_community(engine):
+def seeding_to_community(engine) -> None:
     """CommunityテーブルへのSeeding
     
     Args:
