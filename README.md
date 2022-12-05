@@ -126,7 +126,7 @@ db_handler実行時のOption属性のDefault値は以下の通り
 ### - Option属性設定の例
 - 本のみ登録
 ```bash
-py -m src.master_seeding
+py -m src.master_seeding --book=True
 ```
 
 
