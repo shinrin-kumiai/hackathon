@@ -17,12 +17,14 @@ const BookCard = (props) => {
     const date = Date.now()
     const preDate = Date.parse(props.book.preDate)
 
-    let cardBgColor;
-    if (date > preDate) {
-        cardBgColor = '#ffe1b9'
-    }else {
-        cardBgColor = '#ffffff'
-    }
+    const cardBgColor = (() => {
+        if (date > preDate) {
+            return ('#ffe1b9')
+        }else {
+            return ('#ffffff')
+        }
+    });
+
 
     return (
         <Box>
