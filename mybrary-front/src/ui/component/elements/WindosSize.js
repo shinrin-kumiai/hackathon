@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useLayoutEffect, useState} from "react";
-
+// ここ後で使う可能性があるので残してます
 // const windowSize =() => {
 //     const [size, setSize] = useState([0, 0])
 //     useLayoutEffect(() => {

@@ -1,13 +1,8 @@
 import * as React from 'react';
-import Typography from "@mui/material/Typography";
-
 import Header from "../chunks/Header.jsx";
-import BookCard from "../elements/BookCard.jsx";
 import BookCards from "../chunks/BookCards.jsx";
-import {Card, createTheme, Grid} from "@mui/material";
-import {Girl} from "@mui/icons-material";
+import {createTheme, Grid} from "@mui/material";
 import Box from "@mui/material/Box";
-import FunctionsSpeedDial from "../chunks/FunctionsSpeedDial.jsx";
 
 
 const theme = createTheme({
@@ -19,7 +14,7 @@ const theme = createTheme({
 })
 
 
-const books = [{title: 'mori', preDate: '2022/8/31'}, {title: 'hayashi', preDate: '2022/12/31'}, {title: 'tanaka', preDate: '2023/1/5'}, {title: 'sonken', preDate: '2023/12/3'}]
+const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
 
 const Top = (props) => {
     return (

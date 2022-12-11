@@ -1,4 +1,4 @@
-import {ButtonBase, Card, CardActionArea, CardContent, CardMedia, Grid} from "@mui/material";
+import {Card, CardActionArea, CardContent, CardMedia, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
@@ -18,13 +18,16 @@ const BookCard = (props) => {
     const preDate = Date.parse(props.book.preDate)
 
     const cardBgColor = (() => {
-        if (date > preDate) {
+        if (props.book.status==='rental' && date > preDate) {
             return ('#ffe1b9')
+        }else if (props.book.status==='rental') {
+            return ('#e0ffd6')
+        }else if (props.book.status==='rending') {
+            return ('#cecece')
         }else {
             return ('#ffffff')
         }
     });
-
 
     return (
         <Box>
