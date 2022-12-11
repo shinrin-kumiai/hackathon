@@ -143,3 +143,41 @@ npm run dev
 ```bash
 py -m uvicorn src.main:app --reload
 ```
+
+# テストの実行
+#### 【ディレクトリ構成】
+- `pytest`によるテスト環境を構築している
+- 以下のようなディレクトリ構成になっている
+```
+tests/
+├ integration/
+│ ├ __init__.py
+│ └ //integration test files
+├ unit/
+│ ├ __init__.py
+│ └ //unit test files
+├ __init__.py
+├ conftest.py
+└ dependencies.py
+```
+- `integration`ディレクトリは統合テストを記述
+- `unit`ディレクトリは単体テストを記述
+- `dependencies.py`にはテスト時にoverrideする関数を記述
+
+#### 【テストの実行】
+- テストコードは以下のコマンドで実行できる
+
+`tests`ディレクトリ内の全てのテスト実行
+```bash
+py -m pytest tests/
+```
+
+`tests/integration`ディレクトリ内の全てのテスト実行
+```bash
+py -m pytest tests/integration/
+```
+
+`tests/integration/test_sample.py`ファイル内の全てのテスト実行
+```bash
+py -m pytest tests/integration/test_sample.py
+```
