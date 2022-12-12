@@ -36,7 +36,7 @@ const Comunities = (props, idx) => {
 const Menu = () => (
     <List>
         <ListItem>
-            <ListItemButton>
+            <ListItemButton href='/'>
                 <ListItemIcon>
                     <BookIcon/>
                 </ListItemIcon>
