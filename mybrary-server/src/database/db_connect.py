@@ -1,12 +1,25 @@
+import os
+import dotenv
 import urllib
 from sqlalchemy import create_engine,Column,Integer,String,ForeignKey
 from sqlalchemy.orm import declarative_base,sessionmaker,relationship,Session
 
-###Azureへの接続################################
-server="sinrinkumiai.database.windows.net"
-database="Use_Hackathon"
-username="sinrin"
-password="sonken625@@"
+dotenv.load_dotenv(override=True)
+
+
+if os.environ.get("IS_LOCAL_DB")=="true":
+    print("ローカルDBでDB登録をします")
+    SQLALCHEMY_DATABASE_URL = "sqlite:///mybrary.sqlite3"
+
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+else:
+    ###Azureへの接続################################
+    server=os.environ.get("SERVER")
+    database=os.environ.get("DATABASE")
+    username=os.environ.get("USERNAME")
+    password=os.environ.get("PASSWORD")
 
 odbc_connect=urllib.parse.quote_plus(
     'DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+password)
