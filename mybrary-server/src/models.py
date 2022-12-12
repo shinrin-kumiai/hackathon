@@ -12,16 +12,11 @@ class Book(Base):
     """
     __tablename__ = "book"
     id = Column(String(length=36), primary_key=True)
+    link = Column(String(length=500))
     isbn = Column(String(length=30))
-    jan = Column(String(length=30))
     title = Column(String(length=100))
-    author = Column(String(length=50))
+    creator = Column(String(length=100))
     publisher = Column(String(length=20))
-    price = Column(Integer)
-    language = Column(String(length=20))
-    page_count = Column(Integer)
-    size = Column(Integer)
-    # publish_date = Column(Date)
     user_book = relationship("UserBook", back_populates="book")
     community_book = relationship("CommunityBook", back_populates="book")
 

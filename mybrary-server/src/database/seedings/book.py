@@ -13,123 +13,83 @@ def seeding_to_book(engine) -> None:
     with Session(bind=engine) as db:
         db.add(models.Book(
             id = "book0001-0000-0000-0000-000000000000",
+            link = "http://iss.ndl.go.jp/books/R100000096-I012781940-00",
             isbn = "9784798067278",
-            jan = "jan",
             title = "Python実践データ分析100本ノック",
-            author = "下山 輝昌",
+            creator = "下山, 輝昌",
             publisher = "秀和システム",
-            price = 2400,
-            language = "ja",
-            page_count = 367,
-            size = 21
         ))
         db.add(models.Book(
             id = "book0002-0000-0000-0000-000000000000",
-            isbn = "9784774142043",
-            jan = "jan",
-            title = "Webを支える技術",
-            author = "山本 陽平",
-            publisher = "技術評論社",
-            price = 2570,
-            language = "ja",
-            page_count = 377,
-            size = 21
+            link= "http://iss.ndl.go.jp/books/R100000074-I000580639-00",
+            isbn= "9784774142043",
+            title= "Webを支える技術",
+            creator= "山本, 陽平(1975-)",
+            publisher= "技術評論社"
         ))
         db.add(models.Book(
             id = "book0003-0000-0000-0000-000000000000",
-            isbn = "9784774142357",
-            jan = "jan",
-            title = "プロになるためのWeb技術入門 : なぜ,あなたはWebシステムを開発できないのか",
-            author = "小森 裕介",
-            publisher = "技術評論社",
-            price = 2280,
-            language = "ja",
-            page_count = 277,
-            size = 23
+            link= "http://iss.ndl.go.jp/books/R100000096-I010615692-00",
+            isbn= "9784774142357",
+            title= "プロになるためのWeb技術入門 : なぜ,あなたはWebシステムを開発できないのか",
+            creator= "小森, 裕介",
+            publisher= "技術評論社"
         ))
         db.add(models.Book(
             id = "book0004-0000-0000-0000-000000000000",
-            isbn = "9784873115658",
-            jan = "jan",
-            title = "リーダブルコード : より良いコードを書くためのシンプルで実践的なテクニック",
-            author = "角 征典",
-            publisher = "オライリー・ジャパン",
-            price = 2400,
-            language = "ja",
-            page_count = 237,
-            size = 21
+            link= "http://iss.ndl.go.jp/books/R100000074-I000709259-00",
+            isbn= "9784873115658",
+            title= "リーダブルコード",
+            creator= "Boswell, Dustin",
+            publisher= "オライリー・ジャパン"
         ))
         db.add(models.Book(
             id = "book0005-0000-0000-0000-000000000000",
-            isbn = "9784873116860",
-            jan = "jan",
-            title = "Web API : the good parts",
-            author = "水野 貴明",
-            publisher = "オライリー・ジャパン",
-            price = 2200,
-            language = "ja",
-            page_count = 208,
-            size = 24
+            link= "http://iss.ndl.go.jp/books/R100000002-I025901139-00",
+            isbn= "9784873116860",
+            title= "Web API:The Good Parts",
+            creator= "水野, 貴明, 1973-",
+            publisher= "オライリー・ジャパン"
         ))
         db.add(models.Book(
             id = "book0006-0000-0000-0000-000000000000",
-            isbn = "9784774184111",
-            jan = "jan",
-            title = "JavaScript本格入門 : モダンスタイルによる基礎から現場での応用まで",
-            author = "山田 祥寛",
-            publisher = "技術評論社",
-            price = 2980,
-            language = "ja",
-            page_count = 455,
-            size = 23
+            link= "http://iss.ndl.go.jp/books/R100000074-I000686013-00",
+            isbn= "9784873117386",
+            title= "入門Python3",
+            creator= "Lubanovic, Bill",
+            publisher= "オライリー・ジャパン"
         ))
         db.add(models.Book(
             id = "book0007-0000-0000-0000-000000000000",
-            isbn = "9784797398892",
-            jan = "jan",
-            title = "1冊ですべて身につくHTML&CSSとWebデザイン入門講座",
-            author = "Mana",
-            publisher = "SBクリエイティブ",
-            price = 2260,
-            language = "ja",
-            page_count = 279,
-            size = 24
+            link= "http://iss.ndl.go.jp/books/R100000096-I000289981-00",
+            isbn= "9784774184111",
+            title= "JavaScript本格入門 : モダンスタイルによる基礎から現場での応用まで : \"なんとなく書ける\"で終わらせず、変わりゆくスタイルを本質から理解して、効率的なモノ作りを実現するために。",
+            creator= "山田, 祥寛",
+            publisher= "技術評論社"
         ))
         db.add(models.Book(
             id = "book0008-0000-0000-0000-000000000000",
-            isbn = "9784798169101",
-            jan = "jan",
-            title = "IT用語図鑑",
-            author = "増井 敏克",
-            publisher = "翔泳社",
-            price = 1800,
-            language = "ja",
-            page_count = 295,
-            size = 21
+            link= "http://iss.ndl.go.jp/books/R100000002-I031633004-00",
+            isbn= "9784798169101",
+            title= "IT用語図鑑",
+            creator= "増井, 敏克, 1979-",
+            publisher= "翔泳社"
         ))
         db.add(models.Book(
             id = "book0009-0000-0000-0000-000000000000",
-            isbn = "9784815601577",
-            jan = "jan",
-            title = "確かな力が身につくJavaScript「超」入門",
-            author = "狩野 祐東",
-            publisher = "SBクリエイティブ",
-            price = 2480,
-            language = "ja",
-            page_count = 325,
-            size = 24
+            link= "http://iss.ndl.go.jp/books/R100000002-I029945915-00",
+            isbn= "9784815601577",
+            title= "確かな力が身につくJavaScript「超」入門",
+            creator= "狩野, 祐東",
+            publisher= "SBクリエイティブ"
         ))
         db.add(models.Book(
             id = "book0010-0000-0000-0000-000000000000",
-            isbn = "9784863543591",
-            jan = "jan",
-            title = "基礎から学ぶReact/React Hooks : 実践入門 : つまずきポイントを確認しながらすすめる!",
-            author = "asakohattori",
-            publisher = "シーアンドアール研究所",
-            price = 3420,
-            language = "ja",
-            page_count = 375,
-            size = 21
+            link= "http://iss.ndl.go.jp/books/R100000096-I012583582-00",
+            isbn= "9784863543591",
+            title= "基礎から学ぶReact/React Hooks : 実践入門 : つまずきポイントを確認しながらすすめる!",
+            creator= "asakohattori",
+            publisher= "シーアンドアール研究所"
         ))
         db.commit()
 
