@@ -18,7 +18,7 @@ async def register_book(
 ) -> None:
     try:
         isbn = services.isbn_normalize(isbn)
-        isbn = services.toggle_isbn10_and_isbn13(isbn) if len(isbn) == 10 else isbn
+        isbn = services.toggle_isbn10_and_isbn13(isbn) if len(isbn) != 13 else isbn
         target_book = crud.search_book_by_isbn(db=db, isbn=isbn)
 
         if target_book is None:
