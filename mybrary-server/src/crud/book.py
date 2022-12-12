@@ -25,6 +25,10 @@ def register_book(db: Session, book_data_json: str) -> None:
     Args:
         db (Session): DB接続用セッション
         book_data_json (str): 国立国会図書館APIから取得した書誌jsonデータ
+    
+    Return:
+        isbn (str): DBに登録したisbn13を返す
+            →リクエストとレスポンスでisbnが異なる場合があるため
     """
     isbn = services.isbn_normalize(book_data_json["identifier"]["ISBN"][0])
     if len(isbn) == 10: 
@@ -40,3 +44,4 @@ def register_book(db: Session, book_data_json: str) -> None:
     ))
     db.commit()
     db.flush()
+    return isbn

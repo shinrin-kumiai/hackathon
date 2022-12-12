@@ -33,8 +33,8 @@ async def register_book(
                 isbn=isbn,
                 thumbnail_save_path=thumbnail_save_path
             )
-
-            crud.register_book(db=db, book_data_json=res_json)
+            registered_isbn = crud.register_book(db=db, book_data_json=res_json)
+            isbn = registered_isbn if isbn != registered_isbn else isbn
             target_book = crud.search_book_by_isbn(db=db, isbn=isbn)
 
         crud.associate_book_to_user(
