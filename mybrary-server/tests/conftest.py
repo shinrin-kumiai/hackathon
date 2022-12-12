@@ -1,6 +1,5 @@
 import os
-# import sys
-# sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
+import shutil
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 import pytest
@@ -21,7 +20,9 @@ from tests.dependencies import all_dependency_overrides
 )
 def setup_and_teardown():
     Base.metadata.create_all(bind=engine)
+    os.makedirs("tests/tmp", exist_ok=True)
     main(engine=engine, all = True)
     all_dependency_overrides()
     yield
+    shutil.rmtree('tests/tmp/')
     os.remove("mybrary_test.sqlite3")
