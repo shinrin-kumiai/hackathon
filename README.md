@@ -2,6 +2,15 @@
 ハックツハッカソン用リポジトリです。
 
 
+# Skills
+[![Our Skills](https://skillicons.dev/icons?i=html,css,react,vite,mui,fastapi,sqlite,azure&theme=light)](#Skills)
+
+
+# 環境変数について
+- 本アプリで使用する環境変数は`.env`ファイルから取得される.
+- Github上には`.env.sample`としてアップロードしてあるためコピーして`.env`ファイルを作成し、必要な内容を記述すること.
+
+
 # DB作成（仮DB:SQLite）
 ## SQLiteファイル(Table)作成
 以下のコマンドを`mybrary-server`ディレクトリ内で実行する
@@ -181,3 +190,17 @@ py -m pytest tests/integration/
 ```bash
 py -m pytest tests/integration/test_sample.py
 ```
+
+
+# エンドポイント一覧
+## userカテゴリ
+### - /user/books/register/
+- ユーザー所有の本を登録するエンドポイント
+
+#### -- クエリパラメータ
+|Query-param|detail|
+|:----:|:----|
+|isbn|登録対象の本のisbn13を指定|
+
+#### -- テスト
+国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
