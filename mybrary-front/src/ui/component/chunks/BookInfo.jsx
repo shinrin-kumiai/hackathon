@@ -2,12 +2,7 @@ import Box from "@mui/material/Box";
 import {Card, CardMedia, Fab, Grid, ListItem} from "@mui/material";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 
-
-function AddIcon() {
-    return null;
-}
 
 const BookInfo = (props) => {
     return (

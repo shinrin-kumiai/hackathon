@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LeftDrawer from "../elements/Drawer.jsx";
 import {useState} from "react";
-import {createTheme, ThemeProvider} from "@mui/material";
+import {ThemeProvider} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
 

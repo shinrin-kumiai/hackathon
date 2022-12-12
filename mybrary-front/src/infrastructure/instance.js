@@ -1,5 +1,7 @@
 // import apiConfig from "./apiConfig.js";
 // import axios from "axios";
+
+// 多分後々使います
 //
 // const postBook = axios.create({
 //         baseURL: apiConfig.postBook.URL,

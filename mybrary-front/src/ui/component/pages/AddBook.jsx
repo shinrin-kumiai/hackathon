@@ -1,8 +1,7 @@
 import * as React from 'react';
 import ScannerIndex from "../../../scanner/scannerIndex.jsx";
 import Box from "@mui/material/Box";
-import {createTheme, Grid} from "@mui/material";
-import Typography from "@mui/material/Typography";
+import {Grid} from "@mui/material";
 import Header from "../chunks/Header.jsx";
 import theme from "../../../theme.jsx";
 

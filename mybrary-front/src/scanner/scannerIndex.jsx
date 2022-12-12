@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Scanner from "./Scanner";
 import {Grid} from "@mui/material";
-import axios from "axios";
 
 
 const ScannerIndex = (props) => {
