@@ -131,4 +131,4 @@ def test_存在しない14桁のisbnコードである12345678901234を指定し
     response = client.post("/user/books/register/?isbn=12345678901234")
     res_json = response.json()
     assert response.status_code == 400
-    assert res_json["detail"] == "isbnコードは10桁or13桁で指定してください."
+    assert res_json["detail"] == "isbnコードの桁数が正しくありません."
