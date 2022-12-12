@@ -197,3 +197,6 @@ py -m pytest tests/integration/test_sample.py
 |Query-param|detail|
 |:----:|:----|
 |isbn|登録対象の本のisbn13を指定|
+
+#### -- テスト
+国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
