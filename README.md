@@ -2,6 +2,10 @@
 ハックツハッカソン用リポジトリです。
 
 
+# Skills
+[![Our Skills](https://skillicons.dev/icons?i=html,css,react,vite,mui,fastapi,sqlite,azure&theme=light)](#Skills)
+
+
 # 環境変数について
 - 本アプリで使用する環境変数は`.env`ファイルから取得される.
 - Github上には`.env.sample`としてアップロードしてあるためコピーして`.env`ファイルを作成し、必要な内容を記述すること.
