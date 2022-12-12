@@ -181,3 +181,14 @@ py -m pytest tests/integration/
 ```bash
 py -m pytest tests/integration/test_sample.py
 ```
+
+
+# エンドポイント一覧
+## userカテゴリ
+### - /user/books/register/
+- ユーザー所有の本を登録するエンドポイント
+
+#### -- クエリパラメータ
+|Query-param|detail|
+|:----:|:----|
+|isbn|登録対象の本のisbn13を指定|
