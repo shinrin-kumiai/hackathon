@@ -54,6 +54,12 @@ def get_thumbnail_from_ndl(isbn: str, thumbnail_save_path: str) -> None:
         thumbnail_url = "https://iss.ndl.go.jp/thumbnail"
         res = requests.get(f"{thumbnail_url}/{isbn}")
 
+        if res.status_code == 404:
+            raise HTTPException(
+                status_code=404,
+                detail="書影が見つかりませんでした."
+            )
+
         img_data = res.content
         img_path = f"{thumbnail_save_path}/{isbn}.jpg"
 
@@ -61,6 +67,12 @@ def get_thumbnail_from_ndl(isbn: str, thumbnail_save_path: str) -> None:
             img.write(img_data)
         
         return img_path
+
+    except HTTPException as e:
+        raise HTTPException(
+            status_code=e.status_code,
+            detail=e.detail
+        )
     except:
         raise HTTPException(
             status_code=400,
