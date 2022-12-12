@@ -31,5 +31,5 @@ def toggle_isbn10_and_isbn13(isbn: str) -> str:
     else:
         raise HTTPException(
             status_code=400,
-            detail="isbnコードは10桁or13桁で指定してください."
+            detail="isbnコードの桁数が正しくありません."
         )
