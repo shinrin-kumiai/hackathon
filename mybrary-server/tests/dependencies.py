@@ -26,7 +26,7 @@ def override_get_thumbnail_save_path() -> str:
     Returns:
         str: テスト時の書影の保存先パス
     """
-    return "/tests/tmp"
+    return "tests/tmp"
 
 
 def all_dependency_overrides() -> None:
