@@ -3,15 +3,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 
-const BookTitle = (props) => {
-    return (
-        <Box sx={{margin: 0}}>
-
-        </Box>
-    )
-}
-
-
 const BookCard = (props) => {
 
     const date = Date.now()

@@ -8,10 +8,6 @@ import Menu from "./Menu.jsx";
 
 const drawerWidth = 1000;
 
-
-
-
-
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',

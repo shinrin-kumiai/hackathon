@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-from src.dependencies import get_db
 from src.routers import users, communities, books
 
 
