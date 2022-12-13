@@ -9,7 +9,7 @@
 # 環境変数について
 - 本アプリで使用する環境変数は`.env`ファイルから取得される.
 - Github上には`.env.sample`としてアップロードしてあるためコピーして`.env`ファイルを作成し、必要な内容を記述すること.
-  
+
 #### .envの中身
 ```
 #IS_LOCAL_PC=trueでsqlite3にfalseでAzureに接続される
@@ -22,6 +22,15 @@ PASSWORD=パスワード
 THUMBNAIL_SAVE_PATH = 
 #テスト関連設定
 NDLAPI_RELATED_TEST_EXECUTE_IS = true
+```
+
+# 作成が必要なディレクトリについて
+- `src`ディレクトリ直下に以下のような構成で`thumbnails`という空ディレクトリを作成すること.
+```
+src
+└ assets/
+　 ├ default/
+　 └ thumbnails/ <-
 ```
 
 # DB操作（SQLite and Azure DB）
@@ -212,13 +221,30 @@ py -m pytest tests/integration/test_sample.py
 
 # エンドポイント一覧
 ## userカテゴリ
-### - /user/books/register/
+### - [post] /user/books/register/
 - ユーザー所有の本を登録するエンドポイント
 
 #### -- クエリパラメータ
 |Query-param|detail|
 |:----:|:----|
 |isbn|登録対象の本のisbn13を指定|
+
+#### -- テスト
+国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
+
+### - [get] /user/books
+- ユーザー所有本の一覧を取得するエンドポイント
+
+#### -- クエリパラメータ
+|Query-param|detail|
+|:----:|:----|
+|page|取得したいページ数|
+|size|1ページで取得したい要素数|
+
+## assetsカテゴリ
+### - [get] /assets/thumbnails/{isbn}
+- isbn13によって指定された本の書影を取得するエンドポイント
+- 指定されたisbnコードの書影が存在しなかった場合はThumbnail-No-Found画像がレスポンスされる.
 
 #### -- テスト
 国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.

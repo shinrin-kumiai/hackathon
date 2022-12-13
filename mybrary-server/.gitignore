@@ -2,3 +2,4 @@ __pycache__
 *.env
 *.sqlite3
 *.jpg
+!thumbnail_not_found.jpg
