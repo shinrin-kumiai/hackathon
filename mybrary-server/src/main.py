@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 
-from src.routers import users, assets
+from src.routers import users, assets, communities
 
 
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(assets.router)
+app.include_router(communities.router)
 
 origins = [
     "*"
