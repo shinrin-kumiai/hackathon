@@ -11,6 +11,16 @@
 - Github上には`.env.sample`としてアップロードしてあるためコピーして`.env`ファイルを作成し、必要な内容を記述すること.
 
 
+# 作成が必要なディレクトリについて
+- `src`ディレクトリ直下に以下のような構成で`thumbnails`という空ディレクトリを作成すること.
+```
+src
+└ assets/
+　 ├ default/
+　 └ thumbnails/ <-
+```
+
+
 # DB作成（仮DB:SQLite）
 ## SQLiteファイル(Table)作成
 以下のコマンドを`mybrary-server`ディレクトリ内で実行する
