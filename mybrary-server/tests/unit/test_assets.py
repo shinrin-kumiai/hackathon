@@ -23,7 +23,7 @@ def test_isbnコードが9784798167206である本の書影が正しく取得で
         response = client.post("/user/books/register/?isbn=9784798167206")
         res_json = response.json()
         assert response.status_code == 200
-        assert res_json["message"] == "本が正常に登録されました."
+        assert res_json["isbn"] == "9784798167206"
         
         response = client.get("/assets/thumbnails/9784798167206")
         assert response.status_code == 200
@@ -45,7 +45,7 @@ def test_isbnコードが9784785300019である書影がない本の書影が正
         response = client.post("/user/books/register/?isbn=9784785300019")
         res_json = response.json()
         assert response.status_code == 200
-        assert res_json["message"] == "本が正常に登録されました."
+        assert res_json["isbn"] == "9784785300019"
         
         response = client.get("/assets/thumbnails/9784785300019")
         assert response.status_code == 200
