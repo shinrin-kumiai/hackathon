@@ -78,7 +78,7 @@ def test_isbnコードが9784798167206である未登録の本の登録とユー
         res_json = response.json()
         assert response.status_code == 200
         assert res_json["message"] == "本が正常に登録されました."
-        assert len(glob.glob("/tests/tmp/9784798167206.jpg")) == 1
+        assert len(glob.glob("tests/tmp/9784798167206.jpg")) == 1
 
         with Session(bind=engine) as db:
             all_books = db.query(models.Book).all()
@@ -117,7 +117,7 @@ def test_書影が登録されていない本のisbnコードである9784785300
         res_json = response.json()
         assert response.status_code == 200
         assert res_json["message"] == "本が正常に登録されました."
-        assert len(glob.glob("/tests/tmp/9784785300019.jpg")) == 0
+        assert len(glob.glob("tests/tmp/9784785300019.jpg")) == 0
 
         with Session(bind=engine) as db:
             all_books = db.query(models.Book).all()
