@@ -97,8 +97,8 @@ class State(Base):
 user_community_table = Table(
     "user_community",
     Base.metadata,
-    Column("user_id", Integer, ForeignKey("user.id")),
-    Column("community_id", Integer, ForeignKey("community.id"))
+    Column("user_id", String, ForeignKey("user.id")),
+    Column("community_id", String, ForeignKey("community.id"))
 )
 
 
