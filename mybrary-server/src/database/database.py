@@ -20,7 +20,6 @@ else:
     password=os.environ.get("PASSWORD")
     
     engine=azure_db_connect(server,database,username,password)
-    print(engine)
-
+    
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
