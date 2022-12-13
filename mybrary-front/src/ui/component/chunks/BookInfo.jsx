@@ -25,7 +25,7 @@ const BookInfo = (props) => {
                 <Grid item>
                     <List>
                         <ListItem>
-                            <ListItemText primary={'ISBNコード:   ' + props.response.isbn}/>
+                            <ListItemText primary={'ISBNコード:   ' + props.ISBN}/>
                         </ListItem>
                         <ListItem>
                             <ListItemText primary={'タイトル:   ' + props.response.title}/>

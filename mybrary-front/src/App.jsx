@@ -3,6 +3,8 @@ import Top from "./ui/component/pages/Top.jsx";
 import AddBook from "./ui/component/pages/AddBook.jsx";
 import BookRegisterConfirm from "./ui/component/pages/BookRegisterConfirm.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {Provider} from "react-redux";
+import store from "./store/index.js";
 
 
 const windowSize = () => {

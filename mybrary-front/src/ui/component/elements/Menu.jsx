@@ -13,7 +13,7 @@ import BookIcon from '@mui/icons-material/Book';
 const communitiesList = ['woods', 'waterFront', 'funkyVally']
 
 
-const Comunities = (props, idx) => {
+const Comunities = (props) => {
     return (
         props.comunities.map((name, index) => {
             return (

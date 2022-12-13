@@ -5,6 +5,9 @@ import theme from "../../../theme.jsx";
 import Header from "../chunks/Header.jsx";
 import BookInfo from "../chunks/BookInfo.jsx";
 import Typography from "@mui/material/Typography";
+import store from "../../../store/index.js";
+import axios from "axios";
+import {useState} from "react";
 
 
 function AddIcon() {
@@ -12,6 +15,9 @@ function AddIcon() {
 }
 
 const BookRegisterConfirm = (props) => {
+
+    const [response, setResponse] = useState(null)
+
     const value = {
         imageURL: "https://m.media-amazon.com/images/I/51WG47XKOkL._SX351_BO1,204,203,200_.jpg",
         isbn: '1234567890123',
@@ -20,12 +26,8 @@ const BookRegisterConfirm = (props) => {
         publisher: "sonken shobou",
         publish_date: "2022/08/31"
     }
-    // const [response, setResponse] = useState(value);
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/book').then((response) => {
-    //     setResponse(response.data);
-    //     })
-    //     }, [])
+    axios.get('http://localhost:8000/user/books/register/?isbn=9784003320716', {
+        headers: {}}).then((response) => {setResponse(response)})
 
     return (
         <div>
@@ -38,7 +40,7 @@ const BookRegisterConfirm = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item sx={{padding: 1}}>
-                        <BookInfo response={value} width={props.windowWidth} height={props.windowHeight}/>
+                        <BookInfo response={response} width={props.windowWidth} height={props.windowHeight} ISBN={9784003320716}/>
                     </Grid>
                     <Grid item>
                         <Grid container direction='row' justifyContent='space-evenly' alignContent='center'>
@@ -61,5 +63,6 @@ const BookRegisterConfirm = (props) => {
         </div>
     )
 }
+
 
 export default BookRegisterConfirm

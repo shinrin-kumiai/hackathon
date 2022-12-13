@@ -1,18 +1,42 @@
 import React, { useState } from "react";
 import Scanner from "./Scanner";
 import {Grid} from "@mui/material";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import store from "../store/index.js";
+import {connect} from "react-redux";
+import {updateErr, updateIsbn} from "../store/createSlice.js";
 
 
 const ScannerIndex = (props) => {
+
+    const dispatch = useDispatch();
+
     const [camera, setCamera] = useState(true);
     const [result, setResult] = useState(null);
 
     const onDetected = result => {
         setResult(result);
         setCamera(!camera)
-        console.log(result)
-        // axios.post('http://localhost:8000/book/regist?isbn=' + result)
-        window.location.href = '/book/register_confirm/'
+
+        axios.post('http://localhost:8000/user/books/register/?isbn=' + result, {
+            headers: {}}).then((response) => {
+            if (response.status === 200) {
+                // dispatch(updateIsbn(store, {payload: result}))
+                console.log(response.status)
+                window.location.href = '/book/register_confirm/'
+            } else{
+                // dispatch(updateErr(store, {payload: response.data.detail.toString()}))
+                console.log(response.status)
+                window.location.href = '/book/register/'
+            }
+        }).catch((err) => {
+            console.log(err.message.toString())
+            // dispatch(updateErr(store, {payload: err.message.toString()}))
+            console.log(err)
+            window.location.href = '/book/register/'
+        })
+
     };
 
     return (
@@ -29,5 +53,6 @@ const ScannerIndex = (props) => {
         </section>
     );
 }
+
 
 export default ScannerIndex
