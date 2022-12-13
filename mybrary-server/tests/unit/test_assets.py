@@ -15,6 +15,9 @@ def test_isbnコードが9784798167206である本の書影が正しく取得で
     """正常形(/assets/thumbnails)
     1. isbnコードが9784798167206である本を登録
     2. 登録した本の書影を正しく取得できることを確認
+
+    Note:
+        .env > NDLAPI_RELATED_TEST_EXECUTE_IS == "true"の場合のみテスト実行
     """
     if os.environ.get('NDLAPI_RELATED_TEST_EXECUTE_IS') == "true":
         response = client.post("/user/books/register/?isbn=9784798167206")
@@ -34,6 +37,9 @@ def test_isbnコードが9784785300019である書影がない本の書影が正
     """正常形(/assets/thumbnails)
     1. isbnコードが9784785300019である本を登録
     2. 登録した本の書影を正しく取得できることを確認
+
+    Note:
+        .env > NDLAPI_RELATED_TEST_EXECUTE_IS == "true"の場合のみテスト実行
     """
     if os.environ.get('NDLAPI_RELATED_TEST_EXECUTE_IS') == "true":
         response = client.post("/user/books/register/?isbn=9784785300019")
