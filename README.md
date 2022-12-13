@@ -194,13 +194,32 @@ py -m pytest tests/integration/test_sample.py
 
 # エンドポイント一覧
 ## userカテゴリ
-### - /user/books/register/
+### - [post] /user/books/register/
 - ユーザー所有の本を登録するエンドポイント
 
 #### -- クエリパラメータ
 |Query-param|detail|
 |:----:|:----|
 |isbn|登録対象の本のisbn13を指定|
+
+#### -- テスト
+国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
+
+### - [get] /user/books
+- ユーザー所有本の一覧を取得するエンドポイント
+
+#### -- クエリパラメータ
+|Query-param|detail|
+|:----:|:----|
+|page|取得したいページ数|
+|size|1ページで取得したい要素数|
+
+
+
+## assetsカテゴリ
+### - [get] /assets/thumbnails/{isbn}
+- isbn13によって指定された本の書影を取得するエンドポイント
+- 指定されたisbnコードの書影が存在しなかった場合はThumbnail-No-Found画像がレスポンスされる.
 
 #### -- テスト
 国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
