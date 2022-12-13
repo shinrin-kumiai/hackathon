@@ -9,13 +9,31 @@
 # 環境変数について
 - 本アプリで使用する環境変数は`.env`ファイルから取得される.
 - Github上には`.env.sample`としてアップロードしてあるためコピーして`.env`ファイルを作成し、必要な内容を記述すること.
+  
+#### .envの中身
+```
+#IS_LOCAL_PC=trueでsqlite3にfalseでAzureに接続される
+IS_LOCAL_DB=false
+SERVER=Azureのサーバー名.database.windows.net
+DATABASE=データベース名
+USERNAME=ユーザー名
+PASSWORD=パスワード
+#サーバー関連設定
+THUMBNAIL_SAVE_PATH = 
+#テスト関連設定
+NDLAPI_RELATED_TEST_EXECUTE_IS = true
+```
 
-
-# DB作成（仮DB:SQLite）
-## SQLiteファイル(Table)作成
+# DB操作（SQLite and Azure DB）
+## DB作成
 以下のコマンドを`mybrary-server`ディレクトリ内で実行する
 ```bash
-py -m src.models
+py -m src.db_handler --db_create=True
+```
+## DB削除
+以下のコマンドを`mybrary-server`ディレクトリ内で実行する
+```bash
+py -m src.db_handler --db_delete=True
 ```
 ## Seedings
 ### - **commands**
@@ -107,7 +125,7 @@ uuid4では、"00000000-0000-0000-0000-000000000000"のような36桁のidが割
 |comm0002|user0005, user0006, user0008|2|2|2|2|1|0|1|1|1|0|
 |comm0003|user0007, user0008|0|0|1|1|2|2|2|2|0|0|
 
-## database handler
+## record handler
 ### - delete all records
 以下のコマンドを`mybrary-server`ディレクトリ内で実行すると、指定したテーブルの全レコードが削除される
 ```bash
