@@ -57,5 +57,10 @@ async def get_user_books(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ):  
-    user_book = crud.get_all_user_book(db=db, user_id=user_id)
-    return paginate(list(map(schemas.UserBookInfo.mapping_to_dict, user_book)))
+    try:
+        user_book = crud.get_all_user_book(db=db, user_id=user_id)
+        return paginate(list(map(schemas.UserBookInfo.mapping_to_dict, user_book)))
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
