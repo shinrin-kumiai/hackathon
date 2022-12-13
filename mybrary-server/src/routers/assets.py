@@ -3,6 +3,8 @@ import dotenv
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
+from src import services
+
 dotenv.load_dotenv(override=True)
 
 
@@ -12,12 +14,13 @@ router = APIRouter(
 )
 
 
-@router.get('/assets/{isbn13}')
+@router.get('/assets/{isbn}')
 async def get_image(
-        isbn13: str
+        isbn: str
 ):
     try:
-        file_path = f"{os.environ.get('THUMBNAIL_SAVE_PATH')}/{isbn13}.jpg"
+        isbn = services.isbn_normalize(isbn)
+        file_path = f"{os.environ.get('THUMBNAIL_SAVE_PATH')}/{isbn}.jpg"
         if os.path.exists(file_path):
             return FileResponse(file_path)
         else:
