@@ -37,12 +37,12 @@ src
 ## DB作成
 以下のコマンドを`mybrary-server`ディレクトリ内で実行する
 ```bash
-py -m src.db_handler --db_create=True
+py -m src.database.db_handler --db_create=True
 ```
 ## DB削除
 以下のコマンドを`mybrary-server`ディレクトリ内で実行する
 ```bash
-py -m src.db_handler --db_delete=True
+py -m src.database.db_handler --db_delete=True
 ```
 ## Seedings
 ### - **commands**
@@ -71,15 +71,15 @@ seeding実行時のOption属性のDefault値は以下の通り
 ### - Option属性設定の例
 - bookテーブルにのみseedingをする場合
 ```bash
-py -m src.master_seeding --book=True
+py -m src.database.master_seeding --book=True
 ```
 - userテーブルとcommunityテーブルにseedingをする場合
 ```bash
-py -m src.master_seeding --user=True --community=True
+py -m src.database.master_seeding --user=True --community=True
 ```
 - 全テーブルに対してseedingを行う場合
 ```bash
-py -m src.master_seeding --all=True
+py -m src.database.master_seeding --all=True
 ```
 
 ### - サンプルデータにおけるuuid
@@ -138,7 +138,7 @@ uuid4では、"00000000-0000-0000-0000-000000000000"のような36桁のidが割
 ### - delete all records
 以下のコマンドを`mybrary-server`ディレクトリ内で実行すると、指定したテーブルの全レコードが削除される
 ```bash
-py -m src.seeding.db_handler --Option=Param
+py -m src.database.record_handler --Option=Param
 
 #Option: 既定のOption属性値
 #Param: bool
@@ -162,7 +162,7 @@ db_handler実行時のOption属性のDefault値は以下の通り
 ### - Option属性設定の例
 - 本のみ登録
 ```bash
-py -m src.master_seeding --book=True
+py -m src.database.master_seeding --book=True
 ```
 
 
