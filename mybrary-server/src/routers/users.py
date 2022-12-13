@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/books/register/")
+@router.post("/books/register/", response_model=schemas.BookInfo)
 async def register_book(
     isbn: str = Query(..., description = "登録したい本のisbnコード"),
     db: Session = Depends(get_db),
@@ -44,7 +44,7 @@ async def register_book(
             user_id=user_id,
             book_id=target_book.id
         )
-        return {"message": "本が正常に登録されました."}
+        return schemas.BookInfo.mapping_to_dict(crud.search_book_by_isbn(db=db, isbn=isbn))
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

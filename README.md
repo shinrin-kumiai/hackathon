@@ -229,8 +229,12 @@ py -m pytest tests/integration/test_sample.py
 |:----:|:----|
 |isbn|登録対象の本のisbn13を指定|
 
+#### --レスポンスモデル
+`models.BookInfo`
+
 #### -- テスト
 国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
+
 
 ### - [get] /user/books
 - ユーザー所有本の一覧を取得するエンドポイント
@@ -240,6 +244,9 @@ py -m pytest tests/integration/test_sample.py
 |:----:|:----|
 |page|取得したいページ数|
 |size|1ページで取得したい要素数|
+
+#### --レスポンスモデル
+`list[models.UserBookInfo]`
 
 ## assetsカテゴリ
 ### - [get] /assets/thumbnails/{isbn}
