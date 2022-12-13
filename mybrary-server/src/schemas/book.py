@@ -3,6 +3,48 @@ from pydantic import BaseModel, Field
 from src import models
 
 
+class BookInfo(BaseModel):
+    """Bookテーブルデータのレスポンスモデル
+
+    BaseClass:
+        BaseModel: pydanticの基盤クラス
+    """
+    id: str = Field(..., description="本のid")
+    isbn: str = Field(..., description="isbn13")
+    title: str = Field(..., description="本のタイトル")
+    creator: str = Field(..., description="著者")
+    publisher: str = Field(..., description="出版社")
+
+    def mapping_to_dict(target_book: models.Book) -> dict:
+        """Book型のオブジェクトをBookInfo型にマッピングする関数
+
+        Args:
+            target_book (models.Book): Bookテーブルから取得したレコードオブジェクト
+
+        Returns:
+            dict: BookInfo型のdict
+        """
+        return dict(
+            id = target_book.id,
+            isbn = target_book.isbn,
+            title = target_book.title,
+            creator = target_book.creator,
+            publisher = target_book.publisher
+        )
+    
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "id": "book-0000-0000-0000-000000000000",
+                "isbn": "9780000000000",
+                "title": "Pythonの本",
+                "creator": "森田 林",
+                "publisher": "森林書房"
+            }
+        }
+
+
 class UserBookInfo(BaseModel):
     """ユーザー所有の本のレスポンスモデル
 
