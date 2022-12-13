@@ -6,11 +6,12 @@ from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
 
 router = APIRouter(
+    prefix='/user',
     tags=['user']
 )
 
 
-@router.post("/user/books/register/")
+@router.post("/books/register/")
 async def register_book(
     isbn: str = Query(..., description = "登録したい本のisbnコード"),
     db: Session = Depends(get_db),
@@ -51,7 +52,7 @@ async def register_book(
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@router.get("/user/books", response_model=Page[schemas.UserBookInfo])
+@router.get("/books", response_model=Page[schemas.UserBookInfo])
 async def get_user_books(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
