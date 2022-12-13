@@ -7,7 +7,7 @@ from src.database.database import Base, engine
 class Book(Base):
     """国立国会図書館APIから取得した本のデータを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "book"
@@ -24,7 +24,7 @@ class Book(Base):
 class UserBook(Base):
     """ユーザーとそのユーザーが所有している本との紐づけを行うテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "user_book"
@@ -39,7 +39,7 @@ class UserBook(Base):
 class CommunityBook(Base):
     """コミュニティとそのコミュニティが所有している本との紐づけを行うテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "community_book"
@@ -54,7 +54,7 @@ class CommunityBook(Base):
 class UserBookStateLog(Base):
     """ユーザー所有の本の状態ログを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "user_book_state_log"
@@ -69,7 +69,7 @@ class UserBookStateLog(Base):
 class CommunityBookStateLog(Base):
     """community所有のbookの状態ログを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "community_book_state_log"
@@ -84,7 +84,7 @@ class CommunityBookStateLog(Base):
 class State(Base):
     """state一覧テーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "state"
@@ -105,7 +105,7 @@ user_community_table = Table(
 class User(Base):
     """ユーザー情報を格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "user"
@@ -119,7 +119,7 @@ class User(Base):
 class Community(Base):
     """コミュニティ情報を格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "community"
