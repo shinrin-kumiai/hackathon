@@ -8,7 +8,6 @@ dotenv.load_dotenv(override=True)
 
 
 if os.environ.get("IS_LOCAL_DB")=="true":
-    print("ローカルDBでDB登録をします")
     SQLALCHEMY_DATABASE_URL = "sqlite:///mybrary.sqlite3"
 
     engine = create_engine(
