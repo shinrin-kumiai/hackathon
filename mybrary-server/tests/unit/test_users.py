@@ -6,8 +6,10 @@ from sqlalchemy.orm import Session
 
 from src.main import app
 from src import models
+from src.dependencies import get_current_user
 
 from tests.conftest import engine
+from tests.dependencies import override_get_current_user0002
 
 client = TestClient(app)
 dotenv.load_dotenv(override=True)
@@ -154,3 +156,32 @@ def test_存在しない14桁のisbnコードである12345678901234を指定し
     res_json = response.json()
     assert response.status_code == 400
     assert res_json["detail"] == "isbnコードの桁数が正しくありません."
+
+
+
+def test_user0001が所有している本の一覧が正常に取得できる():
+    """正常系テスト(/user/books)
+    1. ログインユーザーを"user0001"に変更
+    2. "user0001"が所有している本の一覧をリクエスト
+    3. "user0001"が所有している本が3冊取得されることを確認
+    """
+    response = client.get("/user/books?page=1&size=50")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert len(res_json["items"]) == 0
+
+
+def test_user0002が所有している本の一覧が正常に取得できる():
+    """正常系テスト(/user/books)
+    1. ログインユーザーを"user0002"に変更
+    2. "user0002"が所有している本の一覧をリクエスト
+    3. "user0002"が所有している本が3冊取得されることを確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0002
+    response = client.get("/user/books?page=1&size=50")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert len(res_json["items"]) == 3
+    assert res_json["items"][0]["book_id"] == "book0001-0000-0000-0000-000000000000"
+    assert res_json["items"][1]["book_id"] == "book0002-0000-0000-0000-000000000000"
+    assert res_json["items"][2]["book_id"] == "book0003-0000-0000-0000-000000000000"
