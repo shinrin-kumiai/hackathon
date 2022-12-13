@@ -14,9 +14,9 @@ router = APIRouter(
 )
 
 
-@router.get('/assets/{isbn}')
+@router.get('/thumbnails/{isbn}')
 async def get_image(
-        isbn: str
+    isbn: str
 ):
     try:
         isbn = services.isbn_normalize(isbn)
