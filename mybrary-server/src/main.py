@@ -21,3 +21,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+add_pagination(app)

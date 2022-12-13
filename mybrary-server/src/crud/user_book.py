@@ -19,3 +19,19 @@ def associate_book_to_user(db: Session, user_id: str, book_id: str) -> None:
     ))
     db.commit()
     db.flush()
+
+
+def get_all_user_book(db: Session, user_id: str):
+    """ログイン中のユーザーが所有している全ての本を配列で取得する関数
+
+    Args:
+        db (Session): DB接続用セッション
+        user_id (str): ユーザーid
+
+    Returns:
+        <models.UserBook>: ログイン中のユーザーが所有している本の一覧
+    """
+    return db.query(models.UserBook)\
+        .filter(models.UserBook.user_id == user_id)\
+            .join(models.Book, models.UserBook.book_id == models.Book.id)\
+                .all()
