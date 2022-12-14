@@ -57,3 +57,4 @@ def search_user_book_by_id(db: Session, book_id: str) -> models.UserBook:
             status_code=404,
             detail="指定されたidの本が見つかりませんでした."
         )
+    return target_book
