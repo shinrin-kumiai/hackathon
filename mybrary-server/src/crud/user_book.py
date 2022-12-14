@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from uuid import uuid4
 
@@ -35,3 +36,24 @@ def get_all_user_book(db: Session, user_id: str):
         .filter(models.UserBook.user_id == user_id)\
             .join(models.Book, models.UserBook.book_id == models.Book.id)\
                 .all()
+
+
+def search_user_book_by_id(db: Session, book_id: str) -> models.UserBook:
+    """ユーザー所有の本をidで情報取得する関数
+
+    Args:
+        db (Session): DB接続用セッション
+        book_id (str): 取得対象の本のid
+
+    Returns:
+        models.UserBook: UserBookテーブルのレコードオブジェクト
+    """
+    target_book = db.query(models.UserBook)\
+        .filter(models.UserBook.id == book_id)\
+            .join(models.Book, models.UserBook.book_id == models.Book.id)\
+                .first()
+    if target_book is None:
+        raise HTTPException(
+            status_code=404,
+            detail="指定されたidの本が見つかりませんでした."
+        )

@@ -64,3 +64,17 @@ async def get_user_books(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.get("/books/{book_id}", response_model=schemas.UserBookInfo)
+async def search_book_by_id(
+    book_id: str,
+    db: Session = Depends(get_db),
+) -> schemas.UserBookInfo:
+    try:
+        return schemas.UserBookInfo.mapping_to_dict(crud.search_user_book_by_id(db=db, book_id=book_id))
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
