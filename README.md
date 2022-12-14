@@ -249,6 +249,30 @@ py -m pytest tests/integration/test_sample.py
 `list[schemas.UserBookInfo]`
 
 
+### - [get] /books/{book_id}
+- 本の所有idによって指定された本の情報を返すエンドポイント
+
+#### --パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|book_id|取得対象の本のid|
+
+#### --レスポンスモデル
+`schemas.UserBookInfo`
+
+
+### - [delete] /books/{book_id}
+- 本の所有idによって指定された本の削除を行うエンドポイント
+
+#### --パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|book_id|削除対象の本のid|
+
+#### 制限
+- 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
+
+
 ## communityカテゴリ
 ### - [post] /community/create
 - 新規コミュニティを作成するエンドポイント
@@ -259,11 +283,25 @@ py -m pytest tests/integration/test_sample.py
 #### レスポンスモデル
 `schemas.CommunityInfo`
 
+### - [post] /communities/{community_id}/add/{target_user_id}
+- コミュニティにユーザーを登録するエンドポイント
+
+#### -- パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|community_id|登録対象コミュニティのid|
+|target_user_id|登録対象ユーザーのid|
+
 
 ## assetsカテゴリ
 ### - [get] /assets/thumbnails/{isbn}
 - isbn13によって指定された本の書影を取得するエンドポイント
 - 指定されたisbnコードの書影が存在しなかった場合はThumbnail-No-Found画像がレスポンスされる.
+
+#### -- パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|isbn|取得対象の本のisbn13|
 
 #### -- テスト
 国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
