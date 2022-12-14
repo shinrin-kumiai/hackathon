@@ -14,17 +14,20 @@ def seeding_to_community(engine) -> None:
         db.add(models.Community(
             id = "comm0001-0000-0000-0000-000000000000",
             name = "コミュニティ1",
-            owner_id = "user0003-0000-0000-0000-000000000000"
+            owner_id = "user0003-0000-0000-0000-000000000000",
+            description = "とてもすごいコミュニティです."
         ))
         db.add(models.Community(
             id = "comm0002-0000-0000-0000-000000000000",
             name = "コミュニティ2",
-            owner_id = "user0005-0000-0000-0000-000000000000"
+            owner_id = "user0005-0000-0000-0000-000000000000",
+            description = "とてもつよいコミュニティです."
         ))
         db.add(models.Community(
             id = "comm0003-0000-0000-0000-000000000000",
             name = "コミュニティ3",
-            owner_id = "user0007-0000-0000-0000-000000000000"
+            owner_id = "user0007-0000-0000-0000-000000000000",
+            description = "とても楽しいコミュニティです."
         ))
         db.commit()
 
