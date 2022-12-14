@@ -10,7 +10,7 @@ class CommunitySetupInfo(BaseModel):
         BaseModel: pydanticの基盤クラス
     """
     name: str = Field(..., description="コミュニティ名", max_length=30)
-    description: str | None = Field(default=None, description="コミュニティの説明文", max_length=100)
+    description: str | None = Field(default=None, description="コミュニティの説明文", max_length=150)
 
     class Config:
         orm_mode = True
