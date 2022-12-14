@@ -1,13 +1,12 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, DateTime
 from sqlalchemy.orm import relationship
-
-from src.database.database import Base, engine
+from src.database.database import Base
 
 
 class Book(Base):
     """国立国会図書館APIから取得した本のデータを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "book"
@@ -21,10 +20,46 @@ class Book(Base):
     community_book = relationship("CommunityBook", back_populates="book")
 
 
+user_community_table = Table(
+    "user_community",
+    Base.metadata,
+    Column("user_id", String(length=36), ForeignKey("user.id")),
+    Column("community_id", String(length=36), ForeignKey("community.id"))
+)
+
+
+class User(Base):
+    """ユーザー情報を格納するテーブル
+
+    BaseClass:
+        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
+    """
+    __tablename__ = "user"
+    id = Column(String(length=36), primary_key=True)
+    name = Column(String(length=25))
+    mail_adress = Column(String(length=100))
+    user_book = relationship("UserBook", back_populates="user")
+    community = relationship("Community", secondary=user_community_table, back_populates="user")
+
+
+class Community(Base):
+    """コミュニティ情報を格納するテーブル
+
+    BaseClass:
+        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
+    """
+    __tablename__ = "community"
+    id = Column(String(length=36), primary_key=True)
+    name = Column(String(length=30))
+    owner_id = Column(String(length=36))
+    community_book = relationship("CommunityBook", back_populates="community")
+    user = relationship("User", secondary=user_community_table, back_populates="community")
+
+
 class UserBook(Base):
     """ユーザーとそのユーザーが所有している本との紐づけを行うテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "user_book"
@@ -39,7 +74,7 @@ class UserBook(Base):
 class CommunityBook(Base):
     """コミュニティとそのコミュニティが所有している本との紐づけを行うテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "community_book"
@@ -51,10 +86,23 @@ class CommunityBook(Base):
     community = relationship("Community", back_populates="community_book")
 
 
+class State(Base):
+    """state一覧テーブル
+
+    BaseClass:
+        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
+    """
+    __tablename__ = "state"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    state = Column(String(length=10))
+    user_book_state_log = relationship("UserBookStateLog", back_populates="state")
+    community_book_state_log = relationship("CommunityBookStateLog", back_populates="state")
+
+
 class UserBookStateLog(Base):
     """ユーザー所有の本の状態ログを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "user_book_state_log"
@@ -69,7 +117,7 @@ class UserBookStateLog(Base):
 class CommunityBookStateLog(Base):
     """community所有のbookの状態ログを格納するテーブル
 
-    Args:
+    BaseClass:
         Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
     """
     __tablename__ = "community_book_state_log"
@@ -79,56 +127,3 @@ class CommunityBookStateLog(Base):
     register_date = Column(DateTime)
     community_book = relationship("CommunityBook", back_populates="community_book_state_log")
     state = relationship("State", back_populates="community_book_state_log")
-
-
-class State(Base):
-    """state一覧テーブル
-
-    Args:
-        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
-    """
-    __tablename__ = "state"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    state = Column(String(length=10))
-    user_book_state_log = relationship("UserBookStateLog", back_populates="state")
-    community_book_state_log = relationship("CommunityBookStateLog", back_populates="state")
-
-
-user_community_table = Table(
-    "user_community",
-    Base.metadata,
-    Column("user_id", Integer, ForeignKey("user.id")),
-    Column("community_id", Integer, ForeignKey("community.id"))
-)
-
-
-class User(Base):
-    """ユーザー情報を格納するテーブル
-
-    Args:
-        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
-    """
-    __tablename__ = "user"
-    id = Column(String(length=36), primary_key=True)
-    name = Column(String(length=25))
-    mail_adress = Column(String(length=100))
-    user_book = relationship("UserBook", back_populates="user")
-    community = relationship("Community", secondary=user_community_table, back_populates="user")
-
-
-class Community(Base):
-    """コミュニティ情報を格納するテーブル
-
-    Args:
-        Base (<class 'sqlalchemy.orm.decl_api.DeclarativeMeta'>): imported from src.database.database
-    """
-    __tablename__ = "community"
-    id = Column(String(length=36), primary_key=True)
-    name = Column(String(length=30))
-    owner_id = Column(Integer)
-    community_book = relationship("CommunityBook", back_populates="community")
-    user = relationship("User", secondary=user_community_table, back_populates="community")
-
-
-if __name__ == '__main__':
-    Base.metadata.create_all(bind=engine)

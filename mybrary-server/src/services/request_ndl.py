@@ -55,10 +55,7 @@ def get_thumbnail_from_ndl(isbn: str, thumbnail_save_path: str) -> None:
         res = requests.get(f"{thumbnail_url}/{isbn}")
 
         if res.status_code == 404:
-            raise HTTPException(
-                status_code=404,
-                detail="書影が見つかりませんでした."
-            )
+            return "Thumbnail not found."
 
         img_data = res.content
         img_path = f"{thumbnail_save_path}/{isbn}.jpg"

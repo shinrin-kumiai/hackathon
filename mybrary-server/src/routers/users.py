@@ -1,15 +1,17 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
+from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 
 from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
-from src import crud, services
+from src import crud, services, schemas
 
 router = APIRouter(
+    prefix='/user',
     tags=['user']
 )
 
 
-@router.post("/user/books/register/")
+@router.post("/books/register/")
 async def register_book(
     isbn: str = Query(..., description = "登録したい本のisbnコード"),
     db: Session = Depends(get_db),
@@ -49,3 +51,16 @@ async def register_book(
     except:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+
+@router.get("/books", response_model=Page[schemas.UserBookInfo])
+async def get_user_books(
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user),
+):  
+    try:
+        user_book = crud.get_all_user_book(db=db, user_id=user_id)
+        return paginate(list(map(schemas.UserBookInfo.mapping_to_dict, user_book)))
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
