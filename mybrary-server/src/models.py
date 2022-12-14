@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Table, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, Table, DateTime, Date
 from sqlalchemy.orm import relationship
 from src.database.database import Base
 
@@ -52,6 +52,7 @@ class Community(Base):
     id = Column(String(length=36), primary_key=True)
     name = Column(String(length=30))
     owner_id = Column(String(length=36))
+    description = Column(String(length=150))
     community_book = relationship("CommunityBook", back_populates="community")
     user = relationship("User", secondary=user_community_table, back_populates="community")
 
@@ -109,6 +110,8 @@ class UserBookStateLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_book_id = Column(String(length=36), ForeignKey("user_book.id"))
     state_id = Column(Integer, ForeignKey("state.id"))
+    relation_user_id = Column(String(length=36), ForeignKey("user.id"))
+    return_due_date = Column(Date)
     register_date = Column(DateTime)
     user_book = relationship("UserBook", back_populates="user_book_state_log")
     state = relationship("State", back_populates="user_book_state_log")
@@ -124,6 +127,8 @@ class CommunityBookStateLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     community_book_id = Column(String(length=36), ForeignKey("community_book.id"))
     state_id = Column(Integer, ForeignKey("state.id"))
+    relation_user_id = Column(String(length=36), ForeignKey("user.id"))
+    return_due_date = Column(Date)
     register_date = Column(DateTime)
     community_book = relationship("CommunityBook", back_populates="community_book_state_log")
     state = relationship("State", back_populates="community_book_state_log")
