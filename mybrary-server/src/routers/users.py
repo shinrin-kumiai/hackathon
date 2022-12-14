@@ -81,7 +81,7 @@ async def search_book_by_id(
 
 
 @router.delete("/books/{book_id}")
-async def search_book_by_id(
+async def delete_book_by_id(
     book_id: str,
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
