@@ -58,3 +58,25 @@ def search_user_book_by_id(db: Session, book_id: str) -> models.UserBook:
             detail="指定されたidの本が見つかりませんでした."
         )
     return target_book
+
+
+def delete_user_book_by_id(db: Session, book_id: str) -> None:
+    """idで指定されたユーザー所有の本を削除する関数
+
+    Args:
+        db (Session): DB接続用セッション
+        book_id (str): 削除対象の本のid
+
+    Returns:
+        models.UserBook: UserBookテーブルのレコードオブジェクト
+    """
+    try:
+        db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_id)\
+                .delete()
+        db.commit()
+    except:
+        raise HTTPException(
+            status_code=500,
+            detail="本の削除に失敗しました"
+        )

@@ -78,3 +78,25 @@ async def search_book_by_id(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.delete("/books/{book_id}")
+async def search_book_by_id(
+    book_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+) -> schemas.UserBookInfo:
+    try:
+        target_book = crud.search_user_book_by_id(db=db, book_id=book_id)
+        if target_book.user_id != user_id:
+            raise HTTPException(
+                status_code=403,
+                detail="この本の削除機能へのアクセス権限がありません."
+            )
+        crud.delete_user_book_by_id(db=db, book_id=book_id)
+        return {"message": f"id:{book_id}の本を削除しました."}
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
