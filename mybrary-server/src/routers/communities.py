@@ -13,14 +13,21 @@ router = APIRouter(
 
 @router.post("/create", response_model=schemas.CommunityInfo)
 async def create_community(
-    community_setup_info: schemas.CommunitySetupInfo
+    community_setup_info: schemas.CommunitySetupInfo,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user),
 ) -> None:
     try:
-        return {
-                    "name": "森林組合",
-                    "description": "森林組合のコミュニティです.",
-                    "owner_id": "user0001-0000-0000-0000-000000000000"
-                }
+        created_community_id = crud.create_new_community(
+                db=db,
+                user_id=user_id, 
+                community_setup_info=community_setup_info
+            )
+        created_community = crud.search_community_by_id(
+                db=db,
+                community_id=created_community_id
+            )
+        return schemas.CommunityInfo.mapping_to_dict(target_community=created_community)
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
