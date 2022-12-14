@@ -250,14 +250,27 @@ py -m pytest tests/integration/test_sample.py
 
 
 ### - [get] /books/{book_id}
+- 本の所有idによって指定された本の情報を返すエンドポイント
 
-#### -- パスパラメータ
+#### --パスパラメータ
 |Path-param|detail|
 |:----:|:----|
 |book_id|取得対象の本のid|
 
 #### --レスポンスモデル
 `schemas.UserBookInfo`
+
+
+### - [delete] /books/{book_id}
+- 本の所有idによって指定された本の削除を行うエンドポイント
+
+#### --パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|book_id|削除対象の本のid|
+
+#### 制限
+- 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
 
 
 ## communityカテゴリ
