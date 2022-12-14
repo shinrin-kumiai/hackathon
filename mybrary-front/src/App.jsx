@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "./store/index.js";
 import BookDetail from "./ui/component/pages/BookDetail.jsx";
+import AddCommunity from "./ui/component/pages/AddCommunity.jsx";
+import CommunityShelf from "./ui/component/pages/CommunityShelf.jsx";
 
 
 const windowSize = () => {
@@ -36,7 +38,8 @@ function App() {
                 <Route path={"/book/register/"} element={<AddBook windowWidth={width} windowHeight={height}/>}/>
                 <Route path={"/book/register_confirm/:isbn"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>
                 <Route path={"/book/detail/:isbn"} element={<BookDetail windowWidth={width} windowHeight={height}/>}/>
-                {/*<Route path={"/book/register_confirm/"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>*/}
+                <Route path={"/community/new"} element={<AddCommunity windowWidth={width} windowHeight={height}/>}/>
+                <Route path={"/community/:communityID/books"} element={<CommunityShelf windowWidth={width} windowHeight={height}/>}/>
             </Routes>
         </BrowserRouter>
         )

@@ -7,12 +7,14 @@ import theme from "../../../theme.jsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {setBatch} from "react-redux/es/utils/batch.js";
+import {useParams} from "react-router-dom";
 
 // const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
 
-const Top = (props) => {
+const CommunityShelf = (props) => {
+    const params = useParams()
     const [books, setBooks] = useState([])
-    useEffect(() => {axios.get('http://localhost:8000/user/books?page=1&size=50').then(
+    useEffect(() => {axios.get('http://localhost:8000/Community/'+ params.communityId +'books?page=1&size=50').then(
         (response) => setBooks(response.data.items)
     )}, [])
 
@@ -29,15 +31,10 @@ const Top = (props) => {
                             Add Book
                         </Button>
                     </Grid>
-                    <Grid item sx={{padding: 2}}>
-                        <Button href={'/community/new'}>
-                            MakeCommunity
-                        </Button>
-                    </Grid>
                 </Grid>
             </Box>
         </div>
     )
 }
 
-export default Top
+export default CommunityShelf

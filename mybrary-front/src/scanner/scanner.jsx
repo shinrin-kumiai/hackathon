@@ -18,7 +18,7 @@ const Scanner = props => {
         });
 
         Quagga.onProcessed(result => {
-            var drawingCtx = Quagga.canvas.ctx.overlay,
+            const drawingCtx = Quagga.canvas.ctx.overlay,
                 drawingCanvas = Quagga.canvas.dom.overlay;
 
             if (result) {
