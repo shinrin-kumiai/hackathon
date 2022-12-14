@@ -5,6 +5,7 @@ import BookRegisterConfirm from "./ui/component/pages/BookRegisterConfirm.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "./store/index.js";
+import BookDetail from "./ui/component/pages/BookDetail.jsx";
 
 
 const windowSize = () => {
@@ -33,7 +34,9 @@ function App() {
             <Routes>
                 <Route index element={<Top/>}/>
                 <Route path={"/book/register/"} element={<AddBook windowWidth={width} windowHeight={height}/>}/>
-                <Route path={"/book/register_confirm/"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>
+                <Route path={"/book/register_confirm/:isbn"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>
+                <Route path={"/book/detail/:isbn"} element={<BookDetail windowWidth={width} windowHeight={height}/>}/>
+                {/*<Route path={"/book/register_confirm/"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>*/}
             </Routes>
         </BrowserRouter>
         )

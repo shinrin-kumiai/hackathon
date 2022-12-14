@@ -5,6 +5,7 @@ from fastapi_pagination import add_pagination
 from src.routers import users, assets
 
 
+
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(assets.router)
@@ -20,5 +21,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 add_pagination(app)

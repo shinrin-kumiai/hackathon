@@ -16,7 +16,7 @@ const AddBook = (props) => {
     useEffect(() => {
         console.log(currentErr)
         console.log(crisbn)
-        if (currentErr != null) {
+        if (currentErr !== "none") {
             setOpenSnackbar(true)
     }})
 

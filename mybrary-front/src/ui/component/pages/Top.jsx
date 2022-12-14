@@ -4,11 +4,18 @@ import BookCards from "../chunks/BookCards.jsx";
 import {Button, createTheme, Grid} from "@mui/material";
 import Box from "@mui/material/Box";
 import theme from "../../../theme.jsx";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {setBatch} from "react-redux/es/utils/batch.js";
 
-
-const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
+// const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
 
 const Top = (props) => {
+    const [books, setBooks] = useState([])
+    useEffect(() => {axios.get('http://localhost:8000/user/books?page=1&size=50').then(
+        (response) => setBooks(response.data.items)
+    )}, [])
+
     return (
         <div>
             <Header theme={theme}/>

@@ -8,36 +8,34 @@ const BookInfo = (props) => {
     return (
         <Box>
             <Grid container direction='column' justifyContent='flex-start' alignContent='center'>
-                <Grid item>
-                    <Box sx={{maxWidth: props.width, maxHeight: props.height * 1, boxShadow: 6}}>
-                        <Card>
-                            <Box sx={{maxHeight: props.height*0.5, maxWidth:props.width*0.9}}>
-                                <CardMedia
-                                    component="img"
-                                    image={props.response.imageURL}
-                                    alt="book_image"
-                                    sx={{maxWidth: props.width*0.9, maxHeight: props.height*0.5}}
-                                />
-                            </Box>
-                        </Card>
-                    </Box>
+                <Grid item sx={{maxWidth: props.width, maxHeight: props.height * 1, boxShadow: 6, margin:1}}>
+                    <Card>
+                        <Box sx={{maxHeight: props.height*0.5, maxWidth:props.width*0.9}}>
+                            <CardMedia
+                                component="img"
+                                image={'http://localhost:8000/assets/thumbnails/9784798064390'}
+                                alt="book_image"
+                                sx={{maxWidth: props.width*0.9, maxHeight: props.height*0.5}}
+                            />
+                        </Box>
+                    </Card>
                 </Grid>
-                <Grid item>
-                    <List>
+                <Grid item sx={{maxWidth: props.width, maxHeight: props.height * 1, boxShadow: 3, margin:1}}>
+                    <List sx={{boxShadow: 4}}>
                         <ListItem>
-                            <ListItemText primary={'ISBNコード:   ' + props.ISBN}/>
+                            <ListItemText primary={'ISBNコード:   ' + props.value.isbn} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary={'タイトル:   ' + props.response.title}/>
+                            <ListItemText primary={'タイトル:   ' + props.value.title} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary={'著者:   ' + props.response.author}/>
+                            <ListItemText primary={'著者:   ' + props.value.author} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary={'出版社:   ' + props.response.publisher}/>
+                            <ListItemText primary={'出版社:   ' + props.value.publisher} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary={'出版日:   ' + props.response.publish_date}/>
+                            <ListItemText primary={'出版日:   ' + props.value.publish_date} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                     </List>
                 </Grid>

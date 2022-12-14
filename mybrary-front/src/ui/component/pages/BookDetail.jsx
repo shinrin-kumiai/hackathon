@@ -9,47 +9,71 @@ import store from "../../../store/index.js";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 
 
 function AddIcon() {
     return null;
 }
 
-const BookRegisterConfirm = (props) => {
+const BookDetail = (props) => {
 
-    // const params = useParams()
+    const params = useParams()
 
-    const ConfirmBook = useSelector(state => state.bookRegister.isbn)
+    console.log(params)
+
+    const id = params.id
 
     const [response, setResponse] = useState(null)
 
     const value = {
         imageURL: "https://m.media-amazon.com/images/I/51WG47XKOkL._SX351_BO1,204,203,200_.jpg",
-        isbn: ConfirmBook,
+        isbn: 978134566,
         title: "python爆速fire",
         author: "kazuki moriyama",
         publisher: "sonken shobou",
-        publish_date: "2022/08/31"
+        publish_date: "2022/08/31",
+        state: "waitPermission"
     }
     // axios.get('http://localhost:8000/user/books/?isbn=9784798067278', {
     //     headers: {}}).then((response) => {setResponse(response)})
     // useEffect(() => {
-    //     axios.get('http://localhost:8000/assets/thumbnails/9784798067278', {
+    //     axios.get('http://localhost:8000/book/9784798067278', {
     //         headers: {}}).then((response) => {setResponse(response)})
     // }, [])
 
-    console.log(useSelector(state => state.bookRegister))
+    const buttonConfig = (response) => {
+        if (response.state === "waitPermission"){
+            const config = {
+                text: '貸出要望があります！'
+            }
+            return (
+                <Grid container direction='row' justifyContent='space_evenly' alignContent='center'>
+                    <Grid item>
+                        <Grid item>
+                            <Fab variant="extended" color="primary" href='/'>
+                                <AddIcon />
+                                {config.text}
+                            </Fab>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            )
+        } else {
+            return (
+                <></>
+            )
+        }
+    }
 
     return (
         <div>
             <Header theme={theme}/>
             <Box>
                 <Grid container direction='column' justifyContent='flex-start' alignContent='space-evenly'>
-                    <Grid item sx={{padding: 1}}>
-                        <Typography>
-                            こちらの本が登録されました
-                        </Typography>
+                    <Grid item>
+                        {() => {
+                            buttonConfig(value)
+                        }}
                     </Grid>
                     <Grid item sx={{padding: 1}}>
                         <BookInfo value={value} width={props.windowWidth} height={props.windowHeight} imagePath={response}/>
@@ -63,9 +87,9 @@ const BookRegisterConfirm = (props) => {
                                 </Fab>
                             </Grid>
                             <Grid item>
-                                <Fab variant="extended" color="secondary" href='/book/register'>
+                                <Fab variant="extended" color="primary" href='/'>
                                     <AddIcon />
-                                    さらに登録
+                                    登録を解除
                                 </Fab>
                             </Grid>
                         </Grid>
@@ -77,4 +101,4 @@ const BookRegisterConfirm = (props) => {
 }
 
 
-export default BookRegisterConfirm
+export default BookDetail
