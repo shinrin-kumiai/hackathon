@@ -28,6 +28,7 @@ class CommunityInfo(CommunitySetupInfo):
     BaseClass:
         CommunitySetupInfo: コミュニティ作成時に使用するスキーマ
     """
+    id:str = Field(..., description="コミュニティid")
     owner_id: str = Field(..., description="コミュニティ所有者のユーザーid")
 
     def mapping_to_dict(target_community: models.Community) -> dict:
@@ -39,7 +40,12 @@ class CommunityInfo(CommunitySetupInfo):
         Returns:
             dict: CommunityInfo型のdict
         """
-        pass
+        return dict(
+            id = target_community.id,
+            name = target_community.name,
+            description = target_community.description,
+            owner_id = target_community.owner_id
+        )
 
     class Config:
         orm_mode = True
@@ -47,6 +53,7 @@ class CommunityInfo(CommunitySetupInfo):
             "example": {
                 "name": "森林組合",
                 "description": "森林組合のコミュニティです.",
+                "id": "comm0000-0000-0000-0000-000000000000",
                 "owner_id": "user0001-0000-0000-0000-000000000000"
             }
         }
