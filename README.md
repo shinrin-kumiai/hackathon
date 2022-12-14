@@ -221,87 +221,79 @@ py -m pytest tests/integration/test_sample.py
 
 # エンドポイント一覧
 ## userカテゴリ
-### - [post] /user/books/register/
-- ユーザー所有の本を登録するエンドポイント
-
-#### -- クエリパラメータ
-|Query-param|detail|
-|:----:|:----|
-|isbn|登録対象の本のisbn13を指定|
-
-#### --レスポンスモデル
-`schemas.BookInfo`
-
-#### -- テスト
-国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
+>### - [post] /user/books/register/
+>- ユーザー所有の本を登録するエンドポイント
+>#### -- クエリパラメータ
+>|Query-param|detail|
+>|:----:|:----|
+>|isbn|登録対象の本のisbn13を指定|
+>#### --レスポンスモデル
+>`schemas.BookInfo`
+>#### -- テスト
+>国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の>`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
 
 
-### - [get] /user/books
-- ユーザー所有本の一覧を取得するエンドポイント
-
-#### -- クエリパラメータ
-|Query-param|detail|
-|:----:|:----|
-|page|取得したいページ数|
-|size|1ページで取得したい要素数|
-
-#### --レスポンスモデル
-`list[schemas.UserBookInfo]`
+>### - [get] /user/books
+>- ユーザー所有本の一覧を取得するエンドポイント
+>#### -- クエリパラメータ
+>|Query-param|detail|
+>|:----:|:----|
+>|page|取得したいページ数|
+>|size|1ページで取得したい要素数|
+>#### --レスポンスモデル
+>`list[schemas.UserBookInfo]`
 
 
-### - [get] /books/{book_id}
-- 本の所有idによって指定された本の情報を返すエンドポイント
-
-#### --パスパラメータ
-|Path-param|detail|
-|:----:|:----|
-|book_id|取得対象の本のid|
-
-#### --レスポンスモデル
-`schemas.UserBookInfo`
+>### - [get] /user/books/{book_id}
+>- 本の所有idによって指定された本の情報を返すエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|book_id|取得対象の本のid|
+>#### --レスポンスモデル
+>`schemas.UserBookInfo`
 
 
-### - [delete] /books/{book_id}
-- 本の所有idによって指定された本の削除を行うエンドポイント
+>### - [delete] /user/books/{book_id}
+>- 本の所有idによって指定された本の削除を行うエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|book_id|削除対象の本のid|
+>#### 制限
+> - 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
 
-#### --パスパラメータ
-|Path-param|detail|
-|:----:|:----|
-|book_id|削除対象の本のid|
 
-#### 制限
-- 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
+> ### - [get] /user/communities
+> - ログイン中のユーザーが所属しているコミュニティの情報を配列で返すエンドポイント
+> #### --レスポンスモデル
+> `schemas.CommunityInfo`
 
 
 ## communityカテゴリ
-### - [post] /community/create
-- 新規コミュニティを作成するエンドポイント
+>### - [post] /community/create
+>- 新規コミュニティを作成するエンドポイント
+>#### リクエストボディモデル
+>`schemas.CommunitySetupInfo`
+>#### レスポンスモデル
+>`schemas.CommunityInfo`
 
-#### リクエストボディモデル
-`schemas.CommunitySetupInfo`
-
-#### レスポンスモデル
-`schemas.CommunityInfo`
-
-### - [post] /communities/{community_id}/add/{target_user_id}
-- コミュニティにユーザーを登録するエンドポイント
-
-#### -- パスパラメータ
-|Path-param|detail|
-|:----:|:----|
-|community_id|登録対象コミュニティのid|
-|target_user_id|登録対象ユーザーのid|
+>### - [post] /communities/{community_id}/add/{target_user_id}
+>- コミュニティにユーザーを登録するエンドポイント
+>#### -- パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|community_id|登録対象コミュニティのid|
+>|target_user_id|登録対象ユーザーのid|
 
 
 ## assetsカテゴリ
-### - [get] /assets/thumbnails/{isbn}
-- isbn13によって指定された本の書影を取得するエンドポイント
-- 指定されたisbnコードの書影が存在しなかった場合はThumbnail-No-Found画像がレスポンスされる.
-
-#### -- パスパラメータ
-|Path-param|detail|
-|:----:|:----|
-|isbn|取得対象の本のisbn13|
-
-#### -- テスト
-国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
+>### - [get] /assets/thumbnails/{isbn}
+>- isbn13によって指定された本の書影を取得するエンドポイント
+>- 指定されたisbnコードの書影が存在しなかった場合はThumbnail-No-Found画像がレスポンスされる.
+>#### -- パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|isbn|取得対象の本のisbn13|
+>#### -- テスト
+>国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
