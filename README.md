@@ -249,6 +249,17 @@ py -m pytest tests/integration/test_sample.py
 `list[schemas.UserBookInfo]`
 
 
+### - [get] /books/{book_id}
+
+#### -- パスパラメータ
+|Path-param|detail|
+|:----:|:----|
+|book_id|取得対象の本のid|
+
+#### --レスポンスモデル
+`schemas.UserBookInfo`
+
+
 ## communityカテゴリ
 ### - [post] /community/create
 - 新規コミュニティを作成するエンドポイント
