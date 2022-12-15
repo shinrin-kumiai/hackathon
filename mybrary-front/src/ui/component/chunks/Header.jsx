@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LeftDrawer from "../elements/Drawer.jsx";
 import {useState} from "react";
-import {ThemeProvider} from "@mui/material";
+import {ButtonBase, ThemeProvider} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
 
@@ -32,9 +32,14 @@ export default function Header(props) {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Mybrary
-                        </Typography>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <ButtonBase href='/'>
+                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                    Mybrary
+                                </Typography>
+                            </ButtonBase>
+                        </Box>
+
                         <IconButton size='large' color='inherit'>
                             <NotificationsIcon/>
                         </IconButton>

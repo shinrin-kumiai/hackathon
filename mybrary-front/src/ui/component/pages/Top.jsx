@@ -30,8 +30,8 @@ const Top = (props) => {
                         </Button>
                     </Grid>
                     <Grid item sx={{padding: 2}}>
-                        <Button href={'/community/new'}>
-                            MakeCommunity
+                        <Button href={'https://usehackathon.b2clogin.com/usehackathon.onmicrosoft.com/oauth2/v2.0/authorize?p=B2[…]Fjwt.ms&scope=openid&response_type=id_token&prompt=login'}>
+                            LogIn
                         </Button>
                     </Grid>
                 </Grid>

@@ -9,9 +9,9 @@ const BookCards = (props) => {
         <ThemeProvider theme={props.theme}>
             <Box flex>
                 <Grid container direction='row' justifyContent='space-evenly' alignContent='baseline'>
-                    {props.books.map((book) => {
+                    {props.books.map((book, index) => {
                         return(
-                            <Grid item sx={{marginTop: 4, marginX: 2}}>
+                            <Grid item sx={{marginTop: 4, marginX: 2}} key={index}>
                                 <BookCard book={book}/>
                             </Grid>
                         )

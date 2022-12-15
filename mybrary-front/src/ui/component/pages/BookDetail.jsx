@@ -19,29 +19,27 @@ const BookDetail = (props) => {
 
     const params = useParams()
 
-    console.log(params)
-
     const id = params.id
 
-    const [response, setResponse] = useState(null)
+    const [response, setResponse] = useState({})
 
-    const value = {
-        imageURL: "https://m.media-amazon.com/images/I/51WG47XKOkL._SX351_BO1,204,203,200_.jpg",
-        isbn: 978134566,
-        title: "python爆速fire",
-        author: "kazuki moriyama",
-        publisher: "sonken shobou",
-        publish_date: "2022/08/31",
-        state: "waitPermission"
+    useEffect(() => {axios.get('http://localhost:8000/user/books/' + id).then(
+        (response) => (setResponse(response.data))
+    )}, [])
+
+    const imagePath = 'http://localhost:8000/assets/thumbnails/' + response.isbn
+
+    const deleteRelation = () => {
+        axios.delete('http://localhost:8000/user/books/' + id).then((response) => (
+            window.location.href = '/'
+        )).catch(() => (
+            window.location.href = '"/book/detail/' + id
+        ))
     }
-    // axios.get('http://localhost:8000/user/books/?isbn=9784798067278', {
-    //     headers: {}}).then((response) => {setResponse(response)})
-    // useEffect(() => {
-    //     axios.get('http://localhost:8000/book/9784798067278', {
-    //         headers: {}}).then((response) => {setResponse(response)})
-    // }, [])
 
-    const buttonConfig = (response) => {
+
+
+    const ButtonConfig = (response) => {
         if (response.state === "waitPermission"){
             const config = {
                 text: '貸出要望があります！'
@@ -71,24 +69,20 @@ const BookDetail = (props) => {
             <Box>
                 <Grid container direction='column' justifyContent='flex-start' alignContent='space-evenly'>
                     <Grid item>
-                        {() => {
-                            buttonConfig(value)
-                        }}
+                        {<ButtonConfig response={response}/>}
                     </Grid>
                     <Grid item sx={{padding: 1}}>
-                        <BookInfo value={value} width={props.windowWidth} height={props.windowHeight} imagePath={response}/>
+                        <BookInfo value={response} width={props.windowWidth} height={props.windowHeight} imagePath={imagePath}/>
                     </Grid>
                     <Grid item>
                         <Grid container direction='row' justifyContent='space-evenly' alignContent='center'>
                             <Grid item>
                                 <Fab variant="extended" color="primary" href='/'>
-                                    <AddIcon />
                                     MyShelf
                                 </Fab>
                             </Grid>
                             <Grid item>
-                                <Fab variant="extended" color="primary" href='/'>
-                                    <AddIcon />
+                                <Fab variant="extended" color="primary" onClick={() => deleteRelation()}>
                                     登録を解除
                                 </Fab>
                             </Grid>

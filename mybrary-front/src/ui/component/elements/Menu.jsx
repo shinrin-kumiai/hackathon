@@ -9,21 +9,37 @@ import Divider from "@mui/material/Divider";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookIcon from '@mui/icons-material/Book';
+import axios from "axios";
 
-const communitiesList = ['woods', 'waterFront', 'funkyVally']
+const communitiesList = [
+    {
+        name: 'forest',
+        id: '52ad8ad5-ccb2-4265-9685-6181e60447ac'
+    },
+    {
+        name: 'waterFront',
+        id: '3a36b3bc-3266-4726-a157-9c3bc11c533e'
+    },
+    {
+        name: 'funkyVally',
+        id: '3a36b3bc-3266-4726-a157-9c3bc11c533e'
+    }
+]
 
 
 const Comunities = (props) => {
     return (
-        props.comunities.map((name, index) => {
+        props.comunities.map((community, index) => {
             return (
                 <ListItem key={index}>
-                    <ListItemButton>
+                    <ListItemButton onClick={() => {
+                        window.location.href='/community/' + community.id + '/config'
+                    }}>
                         <ListItemIcon>
 
                         </ListItemIcon>
                         <ListItemText>
-                            {name}
+                            {community.name}
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
@@ -46,6 +62,17 @@ const Menu = () => (
             </ListItemButton>
         </ListItem>
         <Comunities comunities={communitiesList}/>
+        <Divider/>
+        <ListItem>
+            <ListItemButton href='/community/new'>
+                <ListItemIcon>
+
+                </ListItemIcon>
+                <ListItemText>
+                    CreateCommunity
+                </ListItemText>
+            </ListItemButton>
+        </ListItem>
         <Divider/>
         <ListItem>
             <ListItemButton>

@@ -23,9 +23,9 @@ const BookCard = (props) => {
     const cardBgColor = '#ffffff'
 
     return (
-        <Box>
+        <Box id={props.book.id}>
             <Card sx={{ width: 150, height: 200, boxShadow:6, backgroundColor: cardBgColor}}>
-                <CardActionArea sx={{ width: 150, height: 200 }} href={'/book/detail/' + props.book.isbn}>
+                <CardActionArea sx={{ width: 150, height: 200 }} href={'/book/detail/' + props.book.id}>
                     <Box sx={{height:160}}>
                         <Grid container direction='column' justifyContent='flex-start' alignContent='center'>
                             <Grid item>

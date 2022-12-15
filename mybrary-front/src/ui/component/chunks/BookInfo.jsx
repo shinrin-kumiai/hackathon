@@ -8,12 +8,12 @@ const BookInfo = (props) => {
     return (
         <Box>
             <Grid container direction='column' justifyContent='flex-start' alignContent='center'>
-                <Grid item sx={{maxWidth: props.width, maxHeight: props.height * 1, boxShadow: 6, margin:1}}>
+                <Grid item sx={{flexGrow:1, boxShadow: 6, margin:1}}>
                     <Card>
                         <Box sx={{maxHeight: props.height*0.5, maxWidth:props.width*0.9}}>
                             <CardMedia
                                 component="img"
-                                image={'http://localhost:8000/assets/thumbnails/9784798064390'}
+                                image={props.imagePath}
                                 alt="book_image"
                                 sx={{maxWidth: props.width*0.9, maxHeight: props.height*0.5}}
                             />
@@ -29,7 +29,7 @@ const BookInfo = (props) => {
                             <ListItemText primary={'タイトル:   ' + props.value.title} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary={'著者:   ' + props.value.author} primaryTypographyProps={{fontSize: 13}}/>
+                            <ListItemText primary={'著者:   ' + props.value.creator} primaryTypographyProps={{fontSize: 13}}/>
                         </ListItem>
                         <ListItem>
                             <ListItemText primary={'出版社:   ' + props.value.publisher} primaryTypographyProps={{fontSize: 13}}/>
