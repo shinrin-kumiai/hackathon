@@ -5,10 +5,7 @@ import theme from "../../../theme.jsx";
 import Header from "../chunks/Header.jsx";
 import BookInfo from "../chunks/BookInfo.jsx";
 import Typography from "@mui/material/Typography";
-import store from "../../../store/index.js";
-import axios from "axios";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useState} from "react";
 import {useSelector} from "react-redux";
 
 

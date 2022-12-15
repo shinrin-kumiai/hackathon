@@ -1,22 +1,7 @@
-import Box from "@mui/material/Box";
 import {useState} from "react";
-import {
-    Button,
-    FormControl,
-    FormHelperText,
-    Grid,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField
-} from "@mui/material";
 import Header from "../chunks/Header.jsx";
 import theme from "../../../theme.jsx";
 import * as React from "react";
-import { useFormControl } from '@mui/material/FormControl';
-import {Controller, useForm} from "react-hook-form";
-import {Form} from "react-router-dom";
-import axios from "axios";
 import CommunityForm from "../elements/CommunityForm.jsx";
 import Typography from "@mui/material/Typography";
 

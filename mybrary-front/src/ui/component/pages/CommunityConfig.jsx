@@ -1,8 +1,4 @@
 import {Button, Grid, ListItem} from "@mui/material";
-import {useParams} from "react-router-dom";
-import axios from "axios";
-import {useState} from "react";
-import Typography from "@mui/material/Typography";
 import MemberList from "../elements/MemberList.jsx";
 import Header from "../chunks/Header.jsx";
 import theme from "../../../theme.jsx";

@@ -9,7 +9,6 @@ import Divider from "@mui/material/Divider";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookIcon from '@mui/icons-material/Book';
-import axios from "axios";
 
 const communitiesList = [
     {
