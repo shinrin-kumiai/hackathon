@@ -169,3 +169,52 @@ def test_user0003がcomm0004に存在しないユーザーuser0000を新規追�
 
     assert response.status_code == 404
     assert res_json["detail"] == "指定されたidのユーザーが見つかりませんでした."
+
+
+def test_comm0001のオーナーであるユーザーuser0003がcomm0001の情報を正常に取得できる():
+    """正常形テスト([get]/communities/{community_id})
+    1. ログイン中のユーザーをuser0003に変更する
+    2. コミュニティ1の情報をリクエストする
+    3. レスポンスのステータスコードとメッセージの確認
+    4. has_permissionがTrueであることの確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert res_json["name"] == "コミュニティ1"
+    assert res_json["has_permission"] == True
+
+
+def test_ユーザーuser0001がcomm0001の情報を正常に取得できる():
+    """正常形テスト([get]/communities/{community_id})
+    1. コミュニティ1の情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    3. has_permissionがFalseであることの確認
+    """
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert res_json["name"] == "コミュニティ1"
+    assert res_json["has_permission"] == False
+
+
+def test_ユーザーuser0001が存在しないコミュニティcomm0000の情報をリクエストして404エラーを吐く():
+    """正常形テスト([get]/communities/{community_id})
+    1. コミュニティ1の情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    3. has_permissionがFalseであることの確認
+    """
+    community_id = "comm0000-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}")
+    res_json = response.json()
+
+    assert response.status_code == 404
+    assert res_json["detail"] == "指定されたidのコミュニティが見つかりませんでした."
