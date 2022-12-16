@@ -20,7 +20,7 @@ async def register_book(
     user_id: str = Depends(get_current_user),
     thumbnail_save_path: str = Depends(get_thumbnail_save_path)
 ) -> None:
-    # try:
+    try:
         isbn = services.isbn_normalize(isbn)
         isbn = services.toggle_isbn10_and_isbn13(isbn) if len(isbn) != 13 else isbn
         target_book = crud.search_book_by_isbn(db=db, isbn=isbn)
@@ -51,10 +51,10 @@ async def register_book(
             user_id=user_id
         )
 
-    # except HTTPException as e:
-    #     raise HTTPException(status_code=e.status_code, detail=e.detail)
-    # except:
-    #     raise HTTPException(status_code=500, detail="Internal Server Error")
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/books", response_model=Page[schemas.UserBookInfo])
