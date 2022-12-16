@@ -12,7 +12,7 @@ dotenv.load_dotenv(override=True)
 
 
 def test_isbnコードが9784798167206である本の書影が正しく取得できる():
-    """正常形(/assets/thumbnails)
+    """正常形([get]/assets/thumbnails)
     1. isbnコードが9784798167206である本を登録
     2. 登録した本の書影を正しく取得できることを確認
 
@@ -34,7 +34,7 @@ def test_isbnコードが9784798167206である本の書影が正しく取得で
 
 
 def test_isbnコードが9784785300019である書影がない本の書影が正しく取得できる():
-    """正常形(/assets/thumbnails)
+    """正常形([get]/assets/thumbnails)
     1. isbnコードが9784785300019である本を登録
     2. 登録した本の書影を正しく取得できることを確認
 
