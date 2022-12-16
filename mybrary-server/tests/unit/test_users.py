@@ -207,3 +207,57 @@ def test_本の所有idがusbk0000である存在しない本の情報をリク�
     res_json = response.json()
     assert response.status_code == 404
     assert res_json["detail"] == "指定されたidの本が見つかりませんでした."
+
+
+def test_user0002が所有しているusbk0001という所有idの本を正常に削除できる():
+    """異常系テスト(/user/books/{book_id})
+    1. ログイン中のユーザーをuser0002に変更
+    2. usbk0001をuser0002が所有していることの確認
+    3. user0002の所有本からusbk0001を削除するリクエストを送る
+    4. user0002の所有本にusbk0001が無くなっていることを確認する
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0002
+    book_ownership_id = "usbk0001-0000-0000-0000-000000000000"
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
+
+    response = client.delete(f"/user/books/{book_ownership_id}")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["message"] == f"id:{book_ownership_id}の本を削除しました."
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is None
+
+
+def test_user0001がuser0002が所有しているusbk0001という所有idの本を削除しようとして403エラーを吐く():
+    """異常系テスト(/user/books/{book_id})
+    1. usbk0001をuser0002が所有していることの確認
+    2. user0001でログイン中だがuser0002の所有本からusbk0001を削除するリクエストを送る
+    3. user0002の所有本にusbk0001が無くなっていないことを確認する
+    """
+    book_ownership_id = "usbk0001-0000-0000-0000-000000000000"
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
+
+    response = client.delete(f"/user/books/{book_ownership_id}")
+    res_json = response.json()
+    assert response.status_code == 403
+    assert res_json["detail"] == "この本の削除機能へのアクセス権限がありません."
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
