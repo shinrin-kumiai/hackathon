@@ -1,42 +1,39 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Scanner from "./Scanner";
 import {Grid} from "@mui/material";
 import axios from "axios";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector, useStore} from "react-redux";
 import store from "../store/index.js";
 import {connect} from "react-redux";
 import {updateErr, updateIsbn} from "../store/createSlice.js";
+import {baseUrl} from "../infrastructure/apiConfig.js";
 
 
 const ScannerIndex = (props) => {
 
     const dispatch = useDispatch();
 
+    const crisbn = useSelector((state) => state.bookRegister.isbn)
+
     const [camera, setCamera] = useState(true);
 
     const onDetected = result => {
         setCamera(!camera)
 
-        axios.post('http://localhost:8000/user/books/register/?isbn=' + result, {
+        axios.post(baseUrl + '/user/books/register/?isbn=' + result, {
             headers: {}}).then((response) => {
-            if (response.status === 200) {
-                dispatch(updateIsbn(result)).then(
-                    window.location.href = '/book/register_confirm/' + result
-                )
+                dispatch(updateIsbn(result)).then( () => {
+                    console.log(useSelector((state) => state.bookRegister.isbn))
+                    window.location.href = '/book/register-confirm/' + result
+                })
                 console.log(response.status)
-
-            } else{
-                dispatch(updateErr(response.data.detail.toString())).then(
-                    window.location.href = '/book/register/'
-                )
-
+            }).catch((err) => {
+            if (err.response?.status === 401) {
+                window.location.href = 'https://usehackathon.b2clogin.com/usehackathon.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_SIGNUP_SIGNIN&client_id=ac29ed4e-39b1-4632-b6fd-ff5867d75b66&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5173&scope=openid&response_type=id_token&prompt=login'
             }
-        }).catch((err) => {
-            console.log(err.message.toString())
-            dispatch(updateErr(err.message.toString())).then(
-                window.location.href = '/book/register/'
-            )
-
+            if (err.isAxiosError && err.response?.data?.errors) {
+                window.location.href = '/book/register'
+            }
         })
 
     };

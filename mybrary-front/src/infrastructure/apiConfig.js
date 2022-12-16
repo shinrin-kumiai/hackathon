@@ -10,4 +10,6 @@ const apiConfig = {
 
 }
 
+export const baseUrl = 'http://localhost:8000'
+
 export default apiConfig

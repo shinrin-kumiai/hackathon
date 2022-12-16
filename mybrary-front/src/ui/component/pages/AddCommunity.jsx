@@ -4,11 +4,12 @@ import theme from "../../../theme.jsx";
 import * as React from "react";
 import CommunityForm from "../elements/CommunityForm.jsx";
 import Typography from "@mui/material/Typography";
+import {Button} from "@mui/material";
+import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 
 const AddCommunity = (props) => {
-    const baseUrl = 'http://localhost:8000'
     const [postData, setPostData] = useState({})
     const onSubmit = data => {
         console.log(data);

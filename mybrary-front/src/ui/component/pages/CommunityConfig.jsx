@@ -12,11 +12,13 @@ const CommunityConfig = (props) => {
     // const params = useParams()
     // const CommunityId = params.id
     // const[communityInfo, setCommunityInfo] = useState({})
-    // axios.get(baseUrl + 'community/' + CommunityId).then(response => {setCommunityInfo(response)}).catch(
-    //     (err) => {
-    //         console.log(err)
-    //     }
-    // )
+    // axios.get(baseUrl + 'community/' + CommunityId).then(response => {setCommunityInfo(response)}).catch((err) => {
+    //         if (err.response.status === 401 ){
+    //             window.location.href='https://usehackathon.b2clogin.com/usehackathon.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_SIGNUP_SIGNIN&client_id=ac29ed4e-39b1-4632-b6fd-ff5867d75b66&nonce=defaultNonce&redirect_uri=http%3A%2F%2Flocalhost%3A5173&scope=openid&response_type=id_token&prompt=login'
+    //         } else {
+    //             window.location.href='/'
+    //         }
+    //     })
     const communityInfo = {
         name: 'hayashi',
         id: 12345666,
