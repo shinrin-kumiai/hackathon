@@ -9,7 +9,7 @@ from src import models
 from src.dependencies import get_current_user
 
 from tests.conftest import engine
-from tests.dependencies import override_get_current_user0002
+from tests.dependencies import override_get_current_user0002, override_get_current_user0003
 
 client = TestClient(app)
 dotenv.load_dotenv(override=True)
@@ -261,3 +261,18 @@ def test_user0001がuser0002が所有しているusbk0001という所有idの本
             .filter(models.UserBook.id == book_ownership_id)\
                 .first()
         target_book is not None
+
+
+def test_user0003が所属しているコミュニティの一覧を正常に取得できる():
+    """正常形テスト(/user/communities)
+    1. ログイン中のユーザーをuser0003に変更
+    2. user0003が所属しているコミュニティ情報の一覧をリクエスト
+    3. レスポンスを確認し、正常に取得できていることを確認する
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    
+    response = client.get("/user/communities")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert len(res_json) == 1
+    assert res_json[0]["name"] == "コミュニティ1"

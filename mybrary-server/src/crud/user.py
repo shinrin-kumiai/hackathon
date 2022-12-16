@@ -18,6 +18,17 @@ def search_user_by_id(
     Returns:
         models.User: ユーザーテーブルのレコードオブジェクト
     """
-    return db.query(models.User)\
-        .filter(models.User.id == user_id)\
-            .first()
+    try:
+        target_user = db.query(models.User)\
+            .filter(models.User.id == user_id)\
+                .first()
+        if target_user is None:
+            raise HTTPException(
+                status_code=404,
+                detail="指定されたidのユーザーが見つかりませんでした."
+            )
+        return target_user
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
