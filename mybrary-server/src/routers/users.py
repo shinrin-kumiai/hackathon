@@ -13,14 +13,14 @@ router = APIRouter(
 )
 
 
-@router.post("/books/register/", response_model=schemas.BookInfo)
+@router.post("/books/register/", response_model=schemas.UserBookInfo)
 async def register_book(
     isbn: str = Query(..., description = "登録したい本のisbnコード"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
     thumbnail_save_path: str = Depends(get_thumbnail_save_path)
 ) -> None:
-    try:
+    # try:
         isbn = services.isbn_normalize(isbn)
         isbn = services.toggle_isbn10_and_isbn13(isbn) if len(isbn) != 13 else isbn
         target_book = crud.search_book_by_isbn(db=db, isbn=isbn)
@@ -41,17 +41,20 @@ async def register_book(
             isbn = registered_isbn if isbn != registered_isbn else isbn
             target_book = crud.search_book_by_isbn(db=db, isbn=isbn)
 
-        crud.associate_book_to_user(
+        registered_user_book_id = crud.associate_book_to_user(
             db=db,
             user_id=user_id,
             book_id=target_book.id
         )
-        return schemas.BookInfo.mapping_to_dict(crud.search_book_by_isbn(db=db, isbn=isbn))
+        return schemas.UserBookInfo.mapping_to_dict(
+            crud.search_user_book_by_id(db=db, book_id=registered_user_book_id),
+            user_id=user_id
+        )
 
-    except HTTPException as e:
-        raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+    # except HTTPException as e:
+    #     raise HTTPException(status_code=e.status_code, detail=e.detail)
+    # except:
+    #     raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/books", response_model=Page[schemas.UserBookInfo])

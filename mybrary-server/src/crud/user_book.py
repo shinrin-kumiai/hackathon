@@ -12,14 +12,21 @@ def associate_book_to_user(db: Session, user_id: str, book_id: str) -> None:
         db (Session): DB接続用セッション
         user_id (str): ユーザーid
         book_id (str): 本id
+
+    Returns:
+        user_book_id: 新規登録した本の所有id
     """
+    user_book_id = str(uuid4())
+
     db.add(models.UserBook(
-        id = str(uuid4()),
+        id = user_book_id,
         user_id = user_id,
         book_id = book_id
     ))
     db.commit()
     db.flush()
+
+    return user_book_id
 
 
 def get_all_user_book(db: Session, user_id: str):
