@@ -65,6 +65,7 @@ class UserBookInfo(BaseModel):
 
         Args:
             user_book (models.UserBook): UserBookテーブルから取得したレコードオブジェクト
+            user_id (str): ログイン中のユーザーid
 
         Returns:
             dict: UserBookInfo型のdict
