@@ -19,7 +19,7 @@ async def create_community(
     try:
         created_community_id = crud.create_new_community(
                 db=db,
-                user_id=user_id, 
+                user_id=user_id,
                 community_setup_info=community_setup_info
             )
         created_community = crud.search_community_by_id(
