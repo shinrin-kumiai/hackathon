@@ -26,6 +26,11 @@ async def create_community(
                 db=db,
                 community_id=created_community_id
             )
+        crud.add_commynity_member(
+            db=db,
+            community_id=created_community_id,
+            target_user_id=user_id,
+        )
         return schemas.CommunityInfo.mapping_to_dict(target_community=created_community)
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
