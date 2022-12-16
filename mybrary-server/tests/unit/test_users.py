@@ -210,7 +210,7 @@ def test_本の所有idがusbk0000である存在しない本の情報をリク�
 
 
 def test_user0002が所有しているusbk0001という所有idの本を正常に削除できる():
-    """異常系テスト(/user/books/{book_id})
+    """正常系テスト(/user/books/{book_id})
     1. ログイン中のユーザーをuser0002に変更
     2. usbk0001をuser0002が所有していることの確認
     3. user0002の所有本からusbk0001を削除するリクエストを送る
