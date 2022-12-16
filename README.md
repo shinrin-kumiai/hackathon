@@ -286,6 +286,11 @@ py -m pytest tests/integration/test_sample.py
 >|community_id|登録対象コミュニティのid|
 >|target_user_id|登録対象ユーザーのid|
 
+>### - [get] /communities/{community_id}
+>- コミュニティidで指定したコミュニティの情報を取得するエンドポイント
+>#### レスポンスモデル
+>`schemas.CommunityInfo`
+
 
 ## assetsカテゴリ
 >### - [get] /assets/thumbnails/{isbn}
