@@ -75,3 +75,19 @@ async def add_community_member(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.get("/communities/{community_id}")
+async def get_communitiy_info(
+    community_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    try:
+        target_community = crud.search_community_by_id(db=db, community_id=community_id)
+        return schemas.CommunityInfo.mapping_to_dict(target_community=target_community, user_id=user_id)
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
