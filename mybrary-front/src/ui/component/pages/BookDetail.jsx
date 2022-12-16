@@ -7,6 +7,7 @@ import BookInfo from "../chunks/BookInfo.jsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 function AddIcon() {
@@ -21,17 +22,15 @@ const BookDetail = (props) => {
 
     const [response, setResponse] = useState({})
 
-    useEffect(() => {axios.get('http://localhost:8000/user/books/' + id).then(
+    useEffect(() => {axios.get(baseUrl + '/user/books/' + id).then(
         (response) => (setResponse(response.data))
     )}, [])
 
-    const imagePath = 'http://localhost:8000/assets/thumbnails/' + response.isbn
+    const imagePath = baseUrl + '/assets/thumbnails/' + response.isbn
 
     const deleteRelation = () => {
-        axios.delete('http://localhost:8000/user/books/' + id).then((response) => (
+        axios.delete(baseUrl + '/user/books/' + id).then((response) => (
             window.location.href = '/'
-        )).catch(() => (
-            window.location.href = '"/book/detail/' + id
         ))
     }
 

@@ -9,14 +9,14 @@ from src import models
 from src.dependencies import get_current_user
 
 from tests.conftest import engine
-from tests.dependencies import override_get_current_user0002
+from tests.dependencies import override_get_current_user0002, override_get_current_user0003
 
 client = TestClient(app)
 dotenv.load_dotenv(override=True)
 
 
 def test_isbnコードが9784798067278である登録済みの本のユーザー紐づけ処理が正常に行われる():
-    """正常形テスト(/user/books/register/)
+    """正常形テスト([post]/user/books/register/)
     1. テストDBにおいて本の数が10冊であることの確認
     2. ユーザー1の所有している本の冊数が0冊であることの確認
     3. テスト対象エンドポイントを叩き、レスポンスを取得
@@ -53,7 +53,7 @@ def test_isbnコードが9784798067278である登録済みの本のユーザー
 
 
 def test_isbnコードが9784798167206である未登録の本の登録とユーザー紐づけ処理が正常に行われる():
-    """正常形テスト(/user/books/register/)
+    """正常形テスト([post]/user/books/register/)
     1. テストDBにおいて本の数が10冊であることの確認
     2. ユーザー1の所有している本の冊数が0冊であることの確認
     3. テスト対象エンドポイントを叩き、レスポンスを取得
@@ -92,7 +92,7 @@ def test_isbnコードが9784798167206である未登録の本の登録とユー
 
 
 def test_書影が登録されていない本のisbnコードである9784785300019を指定してPOSTし正常に登録される():
-    """正常形テスト(/user/books/register/)
+    """正常形テスト([post]/user/books/register/)
     1. テストDBにおいて本の数が10冊であることの確認
     2. ユーザー1の所有している本の冊数が0冊であることの確認
     3. テスト対象エンドポイントを叩き、レスポンスを取得
@@ -131,7 +131,7 @@ def test_書影が登録されていない本のisbnコードである9784785300
 
 
 def test_情報がNDLに登録されていない本のisbnコードである9784785300029を指定してPOSTし404エラーを吐く():
-    """異常系テスト(/user/books/register/)
+    """異常系テスト([post]/user/books/register/)
     1. NDLに未登録の本のisbnコードである9784785300029を指定してPOST
     2. レスポンスのステータスコードと詳細を確認
 
@@ -148,7 +148,7 @@ def test_情報がNDLに登録されていない本のisbnコードである9784
 
 
 def test_存在しない14桁のisbnコードである12345678901234を指定してPOSTし400エラーを吐く():
-    """異常系テスト(/user/books/register/)
+    """異常系テスト([post]/user/books/register/)
     1. 存在しない14桁のisbnコードである12345678901234を指定しPOST
     2. レスポンスのステータスコードとメッセージを確認
     """
@@ -160,7 +160,7 @@ def test_存在しない14桁のisbnコードである12345678901234を指定し
 
 
 def test_user0001が所有している本の一覧が正常に取得できる():
-    """正常系テスト(/user/books)
+    """正常系テスト([get]/user/books)
     1. ログインユーザーを"user0001"に変更
     2. "user0001"が所有している本の一覧をリクエスト
     3. "user0001"が所有している本が3冊取得されることを確認
@@ -172,7 +172,7 @@ def test_user0001が所有している本の一覧が正常に取得できる():
 
 
 def test_user0002が所有している本の一覧が正常に取得できる():
-    """正常系テスト(/user/books)
+    """正常系テスト([get]/user/books)
     1. ログインユーザーを"user0002"に変更
     2. "user0002"が所有している本の一覧をリクエスト
     3. "user0002"が所有している本が3冊取得されることを確認
@@ -185,3 +185,94 @@ def test_user0002が所有している本の一覧が正常に取得できる():
     assert res_json["items"][0]["book_id"] == "book0001-0000-0000-0000-000000000000"
     assert res_json["items"][1]["book_id"] == "book0002-0000-0000-0000-000000000000"
     assert res_json["items"][2]["book_id"] == "book0003-0000-0000-0000-000000000000"
+
+
+def test_本の所有idがusbk0001の本の情報を正常に取得できる():
+    """正常系テスト([get]/user/books/{book_id})
+    2. book_idが"usbk0001"の本の情報をリクエスト
+    3. book_idが"usbk0001"の本の情報が正常に取得されることを確認
+    """
+    response = client.get("/user/books/usbk0001-0000-0000-0000-000000000000")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["book_id"] == "book0001-0000-0000-0000-000000000000"
+
+
+def test_本の所有idがusbk0000である存在しない本の情報をリクエストして404エラーを吐く():
+    """異常系テスト([get]/user/books/{book_id})
+    2. book_idが"usbk0000"の本の情報をリクエスト
+    3. 404エラーが吐かれることを確認
+    """
+    response = client.get("/user/books/usbk0000-0000-0000-0000-000000000000")
+    res_json = response.json()
+    assert response.status_code == 404
+    assert res_json["detail"] == "指定されたidの本が見つかりませんでした."
+
+
+def test_user0002が所有しているusbk0001という所有idの本を正常に削除できる():
+    """正常系テスト([delete]/user/books/{book_id})
+    1. ログイン中のユーザーをuser0002に変更
+    2. usbk0001をuser0002が所有していることの確認
+    3. user0002の所有本からusbk0001を削除するリクエストを送る
+    4. user0002の所有本にusbk0001が無くなっていることを確認する
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0002
+    book_ownership_id = "usbk0001-0000-0000-0000-000000000000"
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
+
+    response = client.delete(f"/user/books/{book_ownership_id}")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["message"] == f"id:{book_ownership_id}の本を削除しました."
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is None
+
+
+def test_user0001がuser0002が所有しているusbk0001という所有idの本を削除しようとして403エラーを吐く():
+    """異常系テスト([delete]/user/books/{book_id})
+    1. usbk0001をuser0002が所有していることの確認
+    2. user0001でログイン中だがuser0002の所有本からusbk0001を削除するリクエストを送る
+    3. user0002の所有本にusbk0001が無くなっていないことを確認する
+    """
+    book_ownership_id = "usbk0001-0000-0000-0000-000000000000"
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
+
+    response = client.delete(f"/user/books/{book_ownership_id}")
+    res_json = response.json()
+    assert response.status_code == 403
+    assert res_json["detail"] == "この本の削除機能へのアクセス権限がありません."
+
+    with Session(bind=engine) as db:
+        target_book = db.query(models.UserBook)\
+            .filter(models.UserBook.id == book_ownership_id)\
+                .first()
+        target_book is not None
+
+
+def test_user0003が所属しているコミュニティの一覧を正常に取得できる():
+    """正常形テスト([get]/user/communities)
+    1. ログイン中のユーザーをuser0003に変更
+    2. user0003が所属しているコミュニティ情報の一覧をリクエスト
+    3. レスポンスを確認し、正常に取得できていることを確認する
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    
+    response = client.get("/user/communities")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert len(res_json) == 1
+    assert res_json[0]["name"] == "コミュニティ1"

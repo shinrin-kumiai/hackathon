@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookIcon from '@mui/icons-material/Book';
+import {useCookies} from "react-cookie";
 
 const communitiesList = [
     {
@@ -48,53 +49,61 @@ const Comunities = (props) => {
 }
 
 
-const Menu = () => (
-    <List>
-        <ListItem>
-            <ListItemButton href='/'>
-                <ListItemIcon>
-                    <BookIcon/>
-                </ListItemIcon>
-                <ListItemText>
-                    MyShelf
-                </ListItemText>
-            </ListItemButton>
-        </ListItem>
-        <Comunities comunities={communitiesList}/>
-        <Divider/>
-        <ListItem>
-            <ListItemButton href='/community/new'>
-                <ListItemIcon>
 
-                </ListItemIcon>
-                <ListItemText>
-                    CreateCommunity
-                </ListItemText>
-            </ListItemButton>
-        </ListItem>
-        <Divider/>
-        <ListItem>
-            <ListItemButton>
-                <ListItemIcon>
-                    <LogoutIcon/>
-                </ListItemIcon>
-                <ListItemText>
-                    LogOut
-                </ListItemText>
-            </ListItemButton>
-        </ListItem>
-        <Divider/>
-        <ListItem>
-            <ListItemButton>
-                <ListItemIcon>
-                    <SettingsIcon/>
-                </ListItemIcon>
-                <ListItemText>
-                    Settings
-                </ListItemText>
-            </ListItemButton>
-        </ListItem>
-    </List>
-);
+
+const Menu = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
+    return (
+        <List>
+            <ListItem>
+                <ListItemButton href='/'>
+                    <ListItemIcon>
+                        <BookIcon/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        MyShelf
+                    </ListItemText>
+                </ListItemButton>
+            </ListItem>
+            <Comunities comunities={communitiesList}/>
+            <Divider/>
+            <ListItem>
+                <ListItemButton href='/community/new'>
+                    <ListItemIcon>
+
+                    </ListItemIcon>
+                    <ListItemText>
+                        CreateCommunity
+                    </ListItemText>
+                </ListItemButton>
+            </ListItem>
+            <Divider/>
+            <ListItem>
+                <ListItemButton onClick={() => {
+                    removeCookie("tkn")
+                    window.location.href='/bye-bye'
+                }}>
+                    <ListItemIcon>
+                        <LogoutIcon/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        LogOut
+                    </ListItemText>
+                </ListItemButton>
+            </ListItem>
+            <Divider/>
+            <ListItem>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        Settings
+                    </ListItemText>
+                </ListItemButton>
+            </ListItem>
+        </List>
+    )
+};
 
 export default Menu

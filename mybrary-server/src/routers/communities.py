@@ -19,14 +19,22 @@ async def create_community(
     try:
         created_community_id = crud.create_new_community(
                 db=db,
-                user_id=user_id, 
+                user_id=user_id,
                 community_setup_info=community_setup_info
             )
         created_community = crud.search_community_by_id(
                 db=db,
                 community_id=created_community_id
             )
-        return schemas.CommunityInfo.mapping_to_dict(target_community=created_community)
+        crud.add_commynity_member(
+            db=db,
+            community_id=created_community_id,
+            target_user_id=user_id,
+        )
+        return schemas.CommunityInfo.mapping_to_dict(
+            target_community=created_community,
+            user_id=user_id
+        )
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
@@ -62,6 +70,22 @@ async def add_community_member(
         )
         target_user_info = crud.search_user_by_id(db=db, user_id=target_user_id)
         return {"message": f"{target_user_info.name}さんが{target_community.name}に参加しました！"}
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@router.get("/communities/{community_id}")
+async def get_communitiy_info(
+    community_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    try:
+        target_community = crud.search_community_by_id(db=db, community_id=community_id)
+        return schemas.CommunityInfo.mapping_to_dict(target_community=target_community, user_id=user_id)
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

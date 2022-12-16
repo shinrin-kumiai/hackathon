@@ -30,8 +30,9 @@ class CommunityInfo(CommunitySetupInfo):
     """
     id:str = Field(..., description="コミュニティid")
     owner_id: str = Field(..., description="コミュニティ所有者のユーザーid")
+    has_permission: bool = Field(..., description="アクセスユーザー=コミュニティオーナーの場合True")
 
-    def mapping_to_dict(target_community: models.Community) -> dict:
+    def mapping_to_dict(target_community: models.Community, user_id) -> dict:
         """Community型のオブジェクトをCommunityInfo型のdictにマッピングする関数
 
         Args:
@@ -44,7 +45,8 @@ class CommunityInfo(CommunitySetupInfo):
             id = target_community.id,
             name = target_community.name,
             description = target_community.description,
-            owner_id = target_community.owner_id
+            owner_id = target_community.owner_id,
+            has_permission = True if target_community.owner_id == user_id else False
         )
 
     class Config:
