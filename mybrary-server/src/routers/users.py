@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 from typing import List
+from functools import partial
 
 from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
@@ -60,7 +61,7 @@ async def get_user_books(
 ):  
     try:
         user_book = crud.get_all_user_book(db=db, user_id=user_id)
-        return paginate(list(map(schemas.UserBookInfo.mapping_to_dict, user_book)))
+        return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), user_book)))
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except:
@@ -71,9 +72,13 @@ async def get_user_books(
 async def search_book_by_id(
     book_id: str,
     db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
 ) -> schemas.UserBookInfo:
     try:
-        return schemas.UserBookInfo.mapping_to_dict(crud.search_user_book_by_id(db=db, book_id=book_id))
+        return schemas.UserBookInfo.mapping_to_dict(
+            user_book = crud.search_user_book_by_id(db=db, book_id=book_id),
+            user_id = user_id
+        )
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

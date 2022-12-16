@@ -58,8 +58,9 @@ class UserBookInfo(BaseModel):
     publisher: str = Field(..., description="出版社")
     creator: str = Field(..., description="著者")
     isbn: str = Field(..., description="isbn13")
+    has_permission: bool = Field(..., description="アクセスユーザー=所有者の場合True")
 
-    def mapping_to_dict(user_book: models.UserBook) -> dict:
+    def mapping_to_dict(user_book: models.UserBook, user_id: str) -> dict:
         """UserBook型のオブジェクトをUserBookInfo型のdictにマッピングする関数
 
         Args:
@@ -75,7 +76,8 @@ class UserBookInfo(BaseModel):
             title = user_book.book.title,
             publisher = user_book.book.publisher,
             creator = user_book.book.creator,
-            isbn = user_book.book.isbn
+            isbn = user_book.book.isbn,
+            has_permission = True if user_book.user_id == user_id else False
         )
     
     class Config:
