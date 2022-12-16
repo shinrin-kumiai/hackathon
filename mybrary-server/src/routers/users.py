@@ -115,7 +115,7 @@ async def get_belong_communities(
 ) -> str:
     try:
         belong_communities = crud.search_user_by_id(db=db, user_id=user_id).community
-        return list(map(schemas.CommunityInfo.mapping_to_dict, belong_communities))
+        return list(map(partial(schemas.CommunityInfo.mapping_to_dict, user_id=user_id), belong_communities))
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
