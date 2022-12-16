@@ -185,3 +185,25 @@ def test_user0002が所有している本の一覧が正常に取得できる():
     assert res_json["items"][0]["book_id"] == "book0001-0000-0000-0000-000000000000"
     assert res_json["items"][1]["book_id"] == "book0002-0000-0000-0000-000000000000"
     assert res_json["items"][2]["book_id"] == "book0003-0000-0000-0000-000000000000"
+
+
+def test_本の所有idがusbk0001の本の情報を正常に取得できる():
+    """正常系テスト(/user/books/{book_id})
+    2. book_idが"usbk0001"の本の情報をリクエスト
+    3. book_idが"usbk0001"の本の情報が正常に取得されることを確認
+    """
+    response = client.get("/user/books/usbk0001-0000-0000-0000-000000000000")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["book_id"] == "book0001-0000-0000-0000-000000000000"
+
+
+def test_本の所有idがusbk0000である存在しない本の情報をリクエストして404エラーを吐く():
+    """異常系テスト(/user/books/{book_id})
+    2. book_idが"usbk0000"の本の情報をリクエスト
+    3. 404エラーが吐かれることを確認
+    """
+    response = client.get("/user/books/usbk0000-0000-0000-0000-000000000000")
+    res_json = response.json()
+    assert response.status_code == 404
+    assert res_json["detail"] == "指定されたidの本が見つかりませんでした."
