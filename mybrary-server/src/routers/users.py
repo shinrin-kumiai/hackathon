@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from functools import partial
 from uuid import uuid4
+from datetime import datetime, date, timedelta
 
 from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
@@ -192,3 +193,37 @@ async def get_user_info(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+
+@router.post("/{user_book_id}/rental-request")
+async def send_rental_request(
+    user_book_id: str,
+    return_due_date: date = Query(description="返却予定日を指定:YYYY-MM-DD"),
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+
+    if target_user_book.user_id == user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="自分の本に対して貸出申請を行うことは出来ません."
+        )
+
+    latest_state_id = crud.get_latest_state_id_by_user_book_id(db=db, user_book_id=user_book_id)
+
+    if latest_state_id != 1:
+        raise HTTPException(
+            status_code=400,
+            detail="この本は現在貸出不可状態です."
+        )
+
+    crud.set_state_lendable_to_applying(
+        user_book_id = user_book_id,
+        user_id = user_id,
+        return_due_date = return_due_date,
+        db = db
+    )
+
+    latest_state_id = crud.get_latest_state_id_by_user_book_id(db=db, user_book_id=user_book_id)
+    return {"message": "貸出申請を正常に送信しました."}
