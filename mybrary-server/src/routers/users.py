@@ -10,7 +10,7 @@ from src import crud, services, schemas
 
 router = APIRouter(
     prefix='/user',
-    tags=['user']
+    tags=['users']
 )
 
 
@@ -70,7 +70,7 @@ async def register_book(
             book_id=target_book.id
         )
         return schemas.UserBookInfo.mapping_to_dict(
-            crud.search_user_book_by_id(db=db, book_id=registered_user_book_id),
+            crud.search_user_book_by_id(db=db, user_book_id=registered_user_book_id),
             user_id=user_id
         )
 
@@ -78,27 +78,28 @@ async def register_book(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
-@router.get("/books", response_model=Page[schemas.UserBookInfo])
+@router.get("/{target_user_id}/books", response_model=Page[schemas.UserBookInfo])
 async def get_user_books(
+    target_user_id: str,
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ):  
     try:
-        user_book = crud.get_all_user_book(db=db, user_id=user_id)
+        user_book = crud.get_all_user_book(db=db, user_id=target_user_id)
         return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), user_book)))
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
-@router.get("/books/{book_id}", response_model=schemas.UserBookInfo)
+@router.get("/books/{user_book_id}", response_model=schemas.UserBookInfo)
 async def search_book_by_id(
-    book_id: str,
+    user_book_id: str,
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ) -> schemas.UserBookInfo:
     try:
         return schemas.UserBookInfo.mapping_to_dict(
-            user_book = crud.search_user_book_by_id(db=db, book_id=book_id),
+            user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id),
             user_id = user_id
         )
 
@@ -106,21 +107,21 @@ async def search_book_by_id(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
-@router.delete("/books/{book_id}")
+@router.delete("/books/{user_book_id}")
 async def delete_book_by_id(
-    book_id: str,
+    user_book_id: str,
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ) -> schemas.UserBookInfo:
     try:
-        target_book = crud.search_user_book_by_id(db=db, book_id=book_id)
+        target_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
         if target_book.user_id != user_id:
             raise HTTPException(
                 status_code=403,
                 detail="この本の削除機能へのアクセス権限がありません."
             )
-        crud.delete_user_book_by_id(db=db, book_id=book_id)
-        return {"message": f"id:{book_id}の本を削除しました."}
+        crud.delete_user_book_by_id(db=db, book_id=user_book_id)
+        return {"message": f"id:{user_book_id}の本を削除しました."}
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

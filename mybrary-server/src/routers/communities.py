@@ -8,7 +8,7 @@ from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
 
 router = APIRouter(
-    tags=['community']
+    tags=['communities']
 )
 
 
