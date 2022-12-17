@@ -110,3 +110,21 @@ async def get_community_accessible_books(
     for user in all_members:
         all_user_books += user.user_book
     return list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), all_user_books))
+
+
+@router.get("/communities/{community_id}/members")
+def get_all_members(
+    community_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    target_community = crud.search_community_by_id(db=db, community_id=community_id)
+    all_members = target_community.user
+
+    all_member_ids = list(map(lambda x: x.id, all_members))
+    if user_id not in all_member_ids:
+        raise HTTPException(
+            status_code=403,
+            detail="このコミュニティに対してアクセス権限がありません."
+    )
+    return list(map(partial(schemas.UserInfo.mapping_to_dict, user_id=user_id), target_community.user))
