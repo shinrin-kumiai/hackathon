@@ -10,24 +10,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import BookIcon from '@mui/icons-material/Book';
 import {useCookies} from "react-cookie";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
-const communitiesList = [
-    {
-        name: 'forest',
-        id: '52ad8ad5-ccb2-4265-9685-6181e60447ac'
-    },
-    {
-        name: 'waterFront',
-        id: '3a36b3bc-3266-4726-a157-9c3bc11c533e'
-    },
-    {
-        name: 'funkyVally',
-        id: '3a36b3bc-3266-4726-a157-9c3bc11c533e'
-    }
-]
-
-
-const Comunities = (props) => {
+const Communities = (props) => {
     return (
         props.comunities.map((community, index) => {
             return (
@@ -51,7 +38,8 @@ const Comunities = (props) => {
 
 
 
-const Menu = () => {
+const Menu = (props) => {
+
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
     return (
         <List>
@@ -65,7 +53,7 @@ const Menu = () => {
                     </ListItemText>
                 </ListItemButton>
             </ListItem>
-            <Comunities comunities={communitiesList}/>
+            <Communities comunities={props.communities}/>
             <Divider/>
             <ListItem>
                 <ListItemButton href='/community/new'>

@@ -6,10 +6,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LeftDrawer from "../elements/Drawer.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ButtonBase, ThemeProvider} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
+import axios from "axios";
+import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 
@@ -17,8 +19,13 @@ import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
 
 export default function Header(props) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [communities, setCommunities] = useState([])
+    useEffect(() => {axios.get(baseUrl + '/user/communities').then(
+        (response) => (
+            setCommunities(response.data)
+        )
+    )}, [])
     return (
-        <ThemeProvider theme={props.theme}>
             <Box sx={{ flexGrow: 1, margin:0}}>
                 <AppBar position="static">
                     <Toolbar>
@@ -48,8 +55,7 @@ export default function Header(props) {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <LeftDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}/>
+                <LeftDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} communities={communities}/>
             </Box>
-        </ThemeProvider>
     )};
 

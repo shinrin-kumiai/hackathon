@@ -29,7 +29,7 @@ const LeftDrawer = (props) => {
                     </Grid>
                 </DrawerHeader>
                 <Divider/>
-                {Menu()}
+                <Menu communities={props.communities}/>
             </SwipeableDrawer>
         </div>
     );

@@ -5,11 +5,12 @@ import theme from "../../../theme.jsx";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
+import {useParams} from "react-router-dom";
 
 
 const CommunityConfig = (props) => {
     // const baseUrl = 'http://localhost:8000/'
-    // const params = useParams()
+    const params = useParams()
     // const CommunityId = params.id
     // const[communityInfo, setCommunityInfo] = useState({})
     // axios.get(baseUrl + 'community/' + CommunityId).then(response => {setCommunityInfo(response)}).catch((err) => {
@@ -52,7 +53,7 @@ const CommunityConfig = (props) => {
                             <MemberList members={communityInfo.members}/>
                         </Grid>
                         <Grid item>
-                            <Button>
+                            <Button href={"/community/" + params.communityID + "/add-user"}>
                                 メンバー追加
                             </Button>
                         </Grid>

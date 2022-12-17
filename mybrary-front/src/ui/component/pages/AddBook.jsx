@@ -17,7 +17,7 @@ const AddBook = (props) => {
         console.log(crisbn)
         if (currentErr !== "none") {
             setOpenSnackbar(true)
-    }})
+    }}, [])
 
 
     return (
@@ -39,8 +39,4 @@ const AddBook = (props) => {
     )
 }
 
-const getError = (state) => {
-    return { err: state.err }
-}
-
-export default connect(getError)(AddBook)
+export default (AddBook)
