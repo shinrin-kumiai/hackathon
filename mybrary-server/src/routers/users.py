@@ -78,13 +78,14 @@ async def register_book(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
-@router.get("/books", response_model=Page[schemas.UserBookInfo])
+@router.get("/{target_user_id}/books", response_model=Page[schemas.UserBookInfo])
 async def get_user_books(
+    target_user_id: str,
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ):  
     try:
-        user_book = crud.get_all_user_book(db=db, user_id=user_id)
+        user_book = crud.get_all_user_book(db=db, user_id=target_user_id)
         return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), user_book)))
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
