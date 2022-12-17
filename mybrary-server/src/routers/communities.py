@@ -89,7 +89,6 @@ async def get_communitiy_info(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
-
 @router.get("/communities/{community_id}/books", response_model=List[schemas.UserBookInfo])
 async def get_community_accessible_books(
     community_id: str,
