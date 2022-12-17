@@ -218,3 +218,49 @@ def test_ユーザーuser0001が存在しないコミュニティcomm0000の情�
 
     assert response.status_code == 404
     assert res_json["detail"] == "指定されたidのコミュニティが見つかりませんでした."
+
+
+def test_comm0001に属しているユーザーuser0003が同コミュニティでのアクセス可能本一覧を正常に取得できる():
+    """正常形テスト([get]/communities/{community_id}/books)
+    1. ログイン中のユーザーをuser0003に変更する
+    2. コミュニティ1のアクセス可能本一覧情報をリクエストする
+    3. レスポンスのステータスコードとメッセージの確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}/books")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert len(res_json) == 3
+
+
+def test_user0003が存在しないコミュニティucomm0000でのアクセス可能本一覧をリクエストして404エラーを吐く():
+    """正常形テスト([get]/communities/{community_id}/books)
+    1. ログイン中のユーザーをuser0003に変更する
+    2. コミュニティ1のアクセス可能本一覧情報をリクエストする
+    3. レスポンスのステータスコードとメッセージの確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    community_id = "comm0000-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}/books")
+    res_json = response.json()
+
+    assert response.status_code == 404
+    assert res_json["detail"] == "指定されたidのコミュニティが見つかりませんでした."
+
+
+def test_comm0001に属していないユーザーuser0001が同コミュニティでのアクセス可能本一覧をリクエストして403エラーを吐く():
+    """正常形テスト([get]/communities/{community_id}/books)
+    1. コミュニティ1のアクセス可能本一覧情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    """
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}/books")
+    res_json = response.json()
+
+    assert response.status_code == 403
+    assert res_json["detail"] == "このコミュニティに対してアクセス権限がありません."
