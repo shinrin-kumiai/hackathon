@@ -7,7 +7,7 @@ import {Provider} from "react-redux";
 import store from "./store/index.js";
 import BookDetail from "./ui/component/pages/BookDetail.jsx";
 import CreateCommunity from "./ui/component/pages/CreateCommunity.jsx";
-import CommunityShelf from "./ui/component/pages/CommunityShelf.jsx";
+// import CommunityShelf from "./ui/component/pages/CommunityShelf.jsx";
 import CommunityConfig from "./ui/component/pages/CommunityConfig.jsx";
 import {CookiesProvider, useCookies} from "react-cookie";
 // import {handleLogin} from "./ui/component/pages/LogInRedirect.jsx";
@@ -21,6 +21,7 @@ import NotFound from "./ui/component/pages/NotFound.jsx";
 // import { callMsGraph } from "./graph";
 import AddUsrtoCommunity from "./ui/component/pages/AddUsrtoCommunity.jsx";
 import Welcome from "./ui/component/pages/Welcome.jsx";
+import CommunityBooks from "./ui/component/pages/CommunityBooks";
 
 
 const windowSize = () => {
@@ -130,7 +131,7 @@ function App() {
                             <Route path={"/book/register-confirm/:isbn/:id"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/book/detail/:id"} element={<BookDetail windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/community/new"} element={<CreateCommunity windowWidth={width} windowHeight={height}/>}/>
-                            <Route path={"/community/:communityID/books"} element={<CommunityShelf windowWidth={width} windowHeight={height}/>}/>
+                            <Route path={"/community/:communityID/books"} element={<CommunityBooks windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/community/:communityID/config"} element={<CommunityConfig windowWidth={width} windowHeight={height}/>}/>
                             {/*<Route path={"/login/redirect"} element={<LogInRedirect/>}/>*/}
                             <Route path={"/bye-bye"} element={<LogOuted/>}/>

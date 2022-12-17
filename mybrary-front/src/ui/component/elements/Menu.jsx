@@ -20,7 +20,7 @@ const Communities = (props) => {
             return (
                 <ListItem key={index}>
                     <ListItemButton onClick={() => {
-                        window.location.href='/community/' + community.id + '/config'
+                        window.location.href='/community/' + community.id + '/books'
                     }}>
                         <ListItemIcon>
 
