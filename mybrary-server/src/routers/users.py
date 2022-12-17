@@ -229,7 +229,6 @@ async def send_rental_request(
     return {"message": "貸出申請を正常に送信しました."}
 
 
-
 @router.post("/{user_book_id}/rental-permit")
 async def send_rental_request(
     user_book_id: str,
@@ -261,7 +260,6 @@ async def send_rental_request(
 
     latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "正常に貸出許可が行われました."}
-
 
 
 @router.post("/{user_book_id}/rental-confirm")
@@ -301,3 +299,35 @@ async def send_rental_request(
 
     latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "正常に貸出確認処理が行われました."}
+
+
+@router.post("/{user_book_id}/return-confirm")
+async def send_rental_request(
+    user_book_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+
+    if target_user_book.user_id != user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="自分の本ではない本に対して返却確認を行うことは出来ません."
+        )
+
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+    if latest_state.state_id != 4:
+        raise HTTPException(
+            status_code=400,
+            detail="この本は現在返却対象ではありません."
+        )
+
+    crud.set_state_back_to_lendable(
+        user_book_id = user_book_id,
+        user_id = latest_state.relation_user_id,
+        db = db
+    )
+
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+    return {"message": "正常に返却処理が行われました."}

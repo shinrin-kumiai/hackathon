@@ -67,7 +67,7 @@ def set_state_applying_to_allowed(
     user_id: str,
     return_due_date: date
 ) -> None:
-    """本の最新ステートを貸出申請中から貸出可能中に変更
+    """本の最新ステートを貸出申請中から貸出許可中に変更
 
     Args:
         user_book_id (str): ユーザー所有本の所有id
@@ -105,6 +105,29 @@ def set_state_allowed_to_confirmed(
         state_id = 4,
         relation_user_id = user_id,
         return_due_date = return_due_date,
+        register_date = datetime.now()
+    ))
+    db.commit()
+    db.flush()
+
+
+def set_state_back_to_lendable(
+    db: Session,
+    user_book_id: str,
+    user_id: str,
+) -> None:
+    """本の最新ステートを貸出中から貸出可能に変更
+
+    Args:
+        user_book_id (str): ユーザー所有本の所有id
+        user_id (str): 貸出申請元のユーザーid
+        db (Session): DB接続用セッション
+    """
+    db.add(models.UserBookStateLog(
+        user_book_id = user_book_id,
+        state_id = 3,
+        relation_user_id = user_id,
+        return_due_date = None,
         register_date = datetime.now()
     ))
     db.commit()
