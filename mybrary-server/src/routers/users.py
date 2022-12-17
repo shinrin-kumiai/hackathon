@@ -10,7 +10,7 @@ from src import crud, services, schemas
 
 router = APIRouter(
     prefix='/user',
-    tags=['user']
+    tags=['users']
 )
 
 
