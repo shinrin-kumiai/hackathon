@@ -314,7 +314,14 @@ py -m pytest tests/integration/test_sample.py
 >#### --パスパラメータ
 >|Path-param|detail|
 >|:----:|:----|
->|user_book_id|貸出申請対象の本の所有id|
+>|user_book_id|貸出許可対象の本の所有id|
+
+>### - [post] /user/{user_book_id}/rental-confirm
+>- 所有idで指定された本の貸出申請に対し貸出確認を行うエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|user_book_id|貸出確認対象の本の所有id|
 
 
 ## communityカテゴリ
