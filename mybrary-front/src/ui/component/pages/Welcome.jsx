@@ -22,8 +22,8 @@ const Welcome = () => {
                         <TextField
                             fullWidth
                             required
-                            id="communityName"
-                            label="コミュニティ名"
+                            id="name"
+                            label="ユーザー名"
                             {...register('name', {
                                 onBlur: handleSubmit(onSubmit)
                             })}
@@ -34,7 +34,7 @@ const Welcome = () => {
                             fullWidth
                             required
                             id="mailAdress"
-                            label="コミュニティ名"
+                            label="メールアドレス　"
                             {...register('mail_address', {
                                 onBlur: handleSubmit(onSubmit)
                             })}
