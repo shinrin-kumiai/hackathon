@@ -15,6 +15,53 @@ client = TestClient(app)
 dotenv.load_dotenv(override=True)
 
 
+def test_ユーザー登録が正常に実行される():
+    """正常形テスト([post]/user/signup)
+    1. 現在のユーザーの人数が8人であることの確認
+    2. ユーザー登録処理
+    3. ユーザーが正常に登録されていることの確認
+    """
+    with Session(bind=engine) as db:
+        all_users = db.query(models.User).all()
+        assert len(all_users) == 8
+
+        response = client.post("/user/signup", json={
+            "name": "森林 太郎",
+            "mail_adress": "sample@example.com",
+        })
+        res_json = response.json()
+        assert response.status_code == 200
+        assert res_json["name"] == "森林 太郎"
+
+    with Session(bind=engine) as db:
+        all_users = db.query(models.User).all()
+        assert len(all_users) == 9
+
+
+def test_ユーザー名が未入力でユーザー登録リクエストを送り422エラーを吐く():
+    """異常形テスト([post]/user/signup)
+    1. 現在のユーザーの人数が8人であることの確認
+    2. ユーザー登録処理
+    3. レスポンスの確認
+    4. ユーザー人数が変化していないことの確認
+    """
+    with Session(bind=engine) as db:
+        all_users = db.query(models.User).all()
+        assert len(all_users) == 8
+
+        response = client.post("/user/signup", json={
+            "name": "森林 太郎",
+            "mail_adress": "sample@example.com",
+        })
+        res_json = response.json()
+        assert response.status_code == 200
+        assert res_json["name"] == "森林 太郎"
+
+    with Session(bind=engine) as db:
+        all_users = db.query(models.User).all()
+        assert len(all_users) == 9
+
+
 def test_isbnコードが9784798067278である登録済みの本のユーザー紐づけ処理が正常に行われる():
     """正常形テスト([post]/user/books/register/)
     1. テストDBにおいて本の数が10冊であることの確認
