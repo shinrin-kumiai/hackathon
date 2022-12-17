@@ -202,29 +202,32 @@ async def send_rental_request(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
-    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+    try:
+        target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
-    if target_user_book.user_id == user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="自分の本に対して貸出申請を行うことは出来ません."
+        if target_user_book.user_id == user_id:
+            raise HTTPException(
+                status_code=400,
+                detail="自分の本に対して貸出申請を行うことは出来ません."
+            )
+
+        latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+        if latest_state.state_id != 1:
+            raise HTTPException(
+                status_code=400,
+                detail="この本は現在貸出不可状態です."
+            )
+
+        crud.set_state_lendable_to_applying(
+            user_book_id = user_book_id,
+            user_id = user_id,
+            return_due_date = return_due_date,
+            db = db
         )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
-
-    if latest_state.state_id != 1:
-        raise HTTPException(
-            status_code=400,
-            detail="この本は現在貸出不可状態です."
-        )
-
-    crud.set_state_lendable_to_applying(
-        user_book_id = user_book_id,
-        user_id = user_id,
-        return_due_date = return_due_date,
-        db = db
-    )
-    return {"message": "貸出申請を正常に送信しました."}
+        return {"message": "貸出申請を正常に送信しました."}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.post("/{user_book_id}/rental-permit")
@@ -233,29 +236,32 @@ async def send_rental_request(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
-    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+    try:
+        target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
-    if target_user_book.user_id != user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="自分の本ではない本に対して貸出許可を行うことは出来ません."
+        if target_user_book.user_id != user_id:
+            raise HTTPException(
+                status_code=400,
+                detail="自分の本ではない本に対して貸出許可を行うことは出来ません."
+            )
+
+        latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+        if latest_state.state_id != 2:
+            raise HTTPException(
+                status_code=400,
+                detail="この本は現在貸出許可対象ではありません."
+            )
+
+        crud.set_state_applying_to_allowed(
+            user_book_id = user_book_id,
+            user_id = latest_state.relation_user_id,
+            return_due_date = latest_state.return_due_date,
+            db = db
         )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
-
-    if latest_state.state_id != 2:
-        raise HTTPException(
-            status_code=400,
-            detail="この本は現在貸出許可対象ではありません."
-        )
-
-    crud.set_state_applying_to_allowed(
-        user_book_id = user_book_id,
-        user_id = latest_state.relation_user_id,
-        return_due_date = latest_state.return_due_date,
-        db = db
-    )
-    return {"message": "正常に貸出許可が行われました."}
+        return {"message": "正常に貸出許可が行われました."}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.post("/{user_book_id}/rental-confirm")
@@ -264,35 +270,38 @@ async def send_rental_request(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
-    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+    try:
+        target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
-    if target_user_book.user_id == user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="自分の本に対して貸出確認を行うことは出来ません."
+        if target_user_book.user_id == user_id:
+            raise HTTPException(
+                status_code=400,
+                detail="自分の本に対して貸出確認を行うことは出来ません."
+            )
+
+        latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+        if latest_state.relation_user_id != user_id:
+            raise HTTPException(
+                status_code=403,
+                detail="この処理へのアクセス権がありません."
+            )
+
+        if latest_state.state_id != 3:
+            raise HTTPException(
+                status_code=400,
+                detail="この本は現在貸出確認対象ではありません."
+            )
+
+        crud.set_state_allowed_to_confirmed(
+            user_book_id = user_book_id,
+            user_id = user_id,
+            return_due_date = latest_state.return_due_date,
+            db = db
         )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
-
-    if latest_state.relation_user_id != user_id:
-        raise HTTPException(
-            status_code=403,
-            detail="この処理へのアクセス権がありません."
-        )
-
-    if latest_state.state_id != 3:
-        raise HTTPException(
-            status_code=400,
-            detail="この本は現在貸出確認対象ではありません."
-        )
-
-    crud.set_state_allowed_to_confirmed(
-        user_book_id = user_book_id,
-        user_id = user_id,
-        return_due_date = latest_state.return_due_date,
-        db = db
-    )
-    return {"message": "正常に貸出確認処理が行われました."}
+        return {"message": "正常に貸出確認処理が行われました."}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.post("/{user_book_id}/return-confirm")
@@ -301,25 +310,28 @@ async def send_rental_request(
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
-    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+    try:
+        target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
-    if target_user_book.user_id != user_id:
-        raise HTTPException(
-            status_code=400,
-            detail="自分の本ではない本に対して返却確認を行うことは出来ません."
+        if target_user_book.user_id != user_id:
+            raise HTTPException(
+                status_code=400,
+                detail="自分の本ではない本に対して返却確認を行うことは出来ません."
+            )
+
+        latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+        if latest_state.state_id != 4:
+            raise HTTPException(
+                status_code=400,
+                detail="この本は現在返却対象ではありません."
+            )
+
+        crud.set_state_back_to_lendable(
+            user_book_id = user_book_id,
+            user_id = latest_state.relation_user_id,
+            db = db
         )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
-
-    if latest_state.state_id != 4:
-        raise HTTPException(
-            status_code=400,
-            detail="この本は現在返却対象ではありません."
-        )
-
-    crud.set_state_back_to_lendable(
-        user_book_id = user_book_id,
-        user_id = latest_state.relation_user_id,
-        db = db
-    )
-    return {"message": "正常に返却処理が行われました."}
+        return {"message": "正常に返却処理が行われました."}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
