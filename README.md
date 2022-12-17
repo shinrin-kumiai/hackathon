@@ -249,7 +249,7 @@ py -m pytest tests/integration/test_sample.py
 >|page|取得したいページ数|
 >|size|1ページで取得したい要素数|
 >#### --レスポンスモデル
->`list[schemas.UserBookInfo]`
+>`List[schemas.UserBookInfo]`
 
 
 >### - [get] /user/books/{book_id}
@@ -271,11 +271,17 @@ py -m pytest tests/integration/test_sample.py
 >#### 制限
 > - 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
 
+>### - [get] /user/communities
+>- ログイン中のユーザーが所属しているコミュニティの情報を配列で返すエンドポイント
+>#### --レスポンスモデル
+>`schemas.CommunityInfo`
 
-> ### - [get] /user/communities
-> - ログイン中のユーザーが所属しているコミュニティの情報を配列で返すエンドポイント
-> #### --レスポンスモデル
-> `schemas.CommunityInfo`
+>### - [get] /user/{target_user_id}
+>- ユーザーidで指定されたユーザーの情報を取得するエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|target_user_id|情報取得対象の本のid|
 
 
 ## communityカテゴリ
@@ -298,6 +304,15 @@ py -m pytest tests/integration/test_sample.py
 >- コミュニティidで指定したコミュニティの情報を取得するエンドポイント
 >#### レスポンスモデル
 >`schemas.CommunityInfo`
+
+>### - [get] /communities/{community_id}/books
+>- コミュニティidで指定したコミュニティのアクセス可能本一覧を取得するエンドポイント
+>#### -- パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|community_id|アクセス可能本一覧取得対象のコミュニティid|
+>#### レスポンスモデル
+>`List[schemas.CommunityInfo]`
 
 
 ## assetsカテゴリ

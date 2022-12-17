@@ -323,3 +323,50 @@ def test_user0003が所属しているコミュニティの一覧を正常に取
     assert response.status_code == 200
     assert len(res_json) == 1
     assert res_json[0]["name"] == "コミュニティ1"
+
+
+
+def test_ユーザーuser0001が自身の情報を正常に取得できる():
+    """正常形テスト([get]/user/{target_user_id})
+    1. user0001の情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    3. has_permissionがTrueであることの確認
+    """
+    target_user_id = "user0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/user/{target_user_id}")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert res_json["name"] == "佐藤"
+    assert res_json["has_permission"] == True
+
+
+def test_ユーザーuser0001がuser0002の情報を正常に取得できる():
+    """正常形テスト([get]/user/{target_user_id})
+    1. user0002の情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    3. has_permissionがTrueであることの確認
+    """
+    target_user_id = "user0002-0000-0000-0000-000000000000"
+
+    response = client.get(f"/user/{target_user_id}")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert res_json["name"] == "鈴木"
+    assert res_json["has_permission"] == False
+
+
+def test_ユーザーuser0001が存在しないユーザーuser0000の情報をリクエストして404エラーを吐く():
+    """異常系テスト([get]/user/{target_user_id})
+    1. user0000の情報をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    """
+    target_user_id = "user0000-0000-0000-0000-000000000000"
+
+    response = client.get(f"/user/{target_user_id}")
+    res_json = response.json()
+
+    assert response.status_code == 404
+    assert res_json["detail"] == "指定されたidのユーザーが見つかりませんでした."

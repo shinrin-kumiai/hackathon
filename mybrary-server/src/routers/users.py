@@ -137,3 +137,31 @@ async def get_belong_communities(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+
+@router.get("/{target_user_id}")
+async def get_user_info(
+    target_user_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    try:
+        target_user = crud.search_user_by_id(db=db, user_id=target_user_id)
+        return schemas.UserInfo.mapping_to_dict(target_user, user_id)
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+
+@router.get("/{target_user_id}")
+async def get_user_info(
+    target_user_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    try:
+        target_user = crud.search_user_by_id(db=db, user_id=target_user_id)
+        return schemas.UserInfo.mapping_to_dict(target_user, user_id)
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
