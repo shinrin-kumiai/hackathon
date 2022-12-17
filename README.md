@@ -347,6 +347,15 @@ py -m pytest tests/integration/test_sample.py
 >#### レスポンスモデル
 >`List[schemas.CommunityInfo]`
 
+>### - [get]　/communities/{community_id}/members
+>- コミュニティidで指定したコミュニティのメンバー一覧を取得するエンドポイント
+>#### -- パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|community_id|アクセス可能本一覧取得対象のコミュニティid|
+>#### レスポンスモデル
+>`List[schemas.UserInfo]`
+
 
 ## assetsカテゴリ
 >### - [get] /assets/thumbnails/{isbn}
