@@ -27,18 +27,8 @@ export default function Header(props) {
     )}, [])
     return (
             <Box sx={{ flexGrow: 1, margin:0}}>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                            onClick={() => {setIsDrawerOpen(true)}}
-                        >
-                            <MenuIcon/>
-                        </IconButton>
                         <Box sx={{ flexGrow: 1 }}>
                             <ButtonBase href='/'>
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -53,8 +43,19 @@ export default function Header(props) {
                         <IconButton size='large' color='inherit'>
                             <MenuBookSharpIcon/>
                         </IconButton>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={() => {setIsDrawerOpen(true)}}
+                            sx={{paddingRight:0, paddingLeft:3}}
+                        >
+                            <MenuIcon/>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
+                <Box sx={{height:50}}/>
                 <LeftDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} communities={communities}/>
             </Box>
     )};

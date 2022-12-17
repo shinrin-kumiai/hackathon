@@ -17,9 +17,10 @@ const Welcome = () => {
         <>
             <Header/>
             <Box sx={{width:1, height:1}}>
-                <Grid container direction='column' justifyContent='center' alignContent='center'>
-                    <Grid item>
+                <Grid container direction='column' justifyContent='center' alignContent='center' sx={{width:1, height:1}} xs={12}>
+                    <Grid item sx={{margin:2, width:0.7, height:0.7}}>
                         <TextField
+                            variant='standard'
                             fullWidth
                             required
                             id="name"
@@ -29,8 +30,9 @@ const Welcome = () => {
                             })}
                         />
                     </Grid>
-                    <Grid item>
+                    <Grid item sx={{margin:2, width: 0.7, height: 0.7}}>
                         <TextField
+                            variant='standard'
                             fullWidth
                             required
                             id="mailAdress"
@@ -40,7 +42,7 @@ const Welcome = () => {
                             })}
                         />
                     </Grid>
-                    <Grid item>
+                    <Grid item sx={{margin: 2, width: 1, height: 1}}>
                         <Button onClick={() => {
                             axios.post(baseUrl + '/user/signup', userInfo).then(() => {
                                 window.location.href = '/'

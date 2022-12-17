@@ -11,7 +11,7 @@ import SignInButton from "./LogInRedirect.jsx";
 import {useCookies} from "react-cookie";
 import AddIcon from '@mui/icons-material/Add';
 import Typography from "@mui/material/Typography";
-
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 // const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
 
 
@@ -28,15 +28,22 @@ const Top = (props) => {
             <Box>
                 <Grid container direction='column' justifyContent='flex-start' alignContent='space-evenly'>
                     <Grid item>
+                        <Typography sx={{marginTop:5, marginLeft:3}}>
+                            My Book Shelf
+                        </Typography>
+                    </Grid>
+                    <Grid item>
                         <BookCards books={books} theme={theme}/>
                     </Grid>
                     <Grid item sx={{padding: 2}}>
-                        <Fab variant='extended' color="primary" href='/book/register' >
-                            <AddIcon />
-                            <Typography fontSize={13}>
-                                本を追加
-                            </Typography>
-                        </Fab>
+                        <Grid container direction='row' justifyContent='flex-end' alignContent='flex-end'>
+                            <Grid item>
+                                <Fab variant='extended' color="primary" href='/book/register'>
+                                    <AddIcon fontSize='small'/>
+                                    <MenuBookIcon/>
+                                </Fab>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <SignInButton></SignInButton>
