@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 from functools import partial
+from typing import List
 
 from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
@@ -94,7 +95,7 @@ async def get_communitiy_info(
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@router.get("/communities/{community_id}/books")
+@router.get("/communities/{community_id}/books", response_model=List[schemas.UserBookInfo])
 async def get_community_accessible_books(
     community_id: str,
     db: Session = Depends(get_db),
