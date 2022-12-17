@@ -224,8 +224,6 @@ async def send_rental_request(
         return_due_date = return_due_date,
         db = db
     )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "貸出申請を正常に送信しました."}
 
 
@@ -257,8 +255,6 @@ async def send_rental_request(
         return_due_date = latest_state.return_due_date,
         db = db
     )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "正常に貸出許可が行われました."}
 
 
@@ -296,8 +292,6 @@ async def send_rental_request(
         return_due_date = latest_state.return_due_date,
         db = db
     )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "正常に貸出確認処理が行われました."}
 
 
@@ -328,6 +322,4 @@ async def send_rental_request(
         user_id = latest_state.relation_user_id,
         db = db
     )
-
-    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "正常に返却処理が行われました."}
