@@ -23,21 +23,27 @@ async def create_user(
     try:
         user_id = str(uuid4()) #現在は仮でuuid直入れしてます.認証機能の実装後修正します.
 
-        same_user = crud.search_user_by_id(db=db, user_id=user_id)
-        if same_user is not None:
-            raise HTTPException(
-                status_code=400,
-                detail="既にアカウントが存在しています."
-            )
-
-        registered_user_id = crud.create_user(
-            db=db,
-            user_id=user_id,
-            user_setup_info=user_setup_info
-        )
-        return schemas.UserInfo.mapping_to_dict(
-            target_user=crud.search_user_by_id(db=db, user_id=registered_user_id),
-            user_id=registered_user_id
+        try:
+            crud.search_user_by_id(db=db, user_id=user_id)
+        except HTTPException as e:
+            if e.detail == "指定されたidのユーザーが見つかりませんでした.":
+                registered_user_id = crud.create_user(
+                    db=db,
+                    user_id=user_id,
+                    user_setup_info=user_setup_info
+                )
+                return schemas.UserInfo.mapping_to_dict(
+                    target_user=crud.search_user_by_id(db=db, user_id=registered_user_id),
+                    user_id=registered_user_id
+                )
+            else:
+                raise HTTPException(
+                    status_code=e.status_code,
+                    detail=e.detail
+                )
+        raise HTTPException(
+            status_code=400,
+            detail="既にユーザー登録されています."
         )
 
     except HTTPException as e:
