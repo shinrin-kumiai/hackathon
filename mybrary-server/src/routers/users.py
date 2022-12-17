@@ -3,6 +3,7 @@ from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
 from typing import List
 from functools import partial
+from uuid import uuid4
 
 from src.dependencies import get_db, get_current_user, get_thumbnail_save_path
 from src import crud, services, schemas
@@ -11,6 +12,30 @@ router = APIRouter(
     prefix='/user',
     tags=['user']
 )
+
+
+@router.post("/signup", response_model=schemas.UserInfo)
+async def create_user(
+    user_setup_info: schemas.UserSetupInfo,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+    ):
+    try:
+        user_id = str(uuid4()) #現在は仮でuuid直入れしてます.認証機能の実装後修正します.
+        registered_user_id = crud.create_user(
+            db=db,
+            user_id=user_id,
+            user_setup_info=user_setup_info
+        )
+        return schemas.UserInfo.mapping_to_dict(
+            target_user=crud.search_user_by_id(db=db, user_id=registered_user_id),
+            user_id=registered_user_id
+        )
+
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.post("/books/register/", response_model=schemas.UserBookInfo)
