@@ -210,9 +210,9 @@ async def send_rental_request(
             detail="自分の本に対して貸出申請を行うことは出来ません."
         )
 
-    latest_state_id = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
 
-    if latest_state_id.state_id != 1:
+    if latest_state.state_id != 1:
         raise HTTPException(
             status_code=400,
             detail="この本は現在貸出不可状態です."
@@ -225,5 +225,45 @@ async def send_rental_request(
         db = db
     )
 
-    latest_state_id = crud.get_latest_state_id_by_user_book_id(db=db, user_book_id=user_book_id)
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+    return {"message": "貸出申請を正常に送信しました."}
+
+
+
+@router.post("/{user_book_id}/rental-permit")
+async def send_rental_request(
+    user_book_id: str,
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)
+):
+    target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
+
+    if target_user_book.user_id == user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="自分の本に対して貸出許可を行うことは出来ません."
+        )
+
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
+
+    if latest_state.state_id != 2:
+        raise HTTPException(
+            status_code=400,
+            detail="この本は現在貸出許可対象ではありません."
+        )
+    
+    if latest_state.relation_user_id != user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="この処理へのアクセス権がありません."
+        )
+
+    crud.set_state_lendable_to_applying(
+        user_book_id = user_book_id,
+        user_id = user_id,
+        return_due_date = latest_state.return_due_date,
+        db = db
+    )
+
+    latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
     return {"message": "貸出申請を正常に送信しました."}
