@@ -221,6 +221,14 @@ py -m pytest tests/integration/test_sample.py
 
 # エンドポイント一覧
 ## userカテゴリ
+>### - [post] /user/signup
+>- ユーザー登録を行うエンドポイント
+>#### リクエストボディモデル
+>`schemas.UserSetupInfo`
+>#### レスポンスモデル
+>`schemas.UserInfo`
+
+
 >### - [post] /user/books/register/
 >- ユーザー所有の本を登録するエンドポイント
 >#### -- クエリパラメータ
