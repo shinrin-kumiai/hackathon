@@ -125,7 +125,7 @@ def set_state_back_to_lendable(
     """
     db.add(models.UserBookStateLog(
         user_book_id = user_book_id,
-        state_id = 3,
+        state_id = 1,
         relation_user_id = user_id,
         return_due_date = None,
         register_date = datetime.now()
