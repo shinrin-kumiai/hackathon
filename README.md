@@ -241,8 +241,19 @@ py -m pytest tests/integration/test_sample.py
 >国立国会図書館APIへの開発時のアクセス数を最低限に抑えるため、このエンドポイントへのテストは`.env`ファイル内の>`NDLAPI_RELATED_TEST_EXECUTE_IS`をtrue(小文字に注意)にした場合にのみ実行される.
 
 
+>### - [get] /user/books
+>- ログイン中ユーザー自身の所有本一覧を取得するエンドポイント
+>#### -- クエリパラメータ
+>|Query-param|detail|
+>|:----:|:----|
+>|page|取得したいページ数|
+>|size|1ページで取得したい要素数|
+>#### --レスポンスモデル
+>`List[schemas.UserBookInfo]`
+
+
 >### - [get] /user/{target_user_id}/books
->- ユーザー所有本の一覧を取得するエンドポイント
+>- ユーザーidで指定されたユーザーの所有本一覧を取得するエンドポイント
 >#### -- クエリパラメータ
 >|Query-param|detail|
 >|:----:|:----|
