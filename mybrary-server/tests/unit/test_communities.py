@@ -264,3 +264,33 @@ def test_comm0001に属していないユーザーuser0001が同コミュニテ�
 
     assert response.status_code == 403
     assert res_json["detail"] == "このコミュニティに対してアクセス権限がありません."
+
+
+def test_comm0001に属しているuser0003がcomm0001のメンバー一覧を正常に取得できる():
+    """正常形テスト([get]/communities/{community_id}/members)
+    1. ログイン中のユーザーをuser0003に変更
+    2. コミュニティ1のメンバー一覧をリクエストする
+    3. レスポンスのステータスコードとメッセージの確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0003
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}/members")
+    res_json = response.json()
+
+    assert response.status_code == 200
+    assert len(res_json) == 2
+
+
+def test_comm0001に属していないuser0001がcomm0001のメンバー一覧をリクエストして403エラーを吐く():
+    """異常系テスト([get]/communities/{community_id}/members)
+    1. コミュニティ1のメンバー一覧をリクエストする
+    2. レスポンスのステータスコードとメッセージの確認
+    """
+    community_id = "comm0001-0000-0000-0000-000000000000"
+
+    response = client.get(f"/communities/{community_id}/members")
+    res_json = response.json()
+
+    assert response.status_code == 403
+    assert res_json["detail"] == "このコミュニティに対してアクセス権限がありません."
