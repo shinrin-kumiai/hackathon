@@ -91,6 +91,7 @@ class UserBookInfo(BaseModel):
                 "title": "Pythonの本",
                 "publisher": "森林書房",
                 "creator": "森田 林",
-                "isbn": "9780000000000"
+                "isbn": "9780000000000",
+                "has_permission": "false"
             }
         }

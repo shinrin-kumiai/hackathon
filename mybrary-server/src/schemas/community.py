@@ -57,6 +57,7 @@ class CommunityInfo(CommunitySetupInfo):
                 "name": "森林組合",
                 "description": "森林組合のコミュニティです.",
                 "id": "comm0000-0000-0000-0000-000000000000",
-                "owner_id": "user0001-0000-0000-0000-000000000000"
+                "owner_id": "user0001-0000-0000-0000-000000000000",
+                "has_permission": "false"
             }
         }
