@@ -25,13 +25,13 @@ def test_ユーザー登録が正常に実行される():
         all_users = db.query(models.User).all()
         assert len(all_users) == 8
 
-        response = client.post("/user/signup", json={
-            "name": "森林 太郎",
-            "mail_adress": "sample@example.com",
-        })
-        res_json = response.json()
-        assert response.status_code == 200
-        assert res_json["name"] == "森林 太郎"
+    response = client.post("/user/signup", json={
+        "name": "森林 太郎",
+        "mail_adress": "sample@example.com",
+    })
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["name"] == "森林 太郎"
 
     with Session(bind=engine) as db:
         all_users = db.query(models.User).all()
@@ -49,13 +49,13 @@ def test_ユーザー名が未入力でユーザー登録リクエストを送�
         all_users = db.query(models.User).all()
         assert len(all_users) == 8
 
-        response = client.post("/user/signup", json={
-            "name": "森林 太郎",
-            "mail_adress": "sample@example.com",
-        })
-        res_json = response.json()
-        assert response.status_code == 200
-        assert res_json["name"] == "森林 太郎"
+    response = client.post("/user/signup", json={
+        "name": "森林 太郎",
+        "mail_adress": "sample@example.com",
+    })
+    res_json = response.json()
+    assert response.status_code == 200
+    assert res_json["name"] == "森林 太郎"
 
     with Session(bind=engine) as db:
         all_users = db.query(models.User).all()
