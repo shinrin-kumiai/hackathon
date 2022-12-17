@@ -323,6 +323,13 @@ py -m pytest tests/integration/test_sample.py
 >|:----:|:----|
 >|user_book_id|貸出確認対象の本の所有id|
 
+>### - [post] /user/{user_book_id}/return-confirm
+>- 所有idで指定された本の貸出確認に対し返却確認を行うエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|user_book_id|返却確認対象の本の所有id|
+
 
 ## communityカテゴリ
 >### - [post] /community/create
