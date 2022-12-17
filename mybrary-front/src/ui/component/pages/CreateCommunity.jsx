@@ -9,7 +9,7 @@ import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 
-const AddCommunity = (props) => {
+const CreateCommunity = (props) => {
     const [postData, setPostData] = useState({})
     const onSubmit = data => {
         console.log(data);
@@ -36,4 +36,4 @@ const AddCommunity = (props) => {
     )
 }
 
-export default AddCommunity
+export default CreateCommunity

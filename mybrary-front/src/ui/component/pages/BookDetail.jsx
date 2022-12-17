@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import {Fab, Grid} from "@mui/material";
+import {Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid} from "@mui/material";
 import * as React from "react";
 import theme from "../../../theme.jsx";
 import Header from "../chunks/Header.jsx";
@@ -8,6 +8,8 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {baseUrl} from "../../../infrastructure/apiConfig.js";
+import {AuthFab} from "../chunks/AuthoritiesButtons.jsx";
+import {Dialog} from "@mui/material";
 
 
 function AddIcon() {
@@ -15,6 +17,9 @@ function AddIcon() {
 }
 
 const BookDetail = (props) => {
+    const [alert, setAlert] = useState(false)
+
+    const auth = true
 
     const params = useParams()
 
@@ -79,14 +84,37 @@ const BookDetail = (props) => {
                                 </Fab>
                             </Grid>
                             <Grid item>
-                                <Fab variant="extended" color="primary" onClick={() => deleteRelation()}>
-                                    登録を解除
-                                </Fab>
+                                {/*<Fab variant="extended" color="primary" onClick={() => deleteRelation()}>*/}
+                                {/*    登録を解除*/}
+                                {/*</Fab>*/}
+                                <AuthFab auth={auth} onClickEvent={() => {setAlert(true)}} txt='登録を解除' color={'warning'}/>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
+                <Dialog
+                    open={alert}
+                    onClose={deleteRelation}
+                    aria-labelledby=""
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"登録から削除します"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {response.title + 'を登録から削除します。'}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {setAlert(false)}}>キャンセル</Button>
+                        <Button onClick={deleteRelation} autoFocus>
+                            はい
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
+
         </div>
     )
 }

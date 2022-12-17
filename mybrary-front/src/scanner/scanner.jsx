@@ -67,7 +67,7 @@ const Scanner = props => {
     };
 
     return (
-        <Box id="interactive" className="viewport" sx={{maxWidth: props.width}}/>
+        <Box id="interactive" className="viewport" sx={{width:1}}/>
     );
 };
 

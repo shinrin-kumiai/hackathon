@@ -5,11 +5,15 @@ import theme from "../../../theme.jsx";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import Typography from "@mui/material/Typography";
 
 
 const CommunityConfig = (props) => {
     // const baseUrl = 'http://localhost:8000/'
-    // const params = useParams()
+    const params = useParams()
     // const CommunityId = params.id
     // const[communityInfo, setCommunityInfo] = useState({})
     // axios.get(baseUrl + 'community/' + CommunityId).then(response => {setCommunityInfo(response)}).catch((err) => {
@@ -19,18 +23,10 @@ const CommunityConfig = (props) => {
     //             window.location.href='/'
     //         }
     //     })
-    const communityInfo = {
-        name: 'hayashi',
-        id: 12345666,
-        description: 'こんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちはこんにちは',
-        members: [
-            {
-                name: 'hayashi',
-                id: 12893798745,
-
-            }
-        ]
-    }
+    const [communityInfo, setCommunityInfo] = useState({})
+    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID ).then(
+        (response) => setCommunityInfo(response.data)
+    )}, [])
     return (
         <Box>
             <Header theme={theme}/>
@@ -38,21 +34,23 @@ const CommunityConfig = (props) => {
                 <Grid item sx={{width:0.05}}/>
                 <Grid item sx={{width: 0.9}}>
                     <Grid container direction='column' justifyContent='flex-start' alignContent='flex-start' sx={{width: 1}}>
-                        <Grid item sx={{}}>
+                        <Grid item sx={{padding:3}}>
+                            <Typography fontSize={22}>
+                                {communityInfo.name}
+                            </Typography>
+                        </Grid>
+                        <Grid item sx={{width:1}}>
                             <List sx={{boxShadow: 2}}>
-                                <ListItem>
-                                    <ListItemText primary={communityInfo.name}/>
-                                </ListItem>
                                 <ListItem>
                                     <ListItemText primary={communityInfo.description}/>
                                 </ListItem>
                             </List>
                         </Grid>
-                        <Grid item sx={{width: 1}}>
-                            <MemberList members={communityInfo.members}/>
-                        </Grid>
+                        {/*<Grid item sx={{width: 1}}>*/}
+                        {/*    <MemberList members={communityInfo.members}/>*/}
+                        {/*</Grid>*/}
                         <Grid item>
-                            <Button>
+                            <Button href={"/community/" + params.communityID + "/add-user"}>
                                 メンバー追加
                             </Button>
                         </Grid>
@@ -60,7 +58,6 @@ const CommunityConfig = (props) => {
                 </Grid>
                 <Grid item sx={{width:0.05}}/>
             </Grid>
-
         </Box>
 
     )

@@ -1,18 +1,25 @@
-import {useCookies} from "react-cookie";
-import {useEffect} from "react";
+import React from "react";
+import { useMsal } from "@azure/msal-react";
+// import { loginRequest } from "../../../authConfig.js";
+import Button from "react-bootstrap/Button";
 
 
-const LogInRedirect = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
-    useEffect(() => {
-        setCookie("tkn", location.hash)
-        window.location.href='/'
-    })
+/**
+ * Renders a button which, when selected, will redirect the page to the login prompt
+ */
+const SignInButton = () => {
+    const { instance } = useMsal();
+
+    const handleLogin = (loginType) => {
+        if (loginType === "redirect") {
+            instance.loginRedirect(loginRequest).catch(e => {
+                console.log(e);
+            });
+        }
+    }
     return (
-        <div>
-
-        </div>
-    )
+        <Button variant="secondary" className="ml-auto" onClick={() => handleLogin("redirect")}>Sign in using Redirect</Button>
+    );
 }
 
-export default LogInRedirect
+export default SignInButton

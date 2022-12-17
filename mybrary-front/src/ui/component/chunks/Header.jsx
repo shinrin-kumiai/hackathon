@@ -6,10 +6,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LeftDrawer from "../elements/Drawer.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ButtonBase, ThemeProvider} from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
+import axios from "axios";
+import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 
@@ -17,21 +19,16 @@ import MenuBookSharpIcon from '@mui/icons-material/MenuBookSharp';
 
 export default function Header(props) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [communities, setCommunities] = useState([])
+    useEffect(() => {axios.get(baseUrl + '/user/communities').then(
+        (response) => (
+            setCommunities(response.data)
+        )
+    )}, [])
     return (
-        <ThemeProvider theme={props.theme}>
             <Box sx={{ flexGrow: 1, margin:0}}>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Toolbar>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                            onClick={() => {setIsDrawerOpen(true)}}
-                        >
-                            <MenuIcon/>
-                        </IconButton>
                         <Box sx={{ flexGrow: 1 }}>
                             <ButtonBase href='/'>
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -46,10 +43,20 @@ export default function Header(props) {
                         <IconButton size='large' color='inherit'>
                             <MenuBookSharpIcon/>
                         </IconButton>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={() => {setIsDrawerOpen(true)}}
+                            sx={{paddingRight:0, paddingLeft:3}}
+                        >
+                            <MenuIcon/>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
-                <LeftDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}/>
+                <Box sx={{height:50}}/>
+                <LeftDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} communities={communities}/>
             </Box>
-        </ThemeProvider>
     )};
 

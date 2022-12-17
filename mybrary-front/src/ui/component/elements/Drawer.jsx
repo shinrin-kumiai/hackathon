@@ -20,7 +20,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const LeftDrawer = (props) => {
     return (
         <div>
-            <SwipeableDrawer open={props.isOpen} onOpen={() => {props.setIsOpen(true)}} onClose={() => {props.setIsOpen(false)}} sx={{width:drawerWidth}}>
+            <SwipeableDrawer open={props.isOpen} onOpen={() => {props.setIsOpen(true)}} onClose={() => {props.setIsOpen(false)}} sx={{width:drawerWidth}} anchor='right'>
                 <DrawerHeader sx={{backgroundColor:'#878989'}}>
                     <Grid sx={{width:240}}>
                         <Typography sx={{color:'#ffffff'}}>
@@ -29,7 +29,7 @@ const LeftDrawer = (props) => {
                     </Grid>
                 </DrawerHeader>
                 <Divider/>
-                {Menu()}
+                <Menu communities={props.communities}/>
             </SwipeableDrawer>
         </div>
     );
