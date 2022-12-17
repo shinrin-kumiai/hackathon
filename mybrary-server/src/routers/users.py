@@ -238,10 +238,10 @@ async def send_rental_request(
 ):
     target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
-    if target_user_book.user_id == user_id:
+    if target_user_book.user_id != user_id:
         raise HTTPException(
             status_code=400,
-            detail="自分の本に対して貸出許可を行うことは出来ません."
+            detail="自分の本ではない本に対して貸出許可を行うことは出来ません."
         )
 
     latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
@@ -251,14 +251,8 @@ async def send_rental_request(
             status_code=400,
             detail="この本は現在貸出許可対象ではありません."
         )
-    
-    if latest_state.relation_user_id != user_id:
-        raise HTTPException(
-            status_code=403,
-            detail="この処理へのアクセス権がありません."
-        )
 
-    crud.set_state_lendable_to_applying(
+    crud.set_state_applying_to_allowed(
         user_book_id = user_book_id,
         user_id = user_id,
         return_due_date = latest_state.return_due_date,
@@ -266,4 +260,4 @@ async def send_rental_request(
     )
 
     latest_state = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
-    return {"message": "貸出申請を正常に送信しました."}
+    return {"message": "正常に貸出許可が行われました."}
