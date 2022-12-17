@@ -37,8 +37,6 @@ async def create_community(
         )
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.post("/communities/{community_id}/add/{target_user_id}")
@@ -73,8 +71,6 @@ async def add_community_member(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/communities/{community_id}")
@@ -89,5 +85,3 @@ async def get_communitiy_info(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")

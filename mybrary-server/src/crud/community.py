@@ -58,8 +58,6 @@ def search_community_by_id(
             return target_community
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 def add_commynity_member(

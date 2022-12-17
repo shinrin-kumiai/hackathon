@@ -29,5 +29,3 @@ async def get_image(
             return FileResponse("src/assets/default/thumbnail_not_found.jpg")
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")

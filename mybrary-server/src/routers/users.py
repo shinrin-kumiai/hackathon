@@ -34,8 +34,6 @@ async def create_user(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.post("/books/register/", response_model=schemas.UserBookInfo)
@@ -78,8 +76,6 @@ async def register_book(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/books", response_model=Page[schemas.UserBookInfo])
@@ -92,8 +88,6 @@ async def get_user_books(
         return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), user_book)))
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/books/{book_id}", response_model=schemas.UserBookInfo)
@@ -110,8 +104,6 @@ async def search_book_by_id(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.delete("/books/{book_id}")
@@ -132,8 +124,6 @@ async def delete_book_by_id(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/communities", response_model=List[schemas.CommunityInfo])
@@ -147,5 +137,3 @@ async def get_belong_communities(
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")

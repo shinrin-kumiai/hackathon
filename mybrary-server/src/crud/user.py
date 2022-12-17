@@ -59,5 +59,3 @@ def search_user_by_id(
         return target_user
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-    except:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
