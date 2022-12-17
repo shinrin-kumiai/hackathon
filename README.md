@@ -299,11 +299,22 @@ py -m pytest tests/integration/test_sample.py
 >|target_user_id|情報取得対象の本のid|
 
 >### - [post] /user/{user_book_id}/rental-request
->- 所有idで指定された本の所有者に貸し出し申請を行うエンドポイント
+>- 所有idで指定された本の所有者に貸出申請を行うエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|user_book_id|貸出申請対象の本の所有id|
 >#### -- クエリパラメータ
 >|Query-param|detail|
 >|:----:|:----|
 >|return_due_date|返却予定日, デフォルト値は処理日の1週間後|
+
+>### - [post] /user/{user_book_id}/rental-permit
+>- 所有idで指定された本の貸出申請に対し貸出許可を行うエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|user_book_id|貸出申請対象の本の所有id|
 
 
 ## communityカテゴリ
