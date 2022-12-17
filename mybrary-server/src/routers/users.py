@@ -198,7 +198,7 @@ async def get_user_info(
 @router.post("/{user_book_id}/rental-request")
 async def send_rental_request(
     user_book_id: str,
-    return_due_date: date = Query(description="返却予定日を指定:YYYY-MM-DD"),
+    return_due_date: date = Query(default=date.today()+timedelta(days=7), description="返却予定日を指定:YYYY-MM-DD"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
