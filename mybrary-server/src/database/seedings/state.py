@@ -13,8 +13,8 @@ def seeding_to_state(engine) -> None:
     with Session(bind=engine) as db:
         db.add(models.State(state="貸出可能"))
         db.add(models.State(state="貸出申請中"))
+        db.add(models.State(state="貸出許可中"))
         db.add(models.State(state="貸出中"))
-        db.add(models.State(state="返却申請中"))
         db.add(models.State(state="貸出停止"))
         db.commit()
 
