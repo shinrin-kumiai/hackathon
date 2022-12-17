@@ -271,11 +271,17 @@ py -m pytest tests/integration/test_sample.py
 >#### 制限
 > - 指定された本の所有者のみがこのエンドポイントへのアクセス権限を有する.
 
+>### - [get] /user/communities
+>- ログイン中のユーザーが所属しているコミュニティの情報を配列で返すエンドポイント
+>#### --レスポンスモデル
+>`schemas.CommunityInfo`
 
-> ### - [get] /user/communities
-> - ログイン中のユーザーが所属しているコミュニティの情報を配列で返すエンドポイント
-> #### --レスポンスモデル
-> `schemas.CommunityInfo`
+>### - [get] /user/{target_user_id}
+>- ユーザーidで指定されたユーザーの情報を取得するエンドポイント
+>#### --パスパラメータ
+>|Path-param|detail|
+>|:----:|:----|
+>|target_user_id|情報取得対象の本のid|
 
 
 ## communityカテゴリ
