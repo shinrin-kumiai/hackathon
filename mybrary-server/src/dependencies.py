@@ -27,7 +27,7 @@ def get_current_user() -> str:
     Returns:
         str: user_id (uuid4)
     """
-    return "user0005-0000-0000-0000-000000000000"
+    return "user0002-0000-0000-0000-000000000000"
 
 
 def get_thumbnail_save_path() -> str:

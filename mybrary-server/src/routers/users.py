@@ -22,14 +22,28 @@ async def create_user(
     ):
     try:
         user_id = str(uuid4()) #現在は仮でuuid直入れしてます.認証機能の実装後修正します.
-        registered_user_id = crud.create_user(
-            db=db,
-            user_id=user_id,
-            user_setup_info=user_setup_info
-        )
-        return schemas.UserInfo.mapping_to_dict(
-            target_user=crud.search_user_by_id(db=db, user_id=registered_user_id),
-            user_id=registered_user_id
+
+        try:
+            crud.search_user_by_id(db=db, user_id=user_id)
+        except HTTPException as e:
+            if e.detail == "指定されたidのユーザーが見つかりませんでした.":
+                registered_user_id = crud.create_user(
+                    db=db,
+                    user_id=user_id,
+                    user_setup_info=user_setup_info
+                )
+                return schemas.UserInfo.mapping_to_dict(
+                    target_user=crud.search_user_by_id(db=db, user_id=registered_user_id),
+                    user_id=registered_user_id
+                )
+            else:
+                raise HTTPException(
+                    status_code=e.status_code,
+                    detail=e.detail
+                )
+        raise HTTPException(
+            status_code=400,
+            detail="既にユーザー登録されています."
         )
 
     except HTTPException as e:
@@ -74,6 +88,18 @@ async def register_book(
             user_id=user_id
         )
 
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+
+@router.get("/books", response_model=Page[schemas.UserBookInfo])
+async def get_user_books(
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user),
+):  
+    try:
+        user_book = crud.get_all_user_book(db=db, user_id=user_id)
+        return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), user_book)))
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 

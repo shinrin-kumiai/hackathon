@@ -205,23 +205,8 @@ def test_存在しない14桁のisbnコードである12345678901234を指定し
     assert res_json["detail"] == "isbnコードの桁数が正しくありません."
 
 
-
-def test_user0002がuser0001の所有している本の一覧が正常に取得できる():
-    """正常系テスト([get]/user/{target_user_id}/books)
-    1. ログインユーザーを"user0002"に変更
-    2. "user0001"が所有している本の一覧をリクエスト
-    3. "user0001"が所有している本が3冊取得されることを確認
-    """
-    app.dependency_overrides[get_current_user] = override_get_current_user0002
-    target_user_id = "user0001-0000-0000-0000-000000000000"
-    response = client.get(f"/user/{target_user_id}/books?page=1&size=50")
-    res_json = response.json()
-    assert response.status_code == 200
-    assert len(res_json["items"]) == 0
-
-
 def test_user0002が自身の所有している本の一覧が正常に取得できる():
-    """正常系テスト([get]/user/{target_user_id}/books)
+    """正常系テスト([get]/user/books)
     1. ログインユーザーを"user0002"に変更
     2. "user0002"が所有している本の一覧をリクエスト
     3. "user0002"が所有している本が3冊取得されることを確認
@@ -238,6 +223,21 @@ def test_user0002が自身の所有している本の一覧が正常に取得で
     assert res_json["items"][0]["has_permission"] == True
     assert res_json["items"][1]["has_permission"] == True
     assert res_json["items"][2]["has_permission"] == True
+
+
+
+def test_user0002がuser0001の所有している本の一覧が正常に取得できる():
+    """正常系テスト([get]/user/{target_user_id}/books)
+    1. ログインユーザーを"user0002"に変更
+    2. "user0001"が所有している本の一覧をリクエスト
+    3. "user0001"が所有している本が3冊取得されることを確認
+    """
+    app.dependency_overrides[get_current_user] = override_get_current_user0002
+    target_user_id = "user0001-0000-0000-0000-000000000000"
+    response = client.get(f"/user/{target_user_id}/books?page=1&size=50")
+    res_json = response.json()
+    assert response.status_code == 200
+    assert len(res_json["items"]) == 0
 
 
 def test_本の所有idがusbk0001の本の情報を正常に取得できる():
