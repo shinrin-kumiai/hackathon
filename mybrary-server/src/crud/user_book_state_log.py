@@ -7,7 +7,7 @@ from datetime import datetime, date
 from src import models, services, schemas
 
 
-def get_latest_state_id_by_user_book_id(
+def get_latest_state_by_user_book_id(
     user_book_id: str,
     db: Session,
 ) -> int:
@@ -33,7 +33,7 @@ def get_latest_state_id_by_user_book_id(
             detail = "指定された本が見つかりませんでした."
         )
 
-    return target_user_book_state.state_id
+    return target_user_book_state
 
 
 def set_state_lendable_to_applying(

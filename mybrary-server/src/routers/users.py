@@ -210,9 +210,9 @@ async def send_rental_request(
             detail="自分の本に対して貸出申請を行うことは出来ません."
         )
 
-    latest_state_id = crud.get_latest_state_id_by_user_book_id(db=db, user_book_id=user_book_id)
+    latest_state_id = crud.get_latest_state_by_user_book_id(db=db, user_book_id=user_book_id)
 
-    if latest_state_id != 1:
+    if latest_state_id.state_id != 1:
         raise HTTPException(
             status_code=400,
             detail="この本は現在貸出不可状態です."
