@@ -22,6 +22,14 @@ async def create_user(
     ):
     try:
         user_id = str(uuid4()) #現在は仮でuuid直入れしてます.認証機能の実装後修正します.
+
+        same_user = crud.search_user_by_id(db=db, user_id=user_id)
+        if same_user is not None:
+            raise HTTPException(
+                status_code=400,
+                detail="既にアカウントが存在しています."
+            )
+
         registered_user_id = crud.create_user(
             db=db,
             user_id=user_id,
