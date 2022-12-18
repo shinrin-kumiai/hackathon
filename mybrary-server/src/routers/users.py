@@ -1,3 +1,5 @@
+import os
+import dotenv
 from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
@@ -14,16 +16,17 @@ router = APIRouter(
     tags=['users']
 )
 
+dotenv.load_dotenv(override=True)
+
 
 @router.post("/signup", response_model=schemas.UserInfo)
 async def create_user(
     user_setup_info: schemas.UserSetupInfo,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
-    user_id: str = Depends(get_current_user)
     ):
     try:
-        user_id = str(uuid4()) #現在は仮でuuid直入れしてます.認証機能の実装後修正します.
-
+        user_id = services.decode_token(token)
         try:
             crud.search_user_by_id(db=db, user_id=user_id)
         except HTTPException as e:
@@ -54,10 +57,13 @@ async def create_user(
 @router.post("/books/register/", response_model=schemas.UserBookInfo)
 async def register_book(
     isbn: str = Query(..., description = "登録したい本のisbnコード"),
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
     thumbnail_save_path: str = Depends(get_thumbnail_save_path)
 ) -> None:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         isbn = services.isbn_normalize(isbn)
         isbn = services.toggle_isbn10_and_isbn13(isbn) if len(isbn) != 13 else isbn
@@ -101,9 +107,12 @@ async def register_book(
 
 @router.get("/books", response_model=Page[schemas.UserBookInfo])
 async def get_user_books(
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ):  
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         user_book = crud.get_all_user_book(db=db, user_id=user_id)
         return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id, db=db), user_book)))
@@ -114,9 +123,12 @@ async def get_user_books(
 @router.get("/{target_user_id}/books", response_model=Page[schemas.UserBookInfo])
 async def get_user_books(
     target_user_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ):  
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         user_book = crud.get_all_user_book(db=db, user_id=target_user_id)
         return paginate(list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id, db=db), user_book)))
@@ -127,9 +139,12 @@ async def get_user_books(
 @router.get("/books/{user_book_id}", response_model=schemas.UserBookInfo)
 async def search_book_by_id(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ) -> schemas.UserBookInfo:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         return schemas.UserBookInfo.mapping_to_dict(
             user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id),
@@ -144,9 +159,12 @@ async def search_book_by_id(
 @router.delete("/books/{user_book_id}")
 async def delete_book_by_id(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ) -> schemas.UserBookInfo:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
         if target_book.user_id != user_id:
@@ -163,9 +181,12 @@ async def delete_book_by_id(
 
 @router.get("/communities", response_model=List[schemas.CommunityInfo])
 async def get_belong_communities(
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ) -> str:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         belong_communities = crud.search_user_by_id(db=db, user_id=user_id).community
         return list(map(partial(schemas.CommunityInfo.mapping_to_dict, user_id=user_id), belong_communities))
@@ -177,9 +198,12 @@ async def get_belong_communities(
 @router.get("/{target_user_id}")
 async def get_user_info(
     target_user_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user = crud.search_user_by_id(db=db, user_id=target_user_id)
         return schemas.UserInfo.mapping_to_dict(target_user, user_id)
@@ -191,9 +215,12 @@ async def get_user_info(
 @router.get("/{target_user_id}")
 async def get_user_info(
     target_user_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user = crud.search_user_by_id(db=db, user_id=target_user_id)
         return schemas.UserInfo.mapping_to_dict(target_user, user_id)
@@ -205,10 +232,13 @@ async def get_user_info(
 @router.post("/{user_book_id}/rental-request")
 async def send_rental_request(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     return_due_date: date = Query(default=date.today()+timedelta(days=7), description="返却予定日を指定:YYYY-MM-DD"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
@@ -240,9 +270,12 @@ async def send_rental_request(
 @router.post("/{user_book_id}/rental-permit")
 async def send_rental_request(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
@@ -274,9 +307,12 @@ async def send_rental_request(
 @router.post("/{user_book_id}/rental-confirm")
 async def send_rental_request(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 
@@ -314,9 +350,12 @@ async def send_rental_request(
 @router.post("/{user_book_id}/return-confirm")
 async def send_rental_request(
     user_book_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_user_book = crud.search_user_book_by_id(db=db, user_book_id=user_book_id)
 

@@ -1,6 +1,6 @@
 import os
 import dotenv
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi.responses import FileResponse
 
 from src import services
@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get('/thumbnails/{isbn}')
+@router.get('/thumbnails/{isbn}/')
 async def get_image(
     isbn: str,
     thumbnail_save_path: str = Depends(get_thumbnail_save_path)
