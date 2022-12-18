@@ -1,3 +1,5 @@
+import os
+import dotenv
 from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi_pagination import Page, paginate
 from sqlalchemy.orm import Session
@@ -11,13 +13,18 @@ router = APIRouter(
     tags=['communities']
 )
 
+dotenv.load_dotenv(override=True)
+
 
 @router.post("/community/create", response_model=schemas.CommunityInfo)
 async def create_community(
     community_setup_info: schemas.CommunitySetupInfo,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ) -> None:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         created_community_id = crud.create_new_community(
                 db=db,
@@ -45,9 +52,12 @@ async def create_community(
 async def add_community_member(
     community_id: str,
     target_user_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user),
 ) -> dict:
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_community = crud.search_community_by_id(
                     db=db,
@@ -78,9 +88,12 @@ async def add_community_member(
 @router.get("/communities/{community_id}")
 async def get_communitiy_info(
     community_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_community = crud.search_community_by_id(db=db, community_id=community_id)
         return schemas.CommunityInfo.mapping_to_dict(target_community=target_community, user_id=user_id)
@@ -92,9 +105,13 @@ async def get_communitiy_info(
 @router.get("/communities/{community_id}/books", response_model=List[schemas.UserBookInfo])
 async def get_community_accessible_books(
     community_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
+
     target_community = crud.search_community_by_id(db=db, community_id=community_id)
     all_members = target_community.user
 
@@ -114,9 +131,12 @@ async def get_community_accessible_books(
 @router.get("/communities/{community_id}/members", response_model=List[schemas.UserInfo])
 def get_all_members(
     community_id: str,
+    token: str | None = Query(default=None, description="トークン"),
     db: Session = Depends(get_db),
     user_id: str = Depends(get_current_user)
 ):
+    if os.environ.get("USE_HEADER") == "true":
+        user_id = services.decode_token(token)
     try:
         target_community = crud.search_community_by_id(db=db, community_id=community_id)
         all_members = target_community.user
