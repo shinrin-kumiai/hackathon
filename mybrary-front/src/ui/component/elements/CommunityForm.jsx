@@ -4,6 +4,7 @@ import axios from "axios";
 
 
 const Form = (props) => {
+    const token = sessionStorage.getItem('token')
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     return (
         <>
@@ -33,7 +34,7 @@ const Form = (props) => {
                 </Grid>
                 <Grid item sx={{padding:2, width:props.width}}>
                     <Button onClick={() => {
-                        axios.post(props.baseUrl + '/community/create', {
+                        axios.post(props.baseUrl + '/community/create?token=' + token, {
                             name: props.postData.name,
                             description: props.postData.description
                         }).then((response) => {

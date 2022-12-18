@@ -7,20 +7,36 @@ import Box from "@mui/material/Box";
 import theme from "../../../theme.jsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import SignInButton from "./LogInRedirect.jsx";
 import {useCookies} from "react-cookie";
 import AddIcon from '@mui/icons-material/Add';
 import Typography from "@mui/material/Typography";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import {loginRequest} from "../../../authConfig"
+import { myMSALObj, handleResponse } from '../../../authPopup.js';
 // const books = [{title: 'mori', preDate: '2022/8/31', status: 'rental'}, {title: 'hayashi', preDate: '2022/12/31', status: 'rending'}, {title: 'tanaka', preDate: '2023/1/5', status: 'rental'}, {title: 'sonken', preDate: '2023/12/3', status: 'neutral'}]
 
 
 const Top = (props) => {
+    const signIn = () => {
+
+        /**
+         * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
+         * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
+         */
+
+        myMSALObj.loginRedirect(loginRequest)
+            .then(handleResponse)
+            .catch(error => {
+                console.log(error);
+            });
+    }
+    const token = sessionStorage.getItem('token')
+    console.log(token)
     const addAuth = true
     const auth = 'visible'
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
     const [books, setBooks] = useState([])
-    useEffect(() => {axios.get('http://localhost:8000/user/books?page=1&size=50',{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
+    useEffect(() => {axios.get('http://localhost:8000/user/books?token=' + token + '&page=1&size=50',{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
         (response) => setBooks(response.data.items)
     )}, [])
     const AuthFab = (props) => {
@@ -58,6 +74,9 @@ const Top = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
+                <Button onClick={() => {signIn()}}>
+                    signiniuooo
+                </Button>
             </Box>
         </div>
     )

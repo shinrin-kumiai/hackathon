@@ -22,6 +22,9 @@ import NotFound from "./ui/component/pages/NotFound.jsx";
 import AddUsrtoCommunity from "./ui/component/pages/AddUsrtoCommunity.jsx";
 import Welcome from "./ui/component/pages/Welcome.jsx";
 import CommunityBooks from "./ui/component/pages/CommunityBooks";
+import RentalRequest from "./ui/component/pages/RentalRequest.jsx";
+import LogInRedirect from "./ui/component/pages/LogInRedirect.jsx";
+import PermitRental from "./ui/component/pages/PermitRental.jsx";
 
 
 const windowSize = () => {
@@ -111,7 +114,7 @@ function App() {
             const allowedOrigins = [apiUrl];
             const token = (cookies.tkn);
             if (allowedOrigins.includes(origin)) {
-                config.headers.authorization = `Bearer ${token}`;
+                config.headers.authorization = token;
             }
             return config;
         },
@@ -130,14 +133,16 @@ function App() {
                             <Route path={"/book/register/"} element={<AddBook windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/book/register-confirm/:isbn/:id"} element={<BookRegisterConfirm windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/book/detail/:id"} element={<BookDetail windowWidth={width} windowHeight={height}/>}/>
+                            <Route path={"/book/detail/:id/request"} element={<RentalRequest windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/community/new"} element={<CreateCommunity windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/community/:communityID/books"} element={<CommunityBooks windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/community/:communityID/config"} element={<CommunityConfig windowWidth={width} windowHeight={height}/>}/>
-                            {/*<Route path={"/login/redirect"} element={<LogInRedirect/>}/>*/}
+                            <Route path={"/login/redirect"} element={<LogInRedirect/>}/>
                             <Route path={"/bye-bye"} element={<LogOuted/>}/>
                             <Route path={"/404-not-found"} element={<NotFound/>}/>
                             <Route path={"/community/:communityID/add-user"} element={<AddUsrtoCommunity windowWidth={width} windowHeight={height}/>}/>
                             <Route path={"/welcome"} element={<Welcome/>}/>
+                            <Route path={"/book/detail/:id/permit"} element={<PermitRental/>}/>
                         </Routes>
                     </BrowserRouter>
                 </CssBaseline>

@@ -1,0 +1,23 @@
+{
+    "credentials": {
+        "tenantName": "usehackathon",
+        "clientID": "d390e370-a3dc-4208-982e-b4a72f6c68df"
+    },
+    "policies": {
+        "policyName": "B2C_1A_SIGNUP_SIGNIN"
+    },
+    "resource": {
+        "scope": ["tasks.read"]
+    },
+    "metadata": {
+        "authority": "https://usehackathon.b2clogin.com/usehackathon.onmicrosoft.com/B2C_1A_SIGNUP_SIGNIN",
+        "discovery": ".well-known/openid-configuration",
+        "version": "v2.0"
+    },
+    "settings": {
+        "isB2C": true,
+        "validateIssuer": true,
+        "passReqToCallback": false,
+        "loggingLevel": "info"
+    }
+}

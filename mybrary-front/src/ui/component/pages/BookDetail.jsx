@@ -6,7 +6,7 @@ import Header from "../chunks/Header.jsx";
 import BookInfo from "../chunks/BookInfo.jsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useNavigation, useParams} from "react-router-dom";
 import {baseUrl} from "../../../infrastructure/apiConfig.js";
 import {AuthFab} from "../chunks/AuthoritiesButtons.jsx";
 import {Dialog} from "@mui/material";
@@ -17,9 +17,14 @@ function AddIcon() {
 }
 
 const BookDetail = (props) => {
+
+    const navigation = useNavigate()
+
     const [alert, setAlert] = useState(false)
 
-    const auth = true
+    const [rentalAlert, setRentalAlaert] = useState(false)
+
+    const [returnAlert, setReturnAlert] = useState(false)
 
     const params = useParams()
 
@@ -27,7 +32,9 @@ const BookDetail = (props) => {
 
     const [response, setResponse] = useState({})
 
-    useEffect(() => {axios.get(baseUrl + '/user/books/' + id).then(
+    const token = sessionStorage.getItem('token')
+
+    useEffect(() => {axios.get(baseUrl + '/user/books/' + id + '?token=' + token).then(
         (response) => (setResponse(response.data))
     )}, [])
 
@@ -39,30 +46,15 @@ const BookDetail = (props) => {
         ))
     }
 
-
-
-    const ButtonConfig = (response) => {
-        if (response.state === "waitPermission"){
-            const config = {
-                text: '貸出要望があります！'
-            }
-            return (
-                <Grid container direction='row' justifyContent='space_evenly' alignContent='center'>
-                    <Grid item>
-                        <Grid item>
-                            <Fab variant="extended" color="primary" href='/'>
-                                <AddIcon />
-                                {config.text}
-                            </Fab>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            )
-        } else {
-            return (
-                <></>
-            )
-        }
+    const startRental = () => {
+        axios.post(baseUrl + '/user/' + id + '/rental-confirm').then((response) => (
+            navigation(-1)
+        ))
+    }
+    const endRental = () => {
+        axios.post(baseUrl + '/user/' + id + '/return-confirm').then(() => (
+            navigation((-1))
+        ))
     }
 
     return (
@@ -70,24 +62,27 @@ const BookDetail = (props) => {
             <Header theme={theme}/>
             <Box>
                 <Grid container direction='column' justifyContent='flex-start' alignContent='space-evenly'>
-                    <Grid item>
-                        {<ButtonConfig response={response}/>}
-                    </Grid>
                     <Grid item sx={{padding: 1}}>
                         <BookInfo value={response} width={props.windowWidth} height={props.windowHeight} imagePath={imagePath}/>
                     </Grid>
                     <Grid item>
                         <Grid container direction='row' justifyContent='space-evenly' alignContent='center'>
                             <Grid item>
-                                <Fab variant="extended" color="primary" href='/'>
-                                    MyShelf
+                                <Fab variant="extended" color="primary" onClick={() => {
+                                    navigation(-1)
+                                }}>
+                                    もどる
                                 </Fab>
                             </Grid>
                             <Grid item>
                                 {/*<Fab variant="extended" color="primary" onClick={() => deleteRelation()}>*/}
                                 {/*    登録を解除*/}
                                 {/*</Fab>*/}
-                                <AuthFab auth={auth} onClickEvent={() => {setAlert(true)}} txt='登録を解除' color={'warning'}/>
+                                <AuthFab auth={(!!(response.has_permission))&(response.latest_state_id===1)} onClickEvent={() => {setAlert(true)}} txt='登録を解除' color={'warning'}/>
+                                <AuthFab auth={!!!(response.has_permission)&(response.latest_state_id===1)} onClickEvent={() => {window.location.href='/book/detail/' + params.id + '/request?token=' + token}} txt='貸出リクエスト' color={'secondary'}/>
+                                <AuthFab auth={!!(response.has_permission)&(response.latest_state_id===2)} onClickEvent={() => {window.location.href='/book/detail/' + params.id + '/permit?token=' + token}} txt='貸出リクエスト在中' color={'secondary'}/>
+                                <AuthFab auth={!!!(response.has_permission)&(response.latest_state_id===3)} onClickEvent={() => {setRentalAlaert(true)}} txt='受け取り報告' color={'secondary'}/>
+                                <AuthFab auth={!!(response.has_permission)&(response.latest_state_id===4)} onClickEvent={() => {setReturnAlert(true)}} txt='返却報告' color={'secondary'}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -113,8 +108,50 @@ const BookDetail = (props) => {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </Box>
 
+                <Dialog
+                    open={rentalAlert}
+                    onClose={deleteRelation}
+                    aria-labelledby=""
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"レンタル開始"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {response.title + 'を受け取りました。'}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {setAlert(false)}}>キャンセル</Button>
+                        <Button onClick={startRental} autoFocus>
+                            はい
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={returnAlert}
+                    onClose={deleteRelation}
+                    aria-labelledby=""
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"レンタル終了"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {response.title + "が返されました"}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {setReturnAlert(false)}}>キャンセル</Button>
+                        <Button onClick={endRental} autoFocus>
+                            はい
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Box>
         </div>
     )
 }

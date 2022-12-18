@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import theme from "../../../theme.jsx";
 import axios from "axios";
 import {useEffect, useState} from "react";
-import SignInButton from "./LogInRedirect.jsx";
 import {useCookies} from "react-cookie";
 import AddIcon from '@mui/icons-material/Add';
 import Typography from "@mui/material/Typography";
@@ -18,15 +17,16 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 
 const CommunityBooks = (props) => {
+    const token = sessionStorage.getItem('token')
     const params = useParams()
     const auth = 'visible'
     const [cookies, setCookie, removeCookie] = useCookies(["tkn"]);
     const [books, setBooks] = useState([])
-    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID + '/books',{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
+    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID + '/books' + '?token=' + token,{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
         (response) => setBooks(response.data)
     )}, [])
     const [communityName, setCommunityName] = useState('')
-    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID ,{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
+    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID + '?token=' + token ,{ headers: { Authorization: "JWT " + cookies.tkn } }).then(
         (response) => setCommunityName(response.data.name)
     )}, [])
     const AuthFab = (props) => {

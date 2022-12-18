@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 
 
 const NotFound = () => {
+    const token = sessionStorage.getItem('token')
     return (
         <Box>
             <Header/>

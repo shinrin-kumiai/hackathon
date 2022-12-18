@@ -10,6 +10,7 @@ import {baseUrl} from "../../../infrastructure/apiConfig.js";
 
 
 const CreateCommunity = (props) => {
+    const token = sessionStorage.getItem('token')
     const [postData, setPostData] = useState({})
     const onSubmit = data => {
         console.log(data);

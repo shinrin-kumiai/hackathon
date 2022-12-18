@@ -15,6 +15,7 @@ const AddUsrtoCommunity = () => {
     const onSubmit = user => {
         setUser(user)
     }
+    const token = sessionStorage.getItem('token')
     const params = useParams()
     return(
         <>
@@ -35,7 +36,7 @@ const AddUsrtoCommunity = () => {
                         </Grid>
                         <Grid item sx={{margin:3}}>
                             <Button variant="contained" onClick={() => {
-                                axios.post(baseUrl + '/communities/' + params.communityID + 'add' + user).then((response) => {
+                                axios.post(baseUrl + '/communities/' + params.communityID + 'add' + user + '?token=' + token).then((response) => {
                                     window.location.href='/community/'+ params.communityID +'/config'
                                 })
                             }}>

@@ -24,9 +24,14 @@ const CommunityConfig = (props) => {
     //         }
     //     })
     const [communityInfo, setCommunityInfo] = useState({})
-    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID ).then(
+    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID  + '?token=' + token).then(
         (response) => setCommunityInfo(response.data)
     )}, [])
+    const [communityMembers, setCommunityMembers] = useState([])
+    useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID + '/members' + '?token=' + token).then(
+        (response) => setCommunityMembers(response.data)
+    )}, [])
+    const token = sessionStorage.getItem('token')
     return (
         <Box>
             <Header theme={theme}/>
@@ -46,9 +51,9 @@ const CommunityConfig = (props) => {
                                 </ListItem>
                             </List>
                         </Grid>
-                        {/*<Grid item sx={{width: 1}}>*/}
-                        {/*    <MemberList members={communityInfo.members}/>*/}
-                        {/*</Grid>*/}
+                        <Grid item sx={{width: 1}}>
+                            <MemberList members={communityMembers}/>
+                        </Grid>
                         <Grid item>
                             <Button href={"/community/" + params.communityID + "/add-user"}>
                                 メンバー追加

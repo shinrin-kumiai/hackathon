@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import {connect, useSelector} from "react-redux";
 
 const AddBook = (props) => {
+    const token = sessionStorage.getItem('token')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const currentErr = useSelector((state) => state.bookRegister.err)
     const crisbn = useSelector((state) => state.bookRegister.isbn)

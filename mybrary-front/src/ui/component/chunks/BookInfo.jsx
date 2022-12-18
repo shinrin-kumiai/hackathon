@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 
 
 const BookInfo = (props) => {
+
     return (
         <Box>
             <Grid container direction='column' justifyContent='flex-start' alignContent='center'>

@@ -11,14 +11,15 @@ import LeftDrawer from "../elements/Drawer.jsx";
 import * as React from "react";
 import theme from "../../../theme.jsx";
 import {useState} from "react";
-import gifUrl from "../../../assets/Mybrary.gif"
-import logoUrl from '../../../assets/sinrin-kumiai.png'
+// import gifUrl from '../../../assets/Mybrary.gif'
+// import logoUrl from '../../../assets/sinrin-kumiai.png'
 
 
 const width = window.innerWidth
 const height = window.innerHeight
 
 const LogOuted = () => {
+    const token = sessionStorage.getItem('token')
     return (
         <div>
             <ThemeProvider theme={theme}>
@@ -46,14 +47,14 @@ const LogOuted = () => {
                     <Grid container justifyContent='center' alignContent='center' sx={{height:height * 0.9}}>
                         <Grid item sx={{boxShadow:1}}>
                             <Card sx={{boxShadow:0}}>
-                                <CardActionArea href='/'>
-                                    <CardMedia
-                                        component="img"
-                                        width={width}
-                                        image={gifUrl}
-                                        alt="bye bye"
-                                    />
-                                </CardActionArea>
+                                {/*<CardActionArea href='/'>*/}
+                                {/*    <CardMedia*/}
+                                {/*        component="img"*/}
+                                {/*        width={width}*/}
+                                {/*        image={gifUrl}*/}
+                                {/*        alt="bye bye"*/}
+                                {/*    />*/}
+                                {/*</CardActionArea>*/}
                             </Card>
                         </Grid>
                     </Grid>

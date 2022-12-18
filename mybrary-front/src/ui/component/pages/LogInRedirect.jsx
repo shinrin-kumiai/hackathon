@@ -7,19 +7,15 @@ import Button from "react-bootstrap/Button";
 /**
  * Renders a button which, when selected, will redirect the page to the login prompt
  */
-const SignInButton = () => {
-    const { instance } = useMsal();
-
-    const handleLogin = (loginType) => {
-        if (loginType === "redirect") {
-            instance.loginRedirect(loginRequest).catch(e => {
-                console.log(e);
-            });
-        }
-    }
+const LogInRedirect = () => {
+    const token = location.hash
+    console.log(token)
+    sessionStorage.setItem('token', token);
+    window.location.href='/'
     return (
-        <Button variant="secondary" className="ml-auto" onClick={() => handleLogin("redirect")}>Sign in using Redirect</Button>
-    );
-}
+        <div>
 
-export default SignInButton
+        </div>
+    )
+}
+export default LogInRedirect
