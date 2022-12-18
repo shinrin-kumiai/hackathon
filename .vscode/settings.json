@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/58c0c67c-27f4-4cbf-970d-cd7015462a17/AppServices/subscriptions/58c0c67c-27f4-4cbf-970d-cd7015462a17/resourceGroups/sinrinkumiai/providers/Microsoft.Web/sites/Mybrarydeploy",
+    "appService.deploySubpath": "mybrary-front"
+}
