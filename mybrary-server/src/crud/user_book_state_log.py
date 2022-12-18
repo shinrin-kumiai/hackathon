@@ -7,6 +7,30 @@ from datetime import datetime, date
 from src import models, services, schemas
 
 
+def set_state_to_lendable(
+    db: Session,
+    user_book_id: str,
+    user_id: str,
+) -> None:
+    """本の最新ステートを貸出可能に設定
+
+    Args:
+        user_book_id (str): ユーザー所有本の所有id
+        user_id (str): 貸出申請元のユーザーid
+        db (Session): DB接続用セッション
+    """
+    db.add(models.UserBookStateLog(
+        user_book_id = user_book_id,
+        state_id = 1,
+        relation_user_id = user_id,
+        return_due_date = None,
+        register_date = datetime.now()
+    ))
+    db.commit()
+    db.flush()
+
+
+
 def get_latest_state_by_user_book_id(
     user_book_id: str,
     db: Session,
@@ -29,7 +53,7 @@ def get_latest_state_by_user_book_id(
 
     if target_user_book_state is None:
         raise HTTPException(
-            status_code = 404,
+            status_code = 400,
             detail = "指定された本が見つかりませんでした."
         )
 

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 
-from src import models
+from src import models, crud
 
 
 class BookInfo(BaseModel):
@@ -59,8 +60,9 @@ class UserBookInfo(BaseModel):
     creator: str = Field(..., description="著者")
     isbn: str = Field(..., description="isbn13")
     has_permission: bool = Field(..., description="アクセスユーザー=所有者の場合True")
+    latest_state_id: int = Field(..., description="最新のステータスidを返す")
 
-    def mapping_to_dict(user_book: models.UserBook, user_id: str) -> dict:
+    def mapping_to_dict(user_book: models.UserBook, user_id: str, db: Session) -> dict:
         """UserBook型のオブジェクトをUserBookInfo型のdictにマッピングする関数
 
         Args:
@@ -78,7 +80,8 @@ class UserBookInfo(BaseModel):
             publisher = user_book.book.publisher,
             creator = user_book.book.creator,
             isbn = user_book.book.isbn,
-            has_permission = True if user_book.user_id == user_id else False
+            has_permission = True if user_book.user_id == user_id else False,
+            latest_state_id = crud.get_latest_state_by_user_book_id(user_book_id=user_book.id, db=db).state_id,
         )
     
     class Config:
@@ -92,6 +95,7 @@ class UserBookInfo(BaseModel):
                 "publisher": "森林書房",
                 "creator": "森田 林",
                 "isbn": "9780000000000",
-                "has_permission": "false"
+                "has_permission": "false",
+                "latest_state_id": 1
             }
         }

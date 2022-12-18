@@ -108,7 +108,7 @@ async def get_community_accessible_books(
     all_user_books = []
     for user in all_members:
         all_user_books += user.user_book
-    return list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id), all_user_books))
+    return list(map(partial(schemas.UserBookInfo.mapping_to_dict, user_id=user_id, db=db), all_user_books))
 
 
 @router.get("/communities/{community_id}/members", response_model=List[schemas.UserInfo])
