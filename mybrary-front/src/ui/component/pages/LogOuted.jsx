@@ -11,7 +11,7 @@ import LeftDrawer from "../elements/Drawer.jsx";
 import * as React from "react";
 import theme from "../../../theme.jsx";
 import {useState} from "react";
-import gifUrl from '../../../assets/Mybrary.gif'
+import gifUrl from "../../../assets/Mybrary.gif"
 import logoUrl from '../../../assets/sinrin-kumiai.png'
 
 
