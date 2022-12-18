@@ -23,6 +23,7 @@ const CommunityConfig = (props) => {
     //             window.location.href='/'
     //         }
     //     })
+    const token = sessionStorage.getItem('token')
     const [communityInfo, setCommunityInfo] = useState({})
     useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID  + '?token=' + token).then(
         (response) => setCommunityInfo(response.data)
@@ -31,7 +32,7 @@ const CommunityConfig = (props) => {
     useEffect(() => {axios.get('http://localhost:8000/communities/' + params.communityID + '/members' + '?token=' + token).then(
         (response) => setCommunityMembers(response.data)
     )}, [])
-    const token = sessionStorage.getItem('token')
+    console.log(token)
     return (
         <Box>
             <Header theme={theme}/>
