@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Scanner from "./Scanner";
+import Scanner from "./Scannera";
 import {Grid} from "@mui/material";
 import axios from "axios";
 import {useDispatch, useSelector, useStore} from "react-redux";
