@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ScannerIndex from "../../../scanner/scannerIndex.jsx";
+import ScannerIndex from "../../../scanner/ScannerIndex.jsx";
 import Box from "@mui/material/Box";
 import {Alert, Grid} from "@mui/material";
 import Header from "../chunks/Header.jsx";
