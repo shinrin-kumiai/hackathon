@@ -22,6 +22,7 @@ jobs:
           node-version: '18.x'
 
       - name: npm install, build, and test
+        working-directory: ./mybrary-front
         run: |
           npm install
           npm run build　--if-present
