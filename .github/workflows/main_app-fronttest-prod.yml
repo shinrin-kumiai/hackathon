@@ -59,4 +59,4 @@ jobs:
           app-name: 'app-fronttest-prod'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0FBD02714214D6FA73C01E17A6E416F }}
-          package: ./mybrary-front
+          package: .
