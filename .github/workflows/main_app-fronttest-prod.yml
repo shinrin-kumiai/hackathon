@@ -27,12 +27,14 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-      
+          
+      - name: Create an app archive
+        run: tar czf node-app.tgz ./*
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: ./mybrary-front
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,8 +46,11 @@ jobs:
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
+#       - name: Expand the download app archive
+#         run: tar zxf node-app.tgz
         with:
           name: node-app
+      
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -54,4 +59,4 @@ jobs:
           app-name: 'app-fronttest-prod'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0FBD02714214D6FA73C01E17A6E416F }}
-          package: .
+          package: ./mybrary-front
