@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./mybrary-front
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,10 +46,10 @@ jobs:
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
-#       - name: Expand the download app archive
-#         run: tar zxf node-app.tgz
-        with:
-          name: node-app
+      - name: Expand the download app archive
+        run: tar zxf node-app.tgz
+      - name: Expand the download app archive
+        
       
 
       - name: 'Deploy to Azure Web App'
